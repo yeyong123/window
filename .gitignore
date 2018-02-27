@@ -1,2 +1,4 @@
 *.swp
 *.pyc
+config.py
+example_config.py

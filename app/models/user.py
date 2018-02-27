@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-02-27 10:33:33
+# Last modified: 2018-02-27 15:19:57
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -9,9 +9,8 @@ from flask_bcrypt import Bcrypt
 from app.models.send_code import SendCode
 import re
 bcrtpt = Bcrypt(app)
-class User(db.Model, Serialize):
+class User(db.Model, Timestamp, Serialize):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
     phone = db.Column(db.String(128), nullable=False, index=True, unique=True)
     password_digest = db.Column(db.String(128))
@@ -20,7 +19,7 @@ class User(db.Model, Serialize):
     raty_price = db.Column(db.Integer, default=0)
     role = db.Column(db.Integer, default=0)
     orders_count = db.Column(db.Integer, default=0)
-    geohash = db.Column(db.String)
+    geohash = db.Column(db.String, index=True)
     token = db.Column(db.String)
     text = db.Column(db.String)
     code = db.Column(db.String)
@@ -30,8 +29,7 @@ class User(db.Model, Serialize):
     province = db.Column(db.String)
     city = db.Column(db.String)
     district = db.Column(db.String)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
 
 
     def __init__(self, **kwargs):

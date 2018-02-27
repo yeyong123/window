@@ -1,0 +1,71 @@
+# coding:utf-8
+# File Name: order.py
+# Created Date: 2018-02-27 13:52:39
+# Last modified: 2018-02-27 15:38:12
+# Author: yeyong
+from app.extra import *
+class Order(db.Model, Timestamp, Serialize):
+    __tablename__  = 'orders'
+    user_id  = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
+    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)
+    server_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)
+    driver_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)
+    install_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)
+    company_id = db.Column(db.Integer, db.ForeignKey("companies.id"), index=True)
+    customer_id = db.Column(db.Integer, index=True, nullable=False)
+    factory_id = db.Column(db.Integer, index=True)
+    intro_id = db.Column(db.Integer, index=True)
+    product_id = db.Column(db.Integer, index=True, nullable=False)
+    region_id = db.Column(db.Integer, index=True)
+    sale_id = db.Column(db.Integer, index=True)
+    category_id = db.Column(db.Integer)
+    material_id = db.Column(db.Integer)
+    title = db.Column(db.String)
+    address = db.Column(db.String)
+    city = db.Column(db.String)
+    province = db.Column(db.String)
+    district = db.Column(db.String)
+    kind  = db.Column(db.String)
+    width = db.Column(db.Float, default=0.0)
+    height = db.Column(db.Float, default=0.0)
+    weight = db.Column(db.Float, default=0.0)
+    cube = db.Column(db.Float, default=0.0)
+    square = db.Column(db.Float, default=0.0)
+    material = db.Column(db.String)
+    remark = db.Column(db.String)
+    serial_no = db.Column(db.String, nullable=False)
+    description = db.Column(db.String)
+    total_amount = db.Column(db.Integer, default=0)
+    intro_amont = db.Column(db.Integer, default=0)
+    raty_price = db.Column(db.Integer, default=0)
+    region = db.Column(db.String)
+    store = db.Column(db.String)
+    customer_name = db.Column(db.String)
+    customer_phone = db.Column(db.String)
+    server_date = db.Column(db.Integer, default=0)
+    handle_date = db.Column(db.Integer, default=0)
+    install_date = db.Column(db.Integer, default=0)
+    arrive_date = db.Column(db.Integer, default=0)
+    express_no = db.Column(db.String)
+    express_name = db.Column(db.String)
+    geohash = db.Column(db.String, index=True)
+    status = db.Column(db.Integer, default=0, index=True)
+    factory_name = db.Column(db.String)
+    factory_status = db.Column(db.String)
+    level = db.Column(db.Integer, default=0, index=True)
+    order_type = db.Column(db.Integer, default=0, index=True)
+    hide = db.Column(db.Boolean, default=False, index=True)
+    server_amount = db.Column(db.Integer, default=0)
+    product_amount = db.Column(db.Integer, default=0)
+    measure_amount = db.Column(db.Integer, default=0)
+    install_amount = db.Column(db.Integer, default=0)
+    ship_amount = db.Column(db.Integer, default=0)
+    other_amount = db.Column(db.Integer, default=0)
+    measure_confirm = db.Column(db.Boolean, default=False)
+    factory_confirm = db.Column(db.Boolean, default=False)
+    install_confirm = db.Column(db.Boolean, default=False)
+
+
+    
+
+

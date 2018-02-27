@@ -1,12 +1,13 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-02-27 11:55:06
+# Last modified: 2018-02-27 15:44:47
 # Author: yeyong
 from app.extra import *
-class Account(db.Model, Serialize):
+from .user_accounts import user_accounts
+
+class Account(db.Model, Timestamp, Serialize):
     __tablename__ = "accounts"
-    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False, index=True, unique=True)
     manager_id = db.Column(db.Integer, index=True)
     address = db.Column(db.String)
@@ -15,9 +16,11 @@ class Account(db.Model, Serialize):
     token = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=False, index=True, unique=True)
     code = db.Column(db.String, index=True)
-    image = db.Column(db.String, )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    image = db.Column(db.String)
+    users = db.relationship("User", secondary=user_accounts, lazy="subquery", backref=db.backref("accounts", lazy=True))
+    roles = db.relationship("Role", backref="account", lazy="dynamic")
+    permissions = db.relationship("Permission", backref="account", lazy="dynamic")
+
 
 
     def __repr__(self):
