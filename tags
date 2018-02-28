@@ -1,0 +1,473 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Account	app/models/account.py	/^class Account(db.Model, BaseModel):$/;"	c
+Account	app/models/order.py	/^from app.models.account import Account$/;"	i
+Account	manage.py	/^from app.models.account import Account$/;"	i
+AdminRouter	app/controllers/admin/__init__.py	/^class AdminRouter:$/;"	c
+AdminRouter	app/flask_init.py	/^from app.controllers.admin import AdminRouter$/;"	i
+ApiRouter	app/controllers/api/__init__.py	/^class ApiRouter:$/;"	c
+ApiRouter	app/flask_init.py	/^from app.controllers.api import ApiRouter$/;"	i
+Auth	app/models/photo.py	/^from qiniu import Auth, put_file$/;"	i
+AuthRoute	app/controllers/api/auth/base.py	/^class AuthRoute:$/;"	c
+AuthRoute	app/controllers/api/auth/routes.py	/^from .base import AuthRoute$/;"	i
+BUCKET_NAME	config.py	/^    BUCKET_NAME = "keeper"$/;"	v	class:Config
+BUCKET_NAME	example_config.py	/^    BUCKET_NAME = "keeper"$/;"	v	class:Config
+BaseModel	app/extra.py	/^from app.models.extends.base_model import BaseModel$/;"	i
+BaseModel	app/models/extends/base_model.py	/^class BaseModel:$/;"	c
+Bcrypt	app/models/user.py	/^from flask_bcrypt import Bcrypt$/;"	i
+Blueprint	app/controllers/api/auth/__init__.py	/^from flask import Blueprint$/;"	i
+Blueprint	app/controllers/api/main/__init__.py	/^from flask import Blueprint$/;"	i
+Category	app/models/category.py	/^class Category(db.Model, BaseModel):$/;"	c
+Category	manage.py	/^from app.models.category import Category$/;"	i
+Communicate	app/models/communicate.py	/^class Communicate(BaseModel):$/;"	c
+Company	app/models/company.py	/^class Company(db.Model, BaseModel):$/;"	c
+Company	manage.py	/^from app.models.company import Company$/;"	i
+Config	app/flask_init.py	/^from config import Config$/;"	i
+Config	config.py	/^class Config:$/;"	c
+Config	example_config.py	/^class Config:$/;"	c
+Customer	app/models/customer.py	/^class Customer(db.Model, BaseModel):$/;"	c
+Customer	app/models/order.py	/^from app.models.customer import Customer$/;"	i
+Customer	manage.py	/^from app.models.customer import Customer$/;"	i
+DEBUG	config.py	/^    DEBUG=True$/;"	v	class:Config
+DEBUG	example_config.py	/^    DEBUG=True$/;"	v	class:Config
+Flask	app/json_response.py	/^from flask import Response, jsonify, Flask$/;"	i
+FlaskRedis	app/ext.py	/^from flask_redis import FlaskRedis$/;"	i
+Headers	app/json_response.py	/^from werkzeug.datastructures import Headers$/;"	i
+JSONResponse	app/json_response.py	/^class JSONResponse(Response):$/;"	c
+Manager	manage.py	/^from flask_script import Manager, Shell$/;"	i
+Material	app/models/material.py	/^class Material(db.Model, BaseModel):$/;"	c
+Material	manage.py	/^from app.models.material import Material$/;"	i
+Migrate	manage.py	/^from flask_migrate import Migrate, MigrateCommand$/;"	i
+MigrateCommand	manage.py	/^from flask_migrate import Migrate, MigrateCommand$/;"	i
+MyFlask	app/ext.py	/^from .json_response import MyFlask$/;"	i
+MyFlask	app/json_response.py	/^class MyFlask(Flask):$/;"	c
+Node	app/models/node.py	/^class Node(db.Model, BaseModel):$/;"	c
+Node	app/models/order.py	/^from app.models.node import Node$/;"	i
+Node	manage.py	/^from app.models.node import Node$/;"	i
+Order	app/models/order.py	/^class Order(db.Model, BaseModel):$/;"	c
+Order	manage.py	/^from app.models.order  import Order$/;"	i
+OrderDetial	app/models/order_detail.py	/^class OrderDetial(db.Model, BaseModel):$/;"	c
+Permission	app/models/permission.py	/^class Permission(db.Model, BaseModel):$/;"	c
+Permission	manage.py	/^from app.models.permission import Permission$/;"	i
+Photo	app/controllers/api/main/home.py	/^from app.models.photo import Photo$/;"	i
+Photo	app/models/photo.py	/^class Photo(db.Model, BaseModel):$/;"	c
+Photo	manage.py	/^from app.models.photo import Photo$/;"	i
+Picture	app/models/order.py	/^from app.models.picture import Picture$/;"	i
+Picture	app/models/picture.py	/^class Picture(db.Model, BaseModel):$/;"	c
+Product	app/models/product.py	/^class Product(db.Model, BaseModel):$/;"	c
+Product	manage.py	/^from app.models.product import Product$/;"	i
+QINIU_AK	config.py	/^    QINIU_AK = "D2HoWxWkb2MHhZVO5J5902DyeGNA05csQJOomlg0"$/;"	v	class:Config
+QINIU_AK	example_config.py	/^    QINIU_AK = "D2HoWxWkb2MHhZVO5J5902DyeGNA05csQJOomlg0"$/;"	v	class:Config
+QINIU_SK	config.py	/^    QINIU_SK = "TmrvwiSTzBO9snZ2dg8JOYuCQA19IetyN-gZpZT8"$/;"	v	class:Config
+QINIU_SK	example_config.py	/^    QINIU_SK = "TmrvwiSTzBO9snZ2dg8JOYuCQA19IetyN-gZpZT8"$/;"	v	class:Config
+QINIU_URL	config.py	/^    QINIU_URL = "https:\/\/images.salesgj.com\/"$/;"	v	class:Config
+QINIU_URL	example_config.py	/^    QINIU_URL = "https:\/\/images.salesgj.com\/"$/;"	v	class:Config
+REDIS_URL	config.py	/^    REDIS_URL="redis:\/\/:5mutian_chuang@106.14.16.196:6379\/5"$/;"	v	class:Config
+REDIS_URL	example_config.py	/^    REDIS_URL="redis:\/\/:5mutian_chuang@106.14.16.196:6379\/5"$/;"	v	class:Config
+Region	app/models/region.py	/^class Region(db.Model, BaseModel):$/;"	c
+Response	app/json_response.py	/^from flask import Response, jsonify, Flask$/;"	i
+Role	app/models/role.py	/^class Role(db.Model, BaseModel):$/;"	c
+Role	manage.py	/^from app.models.role import Role$/;"	i
+SECRET_KEY	config.py	/^    SECRET_KEY = "secret_key"$/;"	v	class:Config
+SECRET_KEY	example_config.py	/^    SECRET_KEY = "secret_key"$/;"	v	class:Config
+SQLALCHEMY_COMMIT_ON_TEARDOWN	config.py	/^    SQLALCHEMY_COMMIT_ON_TEARDOWN = True$/;"	v	class:Config
+SQLALCHEMY_COMMIT_ON_TEARDOWN	example_config.py	/^    SQLALCHEMY_COMMIT_ON_TEARDOWN = True$/;"	v	class:Config
+SQLALCHEMY_DATABASE_URI	config.py	/^    SQLALCHEMY_DATABASE_URI = "postgresql:\/\/chuang:5mutian_chuang@106.14.16.196:5432\/new_window"$/;"	v	class:Config
+SQLALCHEMY_DATABASE_URI	example_config.py	/^    SQLALCHEMY_DATABASE_URI = "postgresql:\/\/chuang:5mutian_chuang@106.14.16.196:5432\/new_window"$/;"	v	class:Config
+SQLALCHEMY_ECHO	config.py	/^    SQLALCHEMY_ECHO = True$/;"	v	class:Config
+SQLALCHEMY_ECHO	example_config.py	/^    SQLALCHEMY_ECHO = True$/;"	v	class:Config
+SQLALCHEMY_TRACK_MODIFICATIONS	config.py	/^    SQLALCHEMY_TRACK_MODIFICATIONS = True$/;"	v	class:Config
+SQLALCHEMY_TRACK_MODIFICATIONS	example_config.py	/^    SQLALCHEMY_TRACK_MODIFICATIONS = True$/;"	v	class:Config
+SQLAlchemy	app/ext.py	/^from flask_sqlalchemy import SQLAlchemy$/;"	i
+SendCode	app/models/send_code.py	/^class SendCode:$/;"	c
+SendCode	app/models/user.py	/^from app.models.send_code import SendCode$/;"	i
+Serializer	app/extra.py	/^from itsdangerous import TimedJSONWebSignatureSerializer as Serializer$/;"	i
+Setting	app/models/setting.py	/^class Setting(db.Model, BaseModel):$/;"	c
+Shell	manage.py	/^from flask_script import Manager, Shell$/;"	i
+User	app/controllers/api/auth/base.py	/^from app.models.user import User$/;"	i
+User	app/models/user.py	/^class User(db.Model, BaseModel):$/;"	c
+User	manage.py	/^from app.models.user import User$/;"	i
+UserLogger	app/models/user_logger.py	/^class UserLogger(db.Model, BaseModel):$/;"	c
+__call__	app/models/send_code.py	/^    def __call__(self, phone=None):$/;"	m	class:SendCode	file:
+__init__	app/json_response.py	/^    def __init__(self, response=None, **kwargs):$/;"	m	class:JSONResponse
+__init__	app/models/account.py	/^    def __init__(self, **kwargs):$/;"	m	class:Account
+__init__	app/models/order.py	/^    def __init__(self, **kwargs):$/;"	m	class:Order
+__init__	app/models/user.py	/^    def __init__(self, **kwargs):$/;"	m	class:User
+__repr__	app/models/account.py	/^    def __repr__(self):$/;"	m	class:Account	file:
+__repr__	app/models/customer.py	/^    def __repr__(self):$/;"	m	class:Customer	file:
+__repr__	app/models/node.py	/^    def __repr__(self):$/;"	m	class:Node	file:
+__repr__	app/models/order.py	/^    def __repr__(self):$/;"	m	class:Order	file:
+__repr__	app/models/photo.py	/^    def __repr__(self):$/;"	m	class:Photo	file:
+__repr__	app/models/picture.py	/^    def __repr__(self):$/;"	m	class:Picture	file:
+__repr__	app/models/user.py	/^    def __repr__(self):$/;"	m	class:User	file:
+__tablename__	app/models/account.py	/^    __tablename__ = "accounts"$/;"	v	class:Account
+__tablename__	app/models/category.py	/^    __tablename__ = 'categories'$/;"	v	class:Category
+__tablename__	app/models/communicate.py	/^    __tablename__ = 'communicates'$/;"	v	class:Communicate
+__tablename__	app/models/company.py	/^    __tablename__ = 'companies'$/;"	v	class:Company
+__tablename__	app/models/customer.py	/^    __tablename__ = 'customers'$/;"	v	class:Customer
+__tablename__	app/models/material.py	/^    __tablename__ = 'materials'$/;"	v	class:Material
+__tablename__	app/models/node.py	/^    __tablename__ = 'nodes'$/;"	v	class:Node
+__tablename__	app/models/order.py	/^    __tablename__  = 'orders'$/;"	v	class:Order
+__tablename__	app/models/order_detail.py	/^    __tablename__ = 'order_details'$/;"	v	class:OrderDetial
+__tablename__	app/models/permission.py	/^    __tablename__ = 'permissions'$/;"	v	class:Permission
+__tablename__	app/models/photo.py	/^    __tablename__ = 'photos'$/;"	v	class:Photo
+__tablename__	app/models/picture.py	/^    __tablename__ = 'pictures'$/;"	v	class:Picture
+__tablename__	app/models/product.py	/^    __tablename__ = 'products'$/;"	v	class:Product
+__tablename__	app/models/region.py	/^    __tablename__  = 'regions'$/;"	v	class:Region
+__tablename__	app/models/role.py	/^    __tablename__ = 'roles'$/;"	v	class:Role
+__tablename__	app/models/setting.py	/^    __tablename__ = 'settings'$/;"	v	class:Setting
+__tablename__	app/models/user.py	/^    __tablename__ = 'users'$/;"	v	class:User
+__tablename__	app/models/user_logger.py	/^    __tablename__  = 'user_loggers'$/;"	v	class:UserLogger
+account_id	app/models/category.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True, nullable=False)$/;"	v	class:Category
+account_id	app/models/communicate.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True)$/;"	v	class:Communicate
+account_id	app/models/company.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)$/;"	v	class:Company
+account_id	app/models/customer.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)$/;"	v	class:Customer
+account_id	app/models/material.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True, nullable=False)$/;"	v	class:Material
+account_id	app/models/node.py	/^    account_id = db.Column(db.Integer, nullable=False, index=True)$/;"	v	class:Node
+account_id	app/models/order.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)$/;"	v	class:Order
+account_id	app/models/order_detail.py	/^    account_id = db.Column(db.Integer, nullable=False, index=True)$/;"	v	class:OrderDetial
+account_id	app/models/permission.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True, nullable=False)$/;"	v	class:Permission
+account_id	app/models/product.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)$/;"	v	class:Product
+account_id	app/models/region.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)$/;"	v	class:Region
+account_id	app/models/role.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True, nullable=False)$/;"	v	class:Role
+account_id	app/models/setting.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=False, nullable=False)$/;"	v	class:Setting
+account_id	app/models/user.py	/^    account_id = db.Column(db.Integer, index=True)$/;"	v	class:User
+account_id	app/models/user_logger.py	/^    account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True)$/;"	v	class:UserLogger
+address	app/models/account.py	/^    address = db.Column(db.String)$/;"	v	class:Account
+address	app/models/customer.py	/^    address = db.Column(db.String)$/;"	v	class:Customer
+address	app/models/order.py	/^    address = db.Column(db.String)$/;"	v	class:Order
+address	app/models/user.py	/^    address = db.Column(db.String)$/;"	v	class:User
+amount	app/models/user.py	/^    amount = db.Column(db.Integer, default=0)$/;"	v	class:User
+and_	app/extra.py	/^from sqlalchemy import and_, or_$/;"	i
+app	app/controllers/api/main/intercept.py	/^from app.extra import app$/;"	i
+app	app/ext.py	/^app = MyFlask(__name__)$/;"	v
+app	app/extra.py	/^from .ext import db, app$/;"	i
+app	app/flask_init.py	/^from .ext import  db, app, redis$/;"	i
+app	manage.py	/^app = create_app()$/;"	v
+appoint_order	app/models/order.py	/^    def appoint_order(cls, user=None, sub=None):$/;"	m	class:Order
+arrive_date	app/models/order.py	/^    arrive_date = db.Column(db.Integer, default=0)$/;"	v	class:Order
+arrive_event	app/models/order.py	/^    def arrive_event(self):$/;"	m	class:Order
+as_json	app/models/user.py	/^    def as_json(self):$/;"	m	class:User
+assion_order	app/models/order.py	/^    def assion_order(cls, user=None, sub=None):$/;"	m	class:Order
+audit_order	app/models/order.py	/^    def audit_order(cls, user=None, sub=None):$/;"	m	class:Order
+auth	app/controllers/api/__init__.py	/^from .auth import auth$/;"	i
+auth	app/controllers/api/auth/__init__.py	/^auth = Blueprint("auth", __name__, url_prefix="\/api")$/;"	v
+auth	app/controllers/api/auth/routes.py	/^from . import auth$/;"	i
+auth_route	app/controllers/api/auth/routes.py	/^auth_route = AuthRoute()$/;"	v
+back_event	app/models/order.py	/^    def back_event(self):$/;"	m	class:Order
+base_regular_order	app/models/order.py	/^    def base_regular_order(cls):$/;"	m	class:Order
+basedir	config.py	/^basedir = os.path.abspath(os.path.dirname(__file__))$/;"	v
+basedir	example_config.py	/^basedir = os.path.abspath(os.path.dirname(__file__))$/;"	v
+bcrtpt	app/models/user.py	/^bcrtpt = Bcrypt(app)$/;"	v
+body	app/models/user_logger.py	/^    body = db.Column(db.String)$/;"	v	class:UserLogger
+branch_labels	migrations/versions/b53c7727c4d3_.py	/^branch_labels = None$/;"	v
+cache_width	app/models/order_detail.py	/^    cache_width = db.Column(db.String)$/;"	v	class:OrderDetial
+cancel_event	app/models/order.py	/^    def cancel_event(self):$/;"	m	class:Order
+category_id	app/models/order.py	/^    category_id = db.Column(db.Integer)$/;"	v	class:Order
+category_id	app/models/product.py	/^    category_id= db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False, index=True)$/;"	v	class:Product
+center	app/models/order_detail.py	/^    center = db.Column(db.Boolean, default=False)$/;"	v	class:OrderDetial
+city	app/models/customer.py	/^    city  = db.Column(db.String)$/;"	v	class:Customer
+city	app/models/order.py	/^    city = db.Column(db.String)$/;"	v	class:Order
+city	app/models/user.py	/^    city = db.Column(db.String)$/;"	v	class:User
+classable	app/models/setting.py	/^    classable = db.Column(db.String)$/;"	v	class:Setting
+code	app/models/account.py	/^    code = db.Column(db.String, index=True)$/;"	v	class:Account
+code	app/models/user.py	/^    code = db.Column(db.String)$/;"	v	class:User
+color	app/models/product.py	/^    color = db.Column(db.String)$/;"	v	class:Product
+colse	app/models/customer.py	/^    colse = db.Column(db.Boolean, default=False, index=True)$/;"	v	class:Customer
+company_id	app/models/material.py	/^    company_id = db.Column(db.Integer, db.ForeignKey("companies.id"), index=True)$/;"	v	class:Material
+company_id	app/models/order.py	/^    company_id = db.Column(db.Integer, db.ForeignKey("companies.id"), index=True)$/;"	v	class:Order
+config	migrations/env.py	/^config = context.config$/;"	v
+confirm_order	app/models/order.py	/^    def confirm_order(cls, user=None, sub=None):$/;"	m	class:Order
+context	migrations/env.py	/^from alembic import context$/;"	i
+create_account	app/models/account.py	/^    def create_account(cls, **kwargs):$/;"	m	class:Account
+create_app	app/flask_init.py	/^def create_app():$/;"	f
+create_app	manage.py	/^from app.flask_init import create_app, db$/;"	i
+create_event	app/models/order.py	/^    def create_event(self):$/;"	m	class:Order
+create_image	app/models/picture.py	/^    def create_image(cls, **kwargs):$/;"	m	class:Picture
+create_order	app/models/order.py	/^    def create_order(cls, **kwargs):$/;"	m	class:Order
+created_at	app/models/extends/base_model.py	/^    created_at = db.Column(db.DateTime, default=datetime.utcnow)$/;"	v	class:BaseModel
+cube	app/models/order.py	/^    cube = db.Column(db.Float, default=0.0)$/;"	v	class:Order
+cube	app/models/order_detail.py	/^    cube = db.Column(db.String)$/;"	v	class:OrderDetial
+current_app	migrations/env.py	/^from flask import current_app$/;"	i
+customer_id	app/models/communicate.py	/^    customer_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)$/;"	v	class:Communicate
+customer_id	app/models/order.py	/^    customer_id = db.Column(db.Integer, index=True)$/;"	v	class:Order
+customer_name	app/models/order.py	/^    customer_name = db.Column(db.String)$/;"	v	class:Order
+customer_phone	app/models/order.py	/^    customer_phone = db.Column(db.String)$/;"	v	class:Order
+customer_type	app/models/customer.py	/^    customer_type = db.Column(db.Integer, default=0, index=True)$/;"	v	class:Customer
+datetime	app/extra.py	/^from datetime import datetime$/;"	i
+datetime	app/models/extends/base_model.py	/^from datetime import datetime$/;"	i
+datetime	app/models/role_permission.py	/^from app.extra import db, datetime$/;"	i
+datetime	app/models/user_accounts.py	/^from app.extra import db, datetime$/;"	i
+datetime	app/models/user_role.py	/^from app.extra import db, datetime$/;"	i
+db	app/ext.py	/^db = SQLAlchemy()$/;"	v
+db	app/extra.py	/^from .ext import db, app$/;"	i
+db	app/flask_init.py	/^from .ext import  db, app, redis$/;"	i
+db	app/models/extends/base_model.py	/^from app.ext import db$/;"	i
+db	app/models/role_permission.py	/^from app.extra import db, datetime$/;"	i
+db	app/models/user_accounts.py	/^from app.extra import db, datetime$/;"	i
+db	app/models/user_role.py	/^from app.extra import db, datetime$/;"	i
+db	manage.py	/^from app.flask_init import create_app, db$/;"	i
+decrement	app/models/order.py	/^    def decrement(self):$/;"	m	class:Order
+default_event	app/models/order.py	/^    def default_event(self):$/;"	m	class:Order
+default_order	app/models/order.py	/^    def default_order(cls, user=None, sub=None):$/;"	m	class:Order
+depends_on	migrations/versions/b53c7727c4d3_.py	/^depends_on = None$/;"	v
+description	app/models/order.py	/^    description = db.Column(db.String)$/;"	v	class:Order
+district	app/models/customer.py	/^    district = db.Column(db.String)$/;"	v	class:Customer
+district	app/models/order.py	/^    district = db.Column(db.String)$/;"	v	class:Order
+district	app/models/user.py	/^    district = db.Column(db.String)$/;"	v	class:User
+down_revision	migrations/versions/b53c7727c4d3_.py	/^down_revision = None$/;"	v
+downgrade	migrations/versions/b53c7727c4d3_.py	/^def downgrade():$/;"	f
+driver	app/models/order.py	/^    driver = db.relationship("User", foreign_keys=[driver_id])$/;"	v	class:Order
+driver_id	app/models/order.py	/^    driver_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)$/;"	v	class:Order
+driver_orders	app/models/user.py	/^    driver_orders = db.relationship("Order", foreign_keys="Order.driver_id", lazy="dynamic")$/;"	v	class:User
+engine_from_config	migrations/env.py	/^from sqlalchemy import engine_from_config, pool$/;"	i
+event	app/models/user_logger.py	/^    event = db.Column(db.String)$/;"	v	class:UserLogger
+express_name	app/models/order.py	/^    express_name = db.Column(db.String)$/;"	v	class:Order
+express_no	app/models/order.py	/^    express_no = db.Column(db.String)$/;"	v	class:Order
+factory_confirm	app/models/order.py	/^    factory_confirm = db.Column(db.Boolean, default=False)$/;"	v	class:Order
+factory_id	app/models/order.py	/^    factory_id = db.Column(db.Integer, index=True)$/;"	v	class:Order
+factory_name	app/models/order.py	/^    factory_name = db.Column(db.String)$/;"	v	class:Order
+factory_status	app/models/order.py	/^    factory_status = db.Column(db.String)$/;"	v	class:Order
+fetch	app/models/picture.py	/^    def fetch(cls, klass, klass_id):$/;"	m	class:Picture
+fileConfig	migrations/env.py	/^from logging.config import fileConfig$/;"	i
+filter_orders	app/models/order.py	/^    def filter_orders(cls, user=None, event=None, **kwargs):$/;"	m	class:Order
+floor	app/models/order_detail.py	/^    floor = db.Column(db.String)$/;"	v	class:OrderDetial
+force_type	app/json_response.py	/^    def force_type(cls, response, environ=None):$/;"	m	class:JSONResponse
+g	app/controllers/api/main/routes.py	/^from flask import request, jsonify, g$/;"	i
+generate_code	app/models/send_code.py	/^    def generate_code(self):$/;"	m	class:SendCode
+generate_customer	app/models/customer.py	/^    def generate_customer(cls, **kwargs):$/;"	m	class:Customer
+generate_customer	app/models/order.py	/^    def generate_customer(self):$/;"	m	class:Order
+generate_no	app/models/account.py	/^    def generate_no(self):$/;"	m	class:Account
+generate_number	app/models/order.py	/^    def generate_number(self):$/;"	m	class:Order
+generate_token	app/models/user.py	/^    def generate_token(self):$/;"	m	class:User
+geohash	app/models/order.py	/^    geohash = db.Column(db.String, index=True)$/;"	v	class:Order
+geohash	app/models/user.py	/^    geohash = db.Column(db.String, index=True)$/;"	v	class:User
+get_account_value	app/models/order.py	/^    def get_account_value(cls):$/;"	m	class:Order
+handle_date	app/models/order.py	/^    handle_date = db.Column(db.Integer, default=0)$/;"	v	class:Order
+hashlib	app/models/user.py	/^import hashlib$/;"	i
+height	app/models/order.py	/^    height = db.Column(db.Float, default=0.0)$/;"	v	class:Order
+height	app/models/order_detail.py	/^    height = db.Column(db.String)$/;"	v	class:OrderDetial
+hide	app/models/order.py	/^    hide = db.Column(db.Boolean, default=False, index=True)$/;"	v	class:Order
+home	app/controllers/api/main/home.py	/^def home():$/;"	f
+id	app/models/extends/base_model.py	/^    id = db.Column(db.Integer, primary_key=True)$/;"	v	class:BaseModel
+image	app/models/account.py	/^    image = db.Column(db.String)$/;"	v	class:Account
+image	app/models/photo.py	/^    image = db.Column(db.String)$/;"	v	class:Photo
+image	app/models/picture.py	/^    image = db.Column(db.String)$/;"	v	class:Picture
+image	app/models/user.py	/^    image  = db.Column(db.String)$/;"	v	class:User
+image_type	app/models/picture.py	/^    image_type = db.Column(db.String)$/;"	v	class:Picture
+increment	app/models/order.py	/^    def increment(self):$/;"	m	class:Order
+init_app	app/controllers/admin/__init__.py	/^    def init_app(app):$/;"	m	class:AdminRouter
+init_app	app/controllers/api/__init__.py	/^    def init_app(app):$/;"	m	class:ApiRouter
+init_app	config.py	/^    def init_app(app):$/;"	m	class:Config
+init_app	example_config.py	/^    def init_app(app):$/;"	m	class:Config
+insert_pictures	app/models/order.py	/^    def insert_pictures(self, image, t=None):$/;"	m	class:Order
+install_amount	app/models/order.py	/^    install_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+install_confirm	app/models/order.py	/^    install_confirm = db.Column(db.Boolean, default=False)$/;"	v	class:Order
+install_date	app/models/order.py	/^    install_date = db.Column(db.Integer, default=0)$/;"	v	class:Order
+install_event	app/models/order.py	/^    def install_event(self):$/;"	m	class:Order
+install_id	app/models/order.py	/^    install_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)$/;"	v	class:Order
+install_orders	app/models/user.py	/^    install_orders = db.relationship("Order", foreign_keys="Order.install_id", lazy="dynamic")$/;"	v	class:User
+installer	app/models/order.py	/^    installer = db.relationship("User", foreign_keys=[install_id])$/;"	v	class:Order
+intercept	app/controllers/api/main/__init__.py	/^from . import routes, intercept$/;"	i
+internal_server	app/controllers/api/main/intercept.py	/^def internal_server(e):$/;"	f
+intro_amount	app/models/order.py	/^    intro_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+intro_id	app/models/order.py	/^    intro_id = db.Column(db.Integer, index=True)$/;"	v	class:Order
+is_admin	app/models/user.py	/^    def is_admin(self):$/;"	m	class:User
+is_audit	app/models/user.py	/^    def is_audit(self):$/;"	m	class:User
+is_driver	app/models/user.py	/^    def is_driver(self):$/;"	m	class:User
+is_server	app/models/user.py	/^    def is_server(self):$/;"	m	class:User
+jsonify	app/controllers/api/main/routes.py	/^from flask import request, jsonify, g$/;"	i
+jsonify	app/json_response.py	/^from flask import Response, jsonify, Flask$/;"	i
+key	app/models/setting.py	/^    key = db.Column(db.String)$/;"	v	class:Setting
+kind	app/models/order.py	/^    kind  = db.Column(db.String)$/;"	v	class:Order
+kind	app/models/product.py	/^    kind = db.Column(db.String)$/;"	v	class:Product
+klass	app/models/user_logger.py	/^    klass = db.Column(db.String)$/;"	v	class:UserLogger
+klass_no	app/models/user_logger.py	/^    klass_no = db.Column(db.String)$/;"	v	class:UserLogger
+level	app/models/order.py	/^    level = db.Column(db.Integer, default=0, index=True)$/;"	v	class:Order
+level	app/models/permission.py	/^    level = db.Column(db.Integer, default=0, index=True)$/;"	v	class:Permission
+level	app/models/role.py	/^    level = db.Column(db.Integer, default=0)$/;"	v	class:Role
+lift	app/models/order_detail.py	/^    lift = db.Column(db.Boolean, default=False)$/;"	v	class:OrderDetial
+lift_size	app/models/order_detail.py	/^    lift_size = db.Column(db.String)$/;"	v	class:OrderDetial
+log_request_info	app/controllers/api/main/intercept.py	/^def log_request_info():$/;"	f
+logger	migrations/env.py	/^logger = logging.getLogger('alembic.env')$/;"	v
+logging	migrations/env.py	/^import logging$/;"	i
+logic_query	app/models/order.py	/^    def logic_query(cls):$/;"	m	class:Order
+login	app/controllers/api/auth/base.py	/^    def login(self):$/;"	m	class:AuthRoute
+logo	app/models/company.py	/^    logo = db.Column(db.String)$/;"	v	class:Company
+main	app/controllers/api/__init__.py	/^from .main import main$/;"	i
+main	app/controllers/api/main/__init__.py	/^main = Blueprint('main', __name__, url_prefix = '\/api')$/;"	v
+main	app/controllers/api/main/intercept.py	/^from . import main$/;"	i
+main	app/controllers/api/main/routes.py	/^from . import main$/;"	i
+make_shell_context	manage.py	/^def make_shell_context():$/;"	f
+manager	manage.py	/^manager = Manager(app)$/;"	v
+manager_id	app/models/account.py	/^    manager_id = db.Column(db.Integer, index=True)$/;"	v	class:Account
+material	app/models/order.py	/^    material = db.Column(db.String)$/;"	v	class:Order
+material	app/models/product.py	/^    material = db.Column(db.String)$/;"	v	class:Product
+material_id	app/models/order.py	/^    material_id = db.Column(db.Integer)$/;"	v	class:Order
+measure_amount	app/models/order.py	/^    measure_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+measure_confirm	app/models/order.py	/^    measure_confirm = db.Column(db.Boolean, default=False)$/;"	v	class:Order
+measure_event	app/models/order.py	/^    def measure_event(self):$/;"	m	class:Order
+metal	app/models/product.py	/^    metal = db.Column(db.String)$/;"	v	class:Product
+migrate	manage.py	/^migrate = Migrate(app, db)$/;"	v
+name	app/models/customer.py	/^    name = db.Column(db.String, index=True, nullable=False)$/;"	v	class:Customer
+name	app/models/user.py	/^    name = db.Column(db.String(128), index=True)$/;"	v	class:User
+nickname	app/models/account.py	/^    nickname = db.Column(db.String)$/;"	v	class:Account
+no_method	app/controllers/api/main/intercept.py	/^def no_method(e):$/;"	f
+node_type	app/models/node.py	/^    node_type = db.Column(db.Integer, default=0)$/;"	v	class:Node
+nodes	app/models/order.py	/^    nodes = db.relationship("Node", backref="order", lazy="dynamic")$/;"	v	class:Order
+op	migrations/versions/b53c7727c4d3_.py	/^from alembic import op$/;"	i
+or_	app/extra.py	/^from sqlalchemy import and_, or_$/;"	i
+order_id	app/models/node.py	/^    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), index=True, nullable=False)$/;"	v	class:Node
+order_id	app/models/order_detail.py	/^    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), index=True, nullable=False)$/;"	v	class:OrderDetial
+order_type	app/models/order.py	/^    order_type = db.Column(db.Integer, default=0, index=True)$/;"	v	class:Order
+orders	app/models/account.py	/^    orders = db.relationship("Order", backref="account", lazy="dynamic")$/;"	v	class:Account
+orders	app/models/company.py	/^    orders = db.relationship("Order", backref="company", lazy="dynamic")$/;"	v	class:Company
+orders	app/models/user.py	/^    orders = db.relationship("Order", foreign_keys="Order.user_id", lazy="dynamic")$/;"	v	class:User
+orders_count	app/models/user.py	/^    orders_count = db.Column(db.Integer, default=0)$/;"	v	class:User
+os	config.py	/^import os$/;"	i
+os	example_config.py	/^import os$/;"	i
+os	manage.py	/^import os$/;"	i
+other_amount	app/models/order.py	/^    other_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+owner_order	app/models/order.py	/^    def owner_order(cls, user=None, sub=None):$/;"	m	class:Order
+owner_self	app/models/order.py	/^    def owner_self(self):$/;"	m	class:Order
+page_not_found	app/controllers/api/main/intercept.py	/^def page_not_found(e):$/;"	f
+parse_column	app/models/extends/base_model.py	/^    def parse_column(self, n):$/;"	m	class:BaseModel
+password	app/models/user.py	/^    def password(self):$/;"	m	class:User
+password	app/models/user.py	/^    def password(self, password):$/;"	m	class:User
+password_digest	app/models/user.py	/^    password_digest = db.Column(db.String(128))$/;"	v	class:User
+pending_order	app/models/order.py	/^    def pending_order(cls, user=None, sub=None):$/;"	m	class:Order
+permissions	app/models/account.py	/^    permissions = db.relationship("Permission", backref="account", lazy="dynamic")$/;"	v	class:Account
+phone	app/models/account.py	/^    phone = db.Column(db.String, nullable=False, index=True, unique=True)$/;"	v	class:Account
+phone	app/models/customer.py	/^    phone = db.Column(db.String, index=True, nullable=False)$/;"	v	class:Customer
+phone	app/models/user.py	/^    phone = db.Column(db.String(128), nullable=False, index=True, unique=True)$/;"	v	class:User
+phone_format	app/models/user.py	/^    def phone_format(self, phone):$/;"	m	class:User
+pictureable_id	app/models/picture.py	/^    pictureable_id = db.Column(db.BigInteger, index=True)$/;"	v	class:Picture
+pictureable_type	app/models/picture.py	/^    pictureable_type = db.Column(db.String, index=True)$/;"	v	class:Picture
+pictures	app/models/order.py	/^    def pictures(self):$/;"	m	class:Order
+pool	migrations/env.py	/^from sqlalchemy import engine_from_config, pool$/;"	i
+price	app/models/material.py	/^    price = db.Column(db.Integer)$/;"	v	class:Material
+price	app/models/product.py	/^    price = db.Column(db.Integer, default=0)$/;"	v	class:Product
+price_type	app/models/product.py	/^    price_type = db.Column(db.String, default="元")$/;"	v	class:Product
+pro_set	app/models/product.py	/^    pro_set = db.Column(db.String)$/;"	v	class:Product
+process_revision_directives	migrations/env.py	/^    def process_revision_directives(context, revision, directives):$/;"	f	function:run_migrations_online
+product_amount	app/models/order.py	/^    product_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+product_id	app/models/order.py	/^    product_id = db.Column(db.Integer, index=True, nullable=False)$/;"	v	class:Order
+product_type	app/models/product.py	/^    product_type = db.Column(db.String)$/;"	v	class:Product
+province	app/models/customer.py	/^    province  = db.Column(db.String)$/;"	v	class:Customer
+province	app/models/order.py	/^    province = db.Column(db.String)$/;"	v	class:Order
+province	app/models/user.py	/^    province = db.Column(db.String)$/;"	v	class:User
+put_file	app/models/photo.py	/^from qiniu import Auth, put_file$/;"	i
+pwd	app/models/user.py	/^    pwd = db.Column(db.String)$/;"	v	class:User
+r	app/models/user.py	/^    def r(self, key=None):$/;"	m	class:User
+random	app/models/account.py	/^        import random$/;"	i
+random	app/models/send_code.py	/^import random$/;"	i
+raty_price	app/models/order.py	/^    raty_price = db.Column(db.Integer, default=0)$/;"	v	class:Order
+raty_price	app/models/user.py	/^    raty_price = db.Column(db.Integer, default=0)$/;"	v	class:User
+re	app/models/user.py	/^import re$/;"	i
+record_event_to_node	app/models/order.py	/^    def record_event_to_node(self, **kwargs):$/;"	m	class:Order
+redis	app/ext.py	/^redis = FlaskRedis()$/;"	v
+redis	app/flask_init.py	/^from .ext import  db, app, redis$/;"	i
+redis	app/models/send_code.py	/^from app.ext import redis$/;"	i
+region	app/models/order.py	/^    region = db.Column(db.String)$/;"	v	class:Order
+region_id	app/models/material.py	/^    region_id = db.Column(db.Integer, index=True)$/;"	v	class:Material
+region_id	app/models/order.py	/^    region_id = db.Column(db.Integer, index=True)$/;"	v	class:Order
+remark	app/models/category.py	/^    remark= db.Column(db.String)$/;"	v	class:Category
+remark	app/models/communicate.py	/^    remark = db.Column(db.String, nullable=False)$/;"	v	class:Communicate
+remark	app/models/company.py	/^    remark = db.Column(db.String)$/;"	v	class:Company
+remark	app/models/customer.py	/^    remark = db.Column(db.String)$/;"	v	class:Customer
+remark	app/models/material.py	/^    remark = db.Column(db.String)$/;"	v	class:Material
+remark	app/models/node.py	/^    remark = db.Column(db.String)$/;"	v	class:Node
+remark	app/models/order.py	/^    remark = db.Column(db.String)$/;"	v	class:Order
+remark	app/models/region.py	/^    remark = db.Column(db.String)$/;"	v	class:Region
+request	app/controllers/api/auth/base.py	/^from flask import request$/;"	i
+request	app/controllers/api/main/home.py	/^from flask import request$/;"	i
+request	app/controllers/api/main/routes.py	/^from flask import request, jsonify, g$/;"	i
+res_page	app/models/extends/base_model.py	/^    def res_page(cls):$/;"	m	class:BaseModel
+reset_event	app/models/order.py	/^    def reset_event(self):$/;"	m	class:Order
+reset_token	app/models/user.py	/^    def reset_token(self):$/;"	m	class:User
+response_class	app/json_response.py	/^    response_class = JSONResponse$/;"	v	class:MyFlask
+revision	migrations/versions/b53c7727c4d3_.py	/^revision = 'b53c7727c4d3'$/;"	v
+role	app/models/user.py	/^    role = db.Column(db.Integer, default=0)$/;"	v	class:User
+role_permissions	app/models/permission.py	/^from .role_permission import role_permissions$/;"	i
+role_permissions	app/models/role_permission.py	/^role_permissions = db.Table("role_permissons", $/;"	v
+roles	app/models/account.py	/^    roles = db.relationship("Role", backref="account", lazy="dynamic")$/;"	v	class:Account
+roles	app/models/permission.py	/^    roles = db.relationship("Role", secondary=role_permissions, lazy="subquery", backref=db.backref("permissions", lazy=True))$/;"	v	class:Permission
+routes	app/controllers/api/auth/__init__.py	/^from . import routes$/;"	i
+routes	app/controllers/api/main/__init__.py	/^from . import routes, intercept$/;"	i
+run_migrations_offline	migrations/env.py	/^def run_migrations_offline():$/;"	f
+run_migrations_online	migrations/env.py	/^def run_migrations_online():$/;"	f
+sa	migrations/versions/b53c7727c4d3_.py	/^import sqlalchemy as sa$/;"	i
+sale_id	app/models/order.py	/^    sale_id = db.Column(db.Integer, index=True)$/;"	v	class:Order
+send_code	app/controllers/api/auth/base.py	/^    def send_code(self):$/;"	m	class:AuthRoute
+serial_no	app/models/account.py	/^    serial_no = db.Column(db.String, index=True)$/;"	v	class:Account
+serial_no	app/models/order.py	/^    serial_no = db.Column(db.String, nullable=False, unique=True)$/;"	v	class:Order
+serialize_token	app/models/user.py	/^    def serialize_token(self):$/;"	m	class:User
+server	app/models/order.py	/^    server = db.relationship("User", foreign_keys=[server_id])$/;"	v	class:Order
+server_amount	app/models/order.py	/^    server_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+server_date	app/models/order.py	/^    server_date = db.Column(db.Integer, default=0)$/;"	v	class:Order
+server_id	app/models/customer.py	/^    server_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)$/;"	v	class:Customer
+server_id	app/models/order.py	/^    server_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)$/;"	v	class:Order
+server_orders	app/models/user.py	/^    server_orders = db.relationship("Order", foreign_keys="Order.server_id", lazy="dynamic")$/;"	v	class:User
+set_account	app/models/order.py	/^    def set_account(cls, value):$/;"	m	class:Order
+ship_amount	app/models/order.py	/^    ship_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+ship_order	app/models/order.py	/^    def ship_order(cls, user=None, sub=None):$/;"	m	class:Order
+signup	app/controllers/api/auth/base.py	/^    def signup(self):$/;"	m	class:AuthRoute
+square	app/models/order.py	/^    square = db.Column(db.Float, default=0.0)$/;"	v	class:Order
+stairs	app/models/order_detail.py	/^    stairs = db.Column(db.Boolean, default=False)$/;"	v	class:OrderDetial
+stairs_size	app/models/order_detail.py	/^    stairs_size = db.Column(db.String)$/;"	v	class:OrderDetial
+status	app/models/order.py	/^    status = db.Column(db.Integer, default=0, index=True)$/;"	v	class:Order
+store	app/models/order.py	/^    store = db.Column(db.String)$/;"	v	class:Order
+string	app/models/account.py	/^        import string$/;"	i
+swicth	app/models/order.py	/^    def swicth(self, key=None):$/;"	m	class:Order
+swicth_event	app/models/order.py	/^    def swicth_event(cls, user=None, event=None, sub=None):$/;"	m	class:Order
+target_metadata	migrations/env.py	/^target_metadata = current_app.extensions['migrate'].db.metadata$/;"	v
+text	app/models/user.py	/^    text = db.Column(db.String)$/;"	v	class:User
+text	app/models/user_logger.py	/^    text = db.Column(db.Text)$/;"	v	class:UserLogger
+time	app/extra.py	/^import time$/;"	i
+time	app/models/extends/base_model.py	/^import time$/;"	i
+title	app/models/account.py	/^    title = db.Column(db.String, nullable=False, index=True, unique=True)$/;"	v	class:Account
+title	app/models/company.py	/^    title = db.Column(db.String)$/;"	v	class:Company
+title	app/models/material.py	/^    title = db.Column(db.String)$/;"	v	class:Material
+title	app/models/order.py	/^    title = db.Column(db.String)$/;"	v	class:Order
+title	app/models/permission.py	/^    title = db.Column(db.String)$/;"	v	class:Permission
+title	app/models/product.py	/^    title = db.Column(db.String)$/;"	v	class:Product
+title	app/models/region.py	/^    title = db.Column(db.String)$/;"	v	class:Region
+title	app/models/role.py	/^    title = db.Column(db.String, index=True)$/;"	v	class:Role
+title	app/models/setting.py	/^    title = db.Column(db.String)$/;"	v	class:Setting
+to_date	app/models/extends/base_model.py	/^    def to_date(self, key=0):$/;"	m	class:BaseModel
+to_json	app/models/extends/base_model.py	/^    def to_json(self, **kwargs):$/;"	m	class:BaseModel
+toggle_status	app/models/order.py	/^    def toggle_status(self, event="next"):$/;"	m	class:Order
+token	app/models/account.py	/^    token = db.Column(db.String, nullable=False)$/;"	v	class:Account
+token	app/models/user.py	/^    token = db.Column(db.String)$/;"	v	class:User
+total_amount	app/models/order.py	/^    total_amount = db.Column(db.Integer, default=0)$/;"	v	class:Order
+unit	app/models/product.py	/^    unit = db.Column(db.String)$/;"	v	class:Product
+updated_at	app/models/extends/base_model.py	/^    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)$/;"	v	class:BaseModel
+upgrade	migrations/versions/b53c7727c4d3_.py	/^def upgrade():$/;"	f
+upload	app/controllers/api/main/home.py	/^def upload():$/;"	f
+upload	app/models/photo.py	/^    def upload(cls, f, name):$/;"	m	class:Photo
+user	app/models/order.py	/^    user = db.relationship("User", foreign_keys=[user_id])$/;"	v	class:Order
+user_accounts	app/models/account.py	/^from .user_accounts import user_accounts$/;"	i
+user_accounts	app/models/user_accounts.py	/^user_accounts = db.Table("user_accounts", $/;"	v
+user_create	app/models/user.py	/^    def user_create(cls, **kwargs):$/;"	m	class:User
+user_id	app/models/communicate.py	/^    user_id = db.Column(db.Integer, nullable=False, index=True)$/;"	v	class:Communicate
+user_id	app/models/order.py	/^    user_id  = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)$/;"	v	class:Order
+user_name	app/models/node.py	/^    user_name = db.Column(db.String, nullable=False)$/;"	v	class:Node
+user_name	app/models/user_logger.py	/^    user_name = db.Column(db.String)$/;"	v	class:UserLogger
+user_roles	app/models/role.py	/^from .user_role import user_roles$/;"	i
+user_roles	app/models/user_role.py	/^user_roles = db.Table("user_roles", $/;"	v
+users	app/models/account.py	/^    users = db.relationship("User", secondary=user_accounts, lazy="subquery", backref=db.backref("accounts", lazy=True))$/;"	v	class:Account
+users	app/models/role.py	/^    users = db.relationship("User", secondary=user_roles, lazy="subquery", backref=db.backref("roles", lazy="dynamic"))$/;"	v	class:Role
+uuid	app/models/photo.py	/^import uuid$/;"	i
+validate_column	app/models/user.py	/^    def validate_column(mapper, connection, target):$/;"	m	class:User
+value	app/models/setting.py	/^    value = db.Column(db.String)$/;"	v	class:Setting
+verify_password	app/models/user.py	/^    def verify_password(self, password):$/;"	m	class:User
+weight	app/models/order.py	/^    weight = db.Column(db.Float, default=0.0)$/;"	v	class:Order
+weight	app/models/order_detail.py	/^    weight = db.Column(db.String)$/;"	v	class:OrderDetial
+width	app/models/order.py	/^    width = db.Column(db.Float, default=0.0)$/;"	v	class:Order
+width	app/models/order_detail.py	/^    width = db.Column(db.String)$/;"	v	class:OrderDetial
+with_statement	migrations/env.py	/^from __future__ import with_statement$/;"	i
+work_order	app/models/order.py	/^    def work_order(cls, user=None, sub=None):$/;"	m	class:Order

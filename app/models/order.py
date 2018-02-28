@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-02-28 17:14:12
+# Last modified: 2018-02-28 17:14:52
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -268,6 +268,7 @@ class Order(db.Model, BaseModel):
     @classmethod
     def logic_query(cls):
         return cls.query.filter(cls.status < 100, cls.account_id == cls.get_account_value())
+
     #基本的查询
     @classmethod
     def base_regular_order(cls):
