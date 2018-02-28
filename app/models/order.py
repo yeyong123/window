@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-02-28 15:44:22
+# Last modified: 2018-02-28 17:14:12
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -80,8 +80,20 @@ class Order(db.Model, BaseModel):
 
 
     def __init__(self, **kwargs):
+        self._account_id = None
         super().__init__(**kwargs)
         self.serial_no = self.generate_number()
+
+    
+    @classmethod
+    def set_account(cls, value):
+        cls._account_id = value
+
+    @classmethod
+    def get_account_value(cls):
+        if hasattr(cls, "_account_id"):
+            return cls._account_id
+        return None
 
 
     def __repr__(self):
@@ -239,18 +251,31 @@ class Order(db.Model, BaseModel):
     ## 根据用户的角色过滤订单
     @classmethod
     def filter_orders(cls, user=None, event=None, **kwargs):
-        pass
+        page = kwargs.get("page", 1)
+        valid = {"category_id", "customer_name",  "serial_no", "status", "order_type"}
+        args = {key: value for key, value in kwargs.items() if key in valid}
+        temp = cls.swicth_event(user=user, event=event, sub=kwargs.get("sub", None))
+        results = temp.filter(and_(*args)).order_by(cls.created_at.desc()).paginate(int(page), per_page=25, error_out=False)
+        temp_page = cls.res_page(results)
+        return results.items, temp_page 
+
+
+    #意向订单
+    @classmethod
+    def pending_order(cls, user=None, sub=None):
+        return cls.logic_query().filter_by(order_type=0)
 
     @classmethod
-    def pending_orders(cls):
-        return cls.query.filter_by(order_type=0)
-
+    def logic_query(cls):
+        return cls.query.filter(cls.status < 100, cls.account_id == cls.get_account_value())
+    #基本的查询
     @classmethod
     def base_regular_order(cls):
-        return cls.query.filter_by(order_type=1)
+        return cls.logic_query().filter_by(order_type=1)
 
+    #我的订单
     @classmethod
-    def owner_order(cls, user=None):
+    def owner_order(cls, user=None, sub=None):
         if user.is_admin:
             return cls.base_regular_order()
         else:
@@ -274,8 +299,9 @@ class Order(db.Model, BaseModel):
         
         
     
+    #指派订单
     @classmethod
-    def assion_order(cls, sub=None):
+    def assion_order(cls, user=None, sub=None):
         if sub is None:
           return  cls.base_regular_order().filter(or_(
                cls.server_id == None,
@@ -289,24 +315,61 @@ class Order(db.Model, BaseModel):
         else:
             return cls.base_regular_order().filter(cls.install_id == None, cls.status == 5)
 
-
-    @classmethod
-    def audit_order(cls):
-        pass
     
+    #待审核
     @classmethod
-    def appoint_order(cls):
-        pass
+    def audit_order(cls, user=None, sub=None):
+        return cls.base_regular_order().filter_by(status=2)
+        
+    
+    #待确认
+    @classmethod
+    def confirm_order(cls, user=None, sub=None):
+        return cls.base_regular_order().filter(or_(cls.status == 6, cls.status == 3))
+
+    #待预约
+    @classmethod
+    def appoint_order(cls, user=None, sub=None):
+        if user.is_admin:
+            return cls.base_regular_order().filter(cls.status > 0).filter(or_(
+                cls.arrive_date == 0,
+                cls.install_date == 0,
+                cls.server_date == 0
+                ))
+        elif user.is_driver:
+            return cls.base_regular_order().filter(cls.driver_id == user.id, cls.arrive_date == None, cls.status == 4)
+        else:
+            return cls.base_regular_order().filter(or_(
+                    and_(cls.status == 1, cls.server_id == user.id, cls.server_date == 0),
+                    and_(cls.status == 5, cls.install_id == user.id, cls.install_date == 0)
+                ))
+
+    #待运输
+    @classmethod
+    def ship_order(cls, user=None, sub=None):
+        if user.is_admin:
+            return cls.base_regular_order().filter_by(status=4)
+        else:
+            return cls.base_regular_order().filter(
+                    cls.status == 4, 
+                    cls.driver_id == user.id, 
+                    cls.arrive_date > 0
+                    )
+    
+    #待施工
+    @classmethod
+    def work_order(cls, user=None, sub=None):
+        return cls.base_regular_order().filter(or_(
+                and_(cls.status == 1, cls.server_id == user.id, cls.server_date > 0),
+                and_(cls.status == 5, cls.install_date > 0, cls.install_id == user.id)
+            ))
 
     @classmethod
-    def ship_order(cls):
-        pass
+    def default_order(cls, user=None, sub=None):
+        cls.query
+
 
     @classmethod
-    def default_order(cls):
-        pass
-
-
     def swicth_event(cls, user=None, event=None, sub=None):
         values = dict(
                 pending_orders = cls.pending_order,
@@ -315,7 +378,8 @@ class Order(db.Model, BaseModel):
                 audit= cls.audit_order,
                 confirm= cls.confirm_order,
                 appoint= cls.appoint_order,
-                ship= cls.ship_order
+                ship= cls.ship_order,
+                work= cls.work_order
                 )
         return values.get(event, cls.default_order)(user=user, sub=None)
     ###################

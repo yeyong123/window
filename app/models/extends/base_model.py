@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-02-28 14:44:24
+# Last modified: 2018-02-28 15:52:04
 # Author: yeyong
 from app.ext import db
 from datetime import datetime
@@ -26,7 +26,7 @@ class BaseModel:
     def to_date(self, key=0):
         return datetime.fromtimestamp(key)
 
-    @classmethod
+    @staticmethod
     def res_page(cls):
         temp_page = dict(
                 has_next=cls.has_next,
