@@ -1,10 +1,10 @@
 # coding:utf-8
 # File Name: product.py
 # Created Date: 2018-02-27 14:45:17
-# Last modified: 2018-02-27 15:23:26
+# Last modified: 2018-02-28 14:46:24
 # Author: yeyong
 from app.extra import *
-class Product(db.Model, Timestamp, Serialize):
+class Product(db.Model, BaseModel):
     __tablename__ = 'products'
     title = db.Column(db.String)
     account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)

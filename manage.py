@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-02-27 15:42:23
+# Last modified: 2018-02-28 13:56:08
 # Author: yeyong
 
 import os
@@ -18,6 +18,8 @@ from app.models.order  import Order
 from app.models.product import Product
 from app.models.company import Company
 from app.models.category import Category
+from app.models.customer import Customer
+from app.models.node import Node
 
 
 app = create_app()
@@ -33,7 +35,11 @@ def make_shell_context():
             Material = Material,
             Role = Role,
             Company=Company,
-            Permisson = Permission
+            Order = Order,
+            Permisson = Permission,
+            Product = Product,
+            Customer=Customer,
+            Node=Node
             )
 
 manager.add_command("shell", Shell(make_context=make_shell_context))

@@ -1,12 +1,12 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-02-27 15:44:47
+# Last modified: 2018-02-28 14:44:16
 # Author: yeyong
 from app.extra import *
 from .user_accounts import user_accounts
 
-class Account(db.Model, Timestamp, Serialize):
+class Account(db.Model, BaseModel):
     __tablename__ = "accounts"
     title = db.Column(db.String, nullable=False, index=True, unique=True)
     manager_id = db.Column(db.Integer, index=True)
@@ -20,6 +20,8 @@ class Account(db.Model, Timestamp, Serialize):
     users = db.relationship("User", secondary=user_accounts, lazy="subquery", backref=db.backref("accounts", lazy=True))
     roles = db.relationship("Role", backref="account", lazy="dynamic")
     permissions = db.relationship("Permission", backref="account", lazy="dynamic")
+    orders = db.relationship("Order", backref="account", lazy="dynamic")
+    
 
 
 

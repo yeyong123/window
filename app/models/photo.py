@@ -1,15 +1,14 @@
 # coding:utf-8
 # File Name: photo.py
 # Created Date: 2018-02-26 15:23:24
-# Last modified: 2018-02-26 16:00:52
+# Last modified: 2018-02-28 14:46:11
 # Author: yeyong
 from app.extra import *
 from qiniu import Auth, put_file
 import uuid
-class Photo(db.Model, Serialize):
+class Photo(db.Model, BaseModel):
     __tablename__ = 'photos'
 
-    id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.String)
 
 

@@ -1,10 +1,10 @@
 # coding:utf-8
 # File Name: user_logger.py
 # Created Date: 2018-02-27 14:57:20
-# Last modified: 2018-02-27 15:23:41
+# Last modified: 2018-02-28 14:48:18
 # Author: yeyong
 from app.extra import *
-class UserLogger(db.Model, Timestamp, Serialize):
+class UserLogger(db.Model, BaseModel):
     __tablename__  = 'user_loggers'
     event = db.Column(db.String)
     user_name = db.Column(db.String)

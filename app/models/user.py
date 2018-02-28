@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-02-27 15:19:57
+# Last modified: 2018-02-28 15:16:36
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -9,7 +9,7 @@ from flask_bcrypt import Bcrypt
 from app.models.send_code import SendCode
 import re
 bcrtpt = Bcrypt(app)
-class User(db.Model, Timestamp, Serialize):
+class User(db.Model, BaseModel):
     __tablename__ = 'users'
     name = db.Column(db.String(128), index=True)
     phone = db.Column(db.String(128), nullable=False, index=True, unique=True)
@@ -29,6 +29,11 @@ class User(db.Model, Timestamp, Serialize):
     province = db.Column(db.String)
     city = db.Column(db.String)
     district = db.Column(db.String)
+
+    driver_orders = db.relationship("Order", foreign_keys="Order.driver_id", lazy="dynamic")
+    server_orders = db.relationship("Order", foreign_keys="Order.server_id", lazy="dynamic")
+    install_orders = db.relationship("Order", foreign_keys="Order.install_id", lazy="dynamic")
+    orders = db.relationship("Order", foreign_keys="Order.user_id", lazy="dynamic")
 
 
 
@@ -111,6 +116,28 @@ class User(db.Model, Timestamp, Serialize):
         user = User.query.filter_by(phone=target.phone).first()
         if user:
             raise ValueError("手机号被使用")
+
+
+    #简化用户的角色
+    @property
+    def is_admin(self):
+        return self.role == 5
+
+    def r(self, key=None):
+        t = self.roles.filter_by(title=key).first()
+        return True if t else False
+
+    @property
+    def is_audit(self):
+        return self.r(key="审核")
+
+    @property
+    def is_driver(self):
+        return self.r("司机")
+
+    @property
+    def is_server(self):
+        return self.r("技工")
 
 
 db.event.listen(User, "before_insert", User.validate_column)
