@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-02-28 14:44:16
+# Last modified: 2018-03-01 16:53:26
 # Author: yeyong
 from app.extra import *
 from .user_accounts import user_accounts
@@ -17,7 +17,7 @@ class Account(db.Model, BaseModel):
     phone = db.Column(db.String, nullable=False, index=True, unique=True)
     code = db.Column(db.String, index=True)
     image = db.Column(db.String)
-    users = db.relationship("User", secondary=user_accounts, lazy="subquery", backref=db.backref("accounts", lazy=True))
+    users = db.relationship("User", secondary=user_accounts, lazy="subquery", backref=db.backref("accounts", lazy="dynamic"))
     roles = db.relationship("Role", backref="account", lazy="dynamic")
     permissions = db.relationship("Permission", backref="account", lazy="dynamic")
     orders = db.relationship("Order", backref="account", lazy="dynamic")

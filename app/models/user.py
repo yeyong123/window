@@ -1,12 +1,14 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-02-28 15:16:36
+# Last modified: 2018-03-01 16:57:03
 # Author: yeyong
 from app.extra import *
 import hashlib
 from flask_bcrypt import Bcrypt
 from app.models.send_code import SendCode
+from app.models.account import Account
+from app.models.role import Role
 import re
 bcrtpt = Bcrypt(app)
 class User(db.Model, BaseModel):
@@ -34,7 +36,6 @@ class User(db.Model, BaseModel):
     server_orders = db.relationship("Order", foreign_keys="Order.server_id", lazy="dynamic")
     install_orders = db.relationship("Order", foreign_keys="Order.install_id", lazy="dynamic")
     orders = db.relationship("Order", foreign_keys="Order.user_id", lazy="dynamic")
-
 
 
     def __init__(self, **kwargs):
@@ -138,6 +139,93 @@ class User(db.Model, BaseModel):
     @property
     def is_server(self):
         return self.r("技工")
+
+
+    ## 用户切换的设置更新用户的 account_id
+    def set_account_id(self, account):
+        User.query.filter_by(id=self.id).update({"account_id": account_id})
+
+    ##找到不同类型的用户
+    @classmethod
+    def searach_role_users(cls, account_id=None, key="销售", page=1):
+        r = cls.query.filter(cls.roles.any(title=key)).paginate(int(page), per_page=25, error_out=False)
+        page = cls.res_page(r)
+        return r.items, page
+        
+    def account_info(self):
+        a = Account.query.filter_by(id=self.account_id).first()
+        if not a:
+            return {}
+        return a.to_json()
+
+    def owner_roles(self):
+        if self.roles.first():
+            return [r.to_json() for r in self.roles.all()]
+        return []
+
+    def to_json(self):
+        args = dict(
+                account= self.account_info(),
+                owner_roles = self.owner_roles()
+                )
+        return super().to_json(**args)
+
+
+    ## 分配角色
+    def allocation_role(self, role_id=None):
+        try:
+            self.roles = []
+            temps = Role.query.filter_by(id=role_id, account_id=self.account_id)
+            for rl in temps:
+                ## 如果这个角色已经分配了这个用户就返回信息
+                r = self.roles.filter_by(id=rl.id).first()
+                if r:
+                    return False, "已经分配了该角色"
+                value = self.roles_hash(key=rl.title)
+                if not value:
+                    return False, "无效的角色名"
+                self.role = int(value)
+                self.roles.append(rl)
+                db.session.add(self)
+                db.session.commit()
+                return True, self
+        except Exception as e:
+            app.logger.warn("分配角色失败:{}".format(e))
+            db.session.rollback()
+            return False, "分配角色失败"
+
+
+
+    def roles_hash(self, key=None, resver=False):
+        args = {
+                "普通成员": 0,
+                "销售": 1,
+                "司机": 2,
+                "技工": 3,
+                "审核" : 4,
+                "管理员" : 5
+                }
+        if resver:
+            args = {v: k for k, v in args.items()}
+        return args.get(key, None)
+
+
+    ## 加入公司
+    def add_account(self, account_id=None):
+        a = Account.query.filter_by(id=account_id).first()
+        joined = self.accounts.filter_by(id=a.id).first()
+        if not a:
+            return False, "该公司设置了隐藏"
+        if joined:
+            return False, "已经加入了该公司"
+        self.accounts.append(a)
+        return True, self
+
+
+
+
+
+
 
 
 db.event.listen(User, "before_insert", User.validate_column)

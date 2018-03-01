@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-01 14:08:13
+# Last modified: 2018-03-01 16:14:42
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -531,6 +531,8 @@ class Order(db.Model, BaseModel):
     def nodes_info(self):
         if self.nodes.first():
             return [n.to_json() for n in self.nodes.all()]
+        else:
+            return []
 
     def install_pictures(self):
         if self.pictures("install_pictures").first():
@@ -542,6 +544,7 @@ class Order(db.Model, BaseModel):
         if self.pictures().first():
             return [p.to_json() for p  in self.pictures().all()]
         return []
+    
 
     def show_json(self):
         methods = {
@@ -562,7 +565,7 @@ class Order(db.Model, BaseModel):
                 "install_pictures",
                 "measure_pictures"
                 }
-        args = {}
+        args = {"nodes": self.nodes_info()}
         for v in methods:
             args.update({v: getattr(self, v)()})
         return self.to_json(**args)
