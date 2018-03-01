@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-01 11:59:11
+# Last modified: 2018-03-01 14:08:13
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -253,17 +253,7 @@ class Order(db.Model, BaseModel):
 
     ####################
 
-    ## 获取图片
-    def pictures(self):
-        return Picture.fetch(klass="order", klass_id=self.id)
-    
-    # 添加图片
-    def insert_pictures(self, image, t=None):
-        ok, p = Picture.create_image(pictureable_type="order", pictureable_id=self.id, image=image, image_type=t)
-        if not ok:
-            return False, "添加图片失败"
-        return True, p
-
+   
 
     #################
     ##################
@@ -542,6 +532,17 @@ class Order(db.Model, BaseModel):
         if self.nodes.first():
             return [n.to_json() for n in self.nodes.all()]
 
+    def install_pictures(self):
+        if self.pictures("install_pictures").first():
+            return [p.to_json() for p in self.pictures("insert_pictures").all()]
+        else:
+            return []
+
+    def measure_pictures(self):
+        if self.pictures().first():
+            return [p.to_json() for p  in self.pictures().all()]
+        return []
+
     def show_json(self):
         methods = {
                 "category_info",
@@ -556,7 +557,10 @@ class Order(db.Model, BaseModel):
                 "product_info",
                 "intro_info",
                 "region_info",
-                "detail_info"
+                "detail_info",
+                "royalties",
+                "install_pictures",
+                "measure_pictures"
                 }
         args = {}
         for v in methods:
@@ -567,7 +571,46 @@ class Order(db.Model, BaseModel):
     #############
     #############
 
+
+    #######################
+    ## 订单上传图片处理
+    ## 有测量图, 安装图
+    #######################
+
+     ## 获取图片
+    def pictures(self, kind="measure_pictures"):
+        return Picture.fetch(klass="order", klass_id=self.id, image_type=kind)
     
+    # 添加图片
+    def insert_pictures(self, image=None, t=None):
+        ok, p = Picture.create_image(pictureable_type="order", pictureable_id=self.id, image=image, image_type=t)
+        if not ok:
+            return False, "添加图片失败"
+        return True, p
+
+    def change_upload(self, user=None, **kwargs):
+        measure = kwargs.get("measure_pictures", None)
+        install = kwargs.get("install_pictures", None)
+        try:
+            if measure:
+                self.pictures_type().delete()
+                image = measure.get("image")
+                ok, p = self.insert_pictures(image=image, t="measure_pictures")
+                if not ok:
+                    return False, p
+                return True, p
+            elif install:
+                self.pictures(kind="install_pictures").delete()
+                image = install.get("image")
+                ok, p = self.insert_pictures(iamge=image, t="install_pictures")
+                if not ok:
+                    return False, p
+                return True, p
+        except Exception as e:
+            app.logger.warn("图片创建出现错误, {}".format(e))
+            db.session.rollback()
+            return False, "图片处理失败"
+
 
 
 

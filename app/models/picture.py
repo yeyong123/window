@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: picture.py
 # Created Date: 2018-02-27 14:35:17
-# Last modified: 2018-02-28 14:46:17
+# Last modified: 2018-03-01 14:00:25
 # Author: yeyong
 from app.extra import *
 class Picture(db.Model, BaseModel):
@@ -30,7 +30,7 @@ class Picture(db.Model, BaseModel):
             return False, "图片创建失败"
 
     @classmethod
-    def fetch(cls, klass, klass_id):
-        return cls.query.filter_by(pictureable_id=klass_id, pictureable_type=klass)
+    def fetch(cls, klass=None, klass_id=None, image_type=None):
+        return cls.query.filter_by(pictureable_id=klass_id, pictureable_type=klass, image_type=image_type)
 
 
