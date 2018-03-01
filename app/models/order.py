@@ -1,11 +1,12 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-01 11:53:52
+# Last modified: 2018-03-01 11:59:11
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
 from app.models.account import Account
+from app.models.user import User
 from app.models.node import Node
 from app.models.picture import Picture
 from app.models.product import Product
@@ -513,9 +514,9 @@ class Order(db.Model, BaseModel):
         return u.to_json()
     ## 安装工
     def install_info(self):
-        if not self.install:
+        if not self.installer:
             return {}
-        return self.install.to_json()
+        return self.installer.to_json()
     ## 大类
     def category_info(self):
         c = Category.query.filter_by(id=self.category_id).first()
@@ -559,7 +560,7 @@ class Order(db.Model, BaseModel):
                 }
         args = {}
         for v in methods:
-            args = {v: getattr(self, v)()}
+            args.update({v: getattr(self, v)()})
         return self.to_json(**args)
 
 
