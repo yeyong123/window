@@ -1,13 +1,18 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-01 10:56:34
+# Last modified: 2018-03-01 11:53:52
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
 from app.models.account import Account
 from app.models.node import Node
 from app.models.picture import Picture
+from app.models.product import Product
+from app.models.region import Region
+from app.models.category import Category
+from app.models.company import Company
+from app.models.material import Material
 
 class Order(db.Model, BaseModel):
     __tablename__  = 'orders'
@@ -70,6 +75,7 @@ class Order(db.Model, BaseModel):
     factory_confirm = db.Column(db.Boolean, default=False)
     install_confirm = db.Column(db.Boolean, default=False)
     nodes = db.relationship("Node", backref="order", lazy="dynamic")
+    order_details = db.relationship("OrderDetail", backref="order", lazy="dynamic")
 
     ## 区分不同的用户
     server = db.relationship("User", foreign_keys=[server_id])
@@ -81,13 +87,25 @@ class Order(db.Model, BaseModel):
 
     def __init__(self, **kwargs):
         self._account_id = None
+        self._current_user = None
         super().__init__(**kwargs)
         self.serial_no = self.generate_number()
+        self.product_amount = self._set_product_amount()
 
     
     @classmethod
     def set_account(cls, value):
         cls._account_id = value
+
+    @classmethod
+    def set_current_user(cls, user):
+        cls._current_user = user
+
+    @classmethod
+    def current_user(cls):
+        if hasattr(cls, "_current_user"):
+            return cls.current_user
+        return None
 
     @classmethod
     def get_account_value(cls):
@@ -109,7 +127,7 @@ class Order(db.Model, BaseModel):
         temp  = 1
         while True:
             if temp > 99:
-                raise AttributeError("创建失败订单用尽")
+                raise AttributeError("创建失败订单号用尽")
             t = basic + temp
             res = str(prefix) + str(t).zfill(9)
             if not type(self).query.filter_by(serial_no=res).first():
@@ -409,10 +427,6 @@ class Order(db.Model, BaseModel):
     ## 当前端每一次界面修改的时候就修改一次总价
     @staticmethod
     def wacth_price_changed(target, value, oldvalue, initiator):
-        print("_____________",target)
-        print(">>>>>>>>>>>",value)
-        print("==============", oldvalue)
-        print("==============", initiator.key)
         target.total_amount = target.order_total_amount(key=initiator.key, value=value)
 
 
@@ -434,6 +448,125 @@ class Order(db.Model, BaseModel):
                 value = value
         temp = sum([getattr(self, key) for key in ts])
         return temp + value
+
+
+    ##计算介绍人金额
+    def royalties(self):
+        if self.intro_amount and self.intro_amount  > 0:
+            return self.intro_amount
+        else:
+            temp = self.product_amount * self.user.raty_price
+            return temp
+
+
+   
+    def _set_product_amount(self):
+        return self.product_info().get("price", 0)
+
+    ############################################
+    #############################################
+    ## 订单中的关联的信息查找, 在序列化到 JSON
+     ## 订单中的产品信息
+    def product_info(self):
+        p = Product.query.filter_by(id=self.product_id).first()
+        if not p:
+            return {}
+        return p.to_json()
+
+    ## 产品信息
+    def account_info(self):
+        if not self.account:
+            return {}
+        return self.account.to_json()
+    ## 渠道
+    def region_info(self):
+        r = Region.query.filter_by(id=self.region_id).first()
+        if not r:
+            return {}
+        return r.to_json()
+    ## 运输环境
+    def detail_info(self):
+        if self.order_details.first():
+            return [d.to_json() for d in self.order_details.all()]
+        
+    ## 司机
+    def driver_info(self):
+        if not self.driver:
+            return {}
+        return self.driver.to_json()
+
+    ## 销售
+    def user_info(self):
+        if not self.user:
+            return {}
+        return self.user.to_json()
+    ## 技工
+    def server_info(self):
+        if not self.server:
+            return {}
+        return self.server.to_json()
+    ## 介绍人
+    def intro_info(self):
+        u = User.query.filter_by(id=self.intro_id).first()
+        if not u:
+            return {}
+        return u.to_json()
+    ## 安装工
+    def install_info(self):
+        if not self.install:
+            return {}
+        return self.install.to_json()
+    ## 大类
+    def category_info(self):
+        c = Category.query.filter_by(id=self.category_id).first()
+        if not c:
+            return {}
+        return c.to_json()
+
+    ## 材质
+    def material_info(self):
+        m = Material.query.filter_by(id=self.material_id).first()
+        if not m:
+            return {}
+        return m.to_json()
+    ## 品牌
+    def company_info(self):
+        c = Company.query.filter_by(id=self.company_id).first()
+        if not c:
+            return {}
+        return c.to_json()
+    ## 
+
+    def nodes_info(self):
+        if self.nodes.first():
+            return [n.to_json() for n in self.nodes.all()]
+
+    def show_json(self):
+        methods = {
+                "category_info",
+                "nodes_info", 
+                "company_info", 
+                "material_info",
+                "user_info",
+                "install_info",
+                "server_info",
+                "driver_info",
+                "account_info",
+                "product_info",
+                "intro_info",
+                "region_info",
+                "detail_info"
+                }
+        args = {}
+        for v in methods:
+            args = {v: getattr(self, v)()}
+        return self.to_json(**args)
+
+
+    #############
+    #############
+
+    
 
 
 
