@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-02-28 17:14:52
+# Last modified: 2018-03-01 10:56:34
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -385,6 +385,65 @@ class Order(db.Model, BaseModel):
         return values.get(event, cls.default_order)(user=user, sub=None)
     ###################
     ####################
+
+    ## 当技工修改时修改状态
+    ## 当测量师傅修改的时候, 以及状态是0的时候, 移到下一个状态
+    ## 当安装师傅修改的时候, 以及状态为4的时候移到下一个状态
+    ## 当司机修改的时候, 以及状态为3的时候移到下一个状态
+    @staticmethod
+    def watch_user_event_changed(target, value, oldvalue, initiator):
+        users = {"server_id", "install_id", "driver_id"}
+        if not initiator.key in users:
+            return None
+        if initiator.key == "server_id":
+            if target.status == 0:
+                target.status = 1
+        elif initiator.key == "install_id":
+            if target.status == 4:
+                target.status = 5
+        else:
+            if target.status == 3:
+                target.status = 4
+
+
+    ## 当前端每一次界面修改的时候就修改一次总价
+    @staticmethod
+    def wacth_price_changed(target, value, oldvalue, initiator):
+        print("_____________",target)
+        print(">>>>>>>>>>>",value)
+        print("==============", oldvalue)
+        print("==============", initiator.key)
+        target.total_amount = target.order_total_amount(key=initiator.key, value=value)
+
+
+    ## 计算总价
+    def order_total_amount(self, key=None, value=None):
+        ts = {"measure_amount", "install_amount", "ship_amount", "product_amount", "server_amount", "other_amount"}
+        if key:
+            if type(key) is list: #如果是多个值
+                for k in key:
+                    ts.remove(k)
+            else:
+                ts.remove(key)
+        if value is None:
+            value = 0
+        else:
+            if type(value) is list:
+                value = sum(value)
+            else:
+                value = value
+        temp = sum([getattr(self, key) for key in ts])
+        return temp + value
+
+
+
+
+for e in {"server_id", "install_id", "driver_id"}:
+    db.event.listen(getattr(Order, e), "set", Order.watch_user_event_changed)
+
+## 检查价格变动
+for t in {"measure_amount", "install_amount", "ship_amount", "product_amount", "server_amount", "other_amount"}:
+    db.event.listen(getattr(Order, t), "set", Order.wacth_price_changed)
 
 
 
