@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: customer.py
 # Created Date: 2018-02-27 12:46:14
-# Last modified: 2018-03-02 15:11:11
+# Last modified: 2018-03-02 15:26:16
 # Author: yeyong
 from app.extra import *
 
@@ -67,6 +67,28 @@ class Customer(db.Model, BaseModel):
     def searach_customers(cls, key=None):
         results = cls.query.filter(or_(cls.name.like("%{}%".format(key)), cls.phone.like("%{}%".format(key))))
         return results
+
+    
+    @classmethod
+    def filter_customer(cls, user=None, **kwargs):
+        start = kwargs.get("start_time", None)
+        end = kwargs.get("end_time", None)
+        page = kwargs.get("page", 1)
+        user = user
+        args = [getattr(cls, k) == v for k, v in kwargs.items() if v and hasattr(cls, k)]
+        if start or end:
+            args.extend(cls.parser_time(start, end))
+        if not user.is_admin:
+            u = [cls.customer_type == 0, cls.server_id == user.id]
+            p = [cls.customer_type != 0]
+            results = cls.query.filter(or_(*p, *u)).filter(and_(*args))
+        else:
+           results = cls.query.filter_by(account_id=user.account_id).filter(and_(*args))
+        temp = results.paginate(int(page), per_page=25, error_out=False)
+        page = cls.res_page(temp)
+        return temp.items, page 
+
+
 
 
 
