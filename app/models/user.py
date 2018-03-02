@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-02 10:42:12
+# Last modified: 2018-03-02 15:02:35
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -36,6 +36,7 @@ class User(db.Model, BaseModel):
     server_orders = db.relationship("Order", foreign_keys="Order.server_id", lazy="dynamic")
     install_orders = db.relationship("Order", foreign_keys="Order.install_id", lazy="dynamic")
     orders = db.relationship("Order", foreign_keys="Order.user_id", lazy="dynamic")
+    customers = db.relationship("Customer", foreign_keys="Customer.server_id", lazy="dynamic")
 
 
     def __init__(self, **kwargs):
@@ -73,11 +74,6 @@ class User(db.Model, BaseModel):
         payload = serial.dumps(dict(user_id=self.id, password=self.password_digest, token=self.token))
         return payload.decode("utf-8")
 
-
-    @property
-    def as_json(self):
-        json = self.to_json()
-        return json
 
 
     ## 用户注册
@@ -154,12 +150,12 @@ class User(db.Model, BaseModel):
             return [r.to_json() for r in self.roles.all()]
         return []
 
-    def to_json(self):
+    def as_json(self):
         args = dict(
                 account= self.account_info(),
                 owner_roles = self.owner_roles()
                 )
-        return super().to_json(**args)
+        return self.to_json(**args)
 
 
     ## 分配角色

@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: customer.py
 # Created Date: 2018-02-27 12:46:14
-# Last modified: 2018-02-28 14:47:44
+# Last modified: 2018-03-02 15:11:11
 # Author: yeyong
 from app.extra import *
 
@@ -18,13 +18,15 @@ class Customer(db.Model, BaseModel):
     remark = db.Column(db.String)
     server_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)
     colse = db.Column(db.Boolean, default=False, index=True)
+    communicates = db.relationship("Communicate", backref="customer", lazy="dynamic")
+    sever = db.relationship("User", foreign_keys=[server_id])
 
 
     def __repr__(self):
         return "<Customer id: {}, name: {}, phone: {}>".format(self.id, self.name, self.phone)
 
     
-      #生成客户
+    ## 生成客户
     @classmethod
     def generate_customer(cls, **kwargs):
         try:
@@ -38,5 +40,42 @@ class Customer(db.Model, BaseModel):
             return True, customer
         except Exception as e:
             return False, "处理客户事件失败"
+
+
+    ## 对接的销售
+    def server_info(self):
+        if self.server:
+            return self.server.to_json()
+        else:
+            return {}
+
+    ## 交流记录
+    def communicate_info(self):
+        c = self.communicates
+        if c.first():
+            return [co.to_json() for co in c]
+        else:
+            return []
+
+    ## 切换为正式客户
+    def toggle_normal(self):
+        Customer.query.filter_by(id=self.id).update({'customer_type': 1})
+
+
+    ## 搜索客户
+    @classmethod 
+    def searach_customers(cls, key=None):
+        results = cls.query.filter(or_(cls.name.like("%{}%".format(key)), cls.phone.like("%{}%".format(key))))
+        return results
+
+
+
+
+
+
+
+
+
+
 
 

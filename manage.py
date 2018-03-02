@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-03-01 11:30:15
+# Last modified: 2018-03-02 14:44:27
 # Author: yeyong
 
 import os
@@ -21,6 +21,7 @@ from app.models.category import Category
 from app.models.customer import Customer
 from app.models.node import Node
 from app.models.order_detail import OrderDetail
+from app.models.communicate import Communicate
 
 
 app = create_app()
@@ -42,6 +43,7 @@ def make_shell_context():
             Customer=Customer,
             Node=Node,
             OrderDetail=OrderDetail,
+            Communicate=Communicate
             )
 
 manager.add_command("shell", Shell(make_context=make_shell_context))

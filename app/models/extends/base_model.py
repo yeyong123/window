@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-02-28 15:52:04
+# Last modified: 2018-03-02 11:31:48
 # Author: yeyong
 from app.ext import db
 from datetime import datetime
@@ -25,6 +25,30 @@ class BaseModel:
 
     def to_date(self, key=0):
         return datetime.fromtimestamp(key)
+
+
+
+    @classmethod
+    def parser_time(cls, start=1696, end=4646):
+        s_time = cls.conver_time(start)
+        e_time = cls.conver_time(end)
+        args = [
+                cls.created_at >= s_time,
+                cls.created_at <= e_time
+                ]
+        return args
+
+    @classmethod
+    def conver_time(cls, time_key=1400):
+        try:
+            return datetime.fromtimestamp(int(time_key))
+        except Exception:
+            return datetime.utcnow()
+
+
+
+        
+
 
     @staticmethod
     def res_page(cls):

@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: material.py
 # Created Date: 2018-02-27 12:57:39
-# Last modified: 2018-02-28 14:47:50
+# Last modified: 2018-03-02 15:01:09
 # Author: yeyong
 from app.extra import *
 class Material(db.Model, BaseModel):
@@ -12,5 +12,9 @@ class Material(db.Model, BaseModel):
     remark = db.Column(db.String)
     region_id = db.Column(db.Integer, index=True)
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"), index=True)
+
+
+    def __repr__(self):
+        return "<Material id: {}, title: {}, price: {}>".format(self.id, self.title, self.price)
 
 

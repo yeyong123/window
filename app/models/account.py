@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-02 10:59:26
+# Last modified: 2018-03-02 15:03:47
 # Author: yeyong
 from app.extra import *
 from .user_accounts import user_accounts
@@ -18,10 +18,15 @@ class Account(db.Model, BaseModel):
     phone = db.Column(db.String, nullable=False, index=True, unique=True)
     code = db.Column(db.String, index=True)
     image = db.Column(db.String)
-    users = db.relationship("User", secondary=user_accounts, lazy="subquery", backref=db.backref("accounts", lazy="dynamic"))
+    users = db.relationship("User", secondary=user_accounts, lazy="dynamic", backref=db.backref("accounts", lazy="dynamic"))
     roles = db.relationship("Role", backref="account", lazy="dynamic")
     permissions = db.relationship("Permission", backref="account", lazy="dynamic")
     orders = db.relationship("Order", backref="account", lazy="dynamic")
+    categories = db.relationship("Category", backref="account", lazy="dynamic")
+    products = db.relationship("Product", backref="account", lazy="dynamic")
+    communicates = db.relationship("Communicate", backref="account", lazy="dynamic")
+    companies = db.relationship("Company", backref="company", lazy="dynamic")
+    customers = db.relationship("Customer", backref="account", lazy="dynamic")
     
 
 
@@ -95,8 +100,6 @@ class Account(db.Model, BaseModel):
 
 
 
-
-
     ##将用户添加进公司
     def add_user_to_account(self, user=None):
         try:
@@ -109,6 +112,20 @@ class Account(db.Model, BaseModel):
             app.logger.warn("加入失败: {}".format(e))
             return False, "加入失败"
 
+    def searach_user_from_account(self, **kwargs):
+        from app.models.user import User
+        page = kwargs.get("page", 1)
+        role = kwargs.get("role", None)
+        args = dict(
+                name = kwargs.get("name", None),
+                phone = kwargs.get("phone", None),
+                account_id = self.id
+                )
+        args = [getattr(User, k) == v for k, v in args.items() if v and hasattr(User, k)]
+        if role:
+            results = User.query.filter(User.roles.any(id=role, account_id=self.id)).filter(and_(*args)).paginate(int(page), per_page=25, error_out=False)
+        else:
+            results  = User.query.filter(and_(*args))
 
     
     ##检查公司名字和品牌名字

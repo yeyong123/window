@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-02 09:56:41
+# Last modified: 2018-03-02 14:46:59
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -26,7 +26,7 @@ class Order(db.Model, BaseModel):
     customer_id = db.Column(db.Integer, index=True)
     factory_id = db.Column(db.Integer, index=True)
     intro_id = db.Column(db.Integer, index=True)
-    product_id = db.Column(db.Integer, index=True, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), index=True, nullable=False)
     region_id = db.Column(db.Integer, index=True)
     sale_id = db.Column(db.Integer, index=True)
     category_id = db.Column(db.Integer)
@@ -262,7 +262,11 @@ class Order(db.Model, BaseModel):
     def filter_orders(cls, user=None, event=None, **kwargs):
         page = kwargs.get("page", 1)
         valid = {"category_id", "customer_name",  "serial_no", "status", "order_type"}
-        args = {key: value for key, value in kwargs.items() if key in valid}
+        args = [getattr(cls, key) == value for key, value in kwargs.items() if key in valid]
+        start = kwargs.get("start_time", None)
+        end = kwargs.get("end_time", None)
+        if start or end:
+            args.extend(cls.parser_time(start, end))
         temp = cls.swicth_event(user=user, event=event, sub=kwargs.get("sub", None))
         results = temp.filter(and_(*args)).order_by(cls.created_at.desc()).paginate(int(page), per_page=25, error_out=False)
         temp_page = cls.res_page(results)
@@ -376,7 +380,7 @@ class Order(db.Model, BaseModel):
 
     @classmethod
     def default_order(cls, user=None, sub=None):
-        cls.query
+        return cls.query
 
 
     #事件集合

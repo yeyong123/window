@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: company.py
 # Created Date: 2018-02-27 12:41:54
-# Last modified: 2018-02-28 14:46:45
+# Last modified: 2018-03-02 15:00:22
 # Author: yeyong
 from app.extra import *
 class Company(db.Model, BaseModel):
@@ -11,4 +11,8 @@ class Company(db.Model, BaseModel):
     logo = db.Column(db.String)
     remark = db.Column(db.String)
     orders = db.relationship("Order", backref="company", lazy="dynamic")
+    materials = db.relationship("Material", backref="company", lazy="dynamic")
+
+    def __repr__(self):
+        return "<Company id: {}, title: {}>".format(self.id, self.title)
 
