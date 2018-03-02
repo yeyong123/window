@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-02 10:44:39
+# Last modified: 2018-03-02 10:59:26
 # Author: yeyong
 from app.extra import *
 from .user_accounts import user_accounts
@@ -76,10 +76,12 @@ class Account(db.Model, BaseModel):
             if not user:
                 return False, "该手机号的用户没有找到"
             user.raty_price = raty_price
+            r = Role.query.filter(Role.id.in_(tuple(roles)), Role.account_id==self.id)
+            if not r.first():
+                return False, "无效的角色"
             ok, msg = self.add_user_to_account(user)
             if not ok:
                 return False, msg
-            r = Role.query.filter(Role.id.in_((*roles)), account_id=self.id)
             roles = [role for role in r if not role in user.roles]
             user.roles.extend(roles)
             db.session.add(user)
@@ -98,7 +100,7 @@ class Account(db.Model, BaseModel):
     ##将用户添加进公司
     def add_user_to_account(self, user=None):
         try:
-            u = self.users.filter_by(id=user.id).first
+            u = user in self.users
             if u:
                 return False, "该用户已经添加过了"
             self.users.append(user)
