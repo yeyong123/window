@@ -1,10 +1,11 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-01 16:53:26
+# Last modified: 2018-03-02 10:44:39
 # Author: yeyong
 from app.extra import *
 from .user_accounts import user_accounts
+from app.models.role import Role
 
 class Account(db.Model, BaseModel):
     __tablename__ = "accounts"
@@ -62,6 +63,73 @@ class Account(db.Model, BaseModel):
                     return result
         else:
             return self.serial_no
+
+
+    ## 添加用户, 分配角色, 设置价格
+    def add_user_and_allcate_roles(self, **kwargs):
+        from app.models.user import User
+        try:
+            phone = kwargs.get("phone", None)
+            roles = kwargs.get("roles", [])
+            raty_price = kwargs.get("raty_price", 0)
+            user = User.query.filter_by(phone=phone).first()
+            if not user:
+                return False, "该手机号的用户没有找到"
+            user.raty_price = raty_price
+            ok, msg = self.add_user_to_account(user)
+            if not ok:
+                return False, msg
+            r = Role.query.filter(Role.id.in_((*roles)), account_id=self.id)
+            roles = [role for role in r if not role in user.roles]
+            user.roles.extend(roles)
+            db.session.add(user)
+            db.session.commit()
+            return True, self
+        except Exception as e:
+            app.logger.warn("分配角色失败: {}".format(e))
+            db.session.rollback()
+            return False, "分配角色失败"
+        
+
+
+
+
+
+    ##将用户添加进公司
+    def add_user_to_account(self, user=None):
+        try:
+            u = self.users.filter_by(id=user.id).first
+            if u:
+                return False, "该用户已经添加过了"
+            self.users.append(user)
+            return True, user
+        except Exception as e:
+            app.logger.warn("加入失败: {}".format(e))
+            return False, "加入失败"
+
+
+    
+    ##检查公司名字和品牌名字
+    @staticmethod
+    def validate_column(mapper, connection, target):
+        if not target.title:
+            raise ValueError("公司名称不能为空")
+        if not target.nickname:
+            raise ValueError("品牌名称必填")
+        a1 = Account.query.filter_by(title=target.title).first()
+        a2 = Account.query.filter_by(nickname=target.nickname).first()
+        if a1 or a2:
+            raise ValueError("品牌及公司名称被使用了")
+
+db.event.listen(Account, "before_insert", Account.validate_column)
+
+
+
+
+
+
+
+
 
 
 

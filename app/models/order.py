@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-01 16:14:42
+# Last modified: 2018-03-02 09:56:41
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -379,6 +379,7 @@ class Order(db.Model, BaseModel):
         cls.query
 
 
+    #事件集合
     @classmethod
     def swicth_event(cls, user=None, event=None, sub=None):
         values = dict(
@@ -478,7 +479,7 @@ class Order(db.Model, BaseModel):
     ## 运输环境
     def detail_info(self):
         if self.order_details.first():
-            return [d.to_json() for d in self.order_details.all()]
+            return [d.to_json() for d in self.order_details]
         
     ## 司机
     def driver_info(self):
@@ -530,7 +531,7 @@ class Order(db.Model, BaseModel):
 
     def nodes_info(self):
         if self.nodes.first():
-            return [n.to_json() for n in self.nodes.all()]
+            return [n.to_json() for n in self.nodes]
         else:
             return []
 
@@ -542,7 +543,7 @@ class Order(db.Model, BaseModel):
 
     def measure_pictures(self):
         if self.pictures().first():
-            return [p.to_json() for p  in self.pictures().all()]
+            return [p.to_json() for p  in self.pictures()]
         return []
     
 
@@ -591,6 +592,7 @@ class Order(db.Model, BaseModel):
             return False, "添加图片失败"
         return True, p
 
+    #修改图片
     def change_upload(self, user=None, **kwargs):
         measure = kwargs.get("measure_pictures", None)
         install = kwargs.get("install_pictures", None)

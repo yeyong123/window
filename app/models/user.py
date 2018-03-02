@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-01 16:57:03
+# Last modified: 2018-03-02 10:42:12
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -110,16 +110,7 @@ class User(db.Model, BaseModel):
             return False
 
 
-    @staticmethod
-    def validate_column(mapper, connection, target):
-        if not target.phone_format(target.phone):
-            raise ValueError("手机号无效")
-        user = User.query.filter_by(phone=target.phone).first()
-        if user:
-            raise ValueError("手机号被使用")
-
-
-    #简化用户的角色
+       #简化用户的角色
     @property
     def is_admin(self):
         return self.role == 5
@@ -224,6 +215,15 @@ class User(db.Model, BaseModel):
 
 
 
+
+
+    @staticmethod
+    def validate_column(mapper, connection, target):
+        if not target.phone_format(target.phone):
+            raise ValueError("手机号无效")
+        user = User.query.filter_by(phone=target.phone).first()
+        if user:
+            raise ValueError("手机号被使用")
 
 
 
