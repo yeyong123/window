@@ -1,12 +1,13 @@
 # coding:utf-8
 # File Name: customer.py
 # Created Date: 2018-02-27 12:46:14
-# Last modified: 2018-03-02 15:26:16
+# Last modified: 2018-03-05 11:11:35
 # Author: yeyong
 from app.extra import *
 
 class Customer(db.Model, BaseModel):
     __tablename__ = 'customers'
+
     name = db.Column(db.String, index=True, nullable=False)
     phone = db.Column(db.String, index=True, nullable=False)
     province  = db.Column(db.String)

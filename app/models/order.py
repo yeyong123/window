@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-02 14:46:59
+# Last modified: 2018-03-05 14:40:13
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -541,7 +541,7 @@ class Order(db.Model, BaseModel):
 
     def install_pictures(self):
         if self.pictures("install_pictures").first():
-            return [p.to_json() for p in self.pictures("insert_pictures").all()]
+            return [p.to_json() for p in self.pictures("insert_pictures")]
         else:
             return []
 
