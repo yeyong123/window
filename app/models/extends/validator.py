@@ -1,15 +1,22 @@
 # coding:utf-8
 # File Name: validator.py
 # Created Date: 2018-03-05 09:50:30
-# Last modified: 2018-03-05 15:11:50
+# Last modified: 2018-03-07 11:14:33
 # Author: yeyong
 import abc
 class AutoStorage:
+    __counter = 0
 
-    def __init__(self, name=None, key=None):
+    def __init__(self, name):
         self.name = name
 
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        else:
+            return instance.__dict__[self.name]
 
+   
     def __set__(self, instance, value):
         instance.__dict__[self.name] = value
 
@@ -35,6 +42,7 @@ class Quantity(Validated):
 
 class NonBlank(Validated):
     def validate(self, instance, value):
+        print("sasda", self.name)
         value = value.strip()
         if len(value) == 0:
             raise ValueError("{}不能为空".format(self.name))
@@ -42,16 +50,13 @@ class NonBlank(Validated):
 
 
 class Presented(Validated):
-
     def validate(self, instance, value):
-        column = self.name
         cls = type(instance)
-        arg = [getattr(cls, column) == value]
-        print("??????????????", column, cls,  arg, value)
-        temp = cls.query.filter(getattr(cls, column) == value).first()
-        print(temp)
-        if temp and getattr(temp, column) == value:
-            raise ValueError("值已经存在")
+        key = self.name.split("_")[-1]
+        t = cls.query.filter(getattr(cls, key) == value).first()
+        print(">>>>>>>>>", t)
+        if t:
+            raise ValueError("exited ", value)
         else:
             return value
 

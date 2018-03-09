@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base.py
 # Created Date: 2018-02-26 14:30:39
-# Last modified: 2018-02-26 16:17:32
+# Last modified: 2018-03-06 10:46:53
 # Author: yeyong
 from flask import request
 from app.models.user import User
@@ -14,7 +14,7 @@ class AuthRoute:
         if user and user.verify_password(password):
             user.reset_token()
             token = user.generate_token
-            return dict(msg="ok", token=token, user=user.as_json, code=200)
+            return dict(msg="ok", token=token, user=user.as_json(), code=200)
         else:
             return dict(msg="账户或密码错误", code=422)
 

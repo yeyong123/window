@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-02 15:02:35
+# Last modified: 2018-03-06 10:53:36
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -40,9 +40,19 @@ class User(db.Model, BaseModel):
 
 
     def __init__(self, **kwargs):
+        self._account_id = None
         super().__init__(**kwargs)
         self.token = self.serialize_token()
 
+    @classmethod
+    def set_account(cls, value):
+        cls._account_id = value
+
+    @classmethod
+    def get_account_value(cls):
+        if hasattr(cls, "_account_id"):
+            return cls._account_id
+        return None
 
     def serialize_token(self):
         return hashlib.sha1(app.config["SECRET_KEY"].encode("utf-8")).hexdigest()
@@ -74,6 +84,17 @@ class User(db.Model, BaseModel):
         payload = serial.dumps(dict(user_id=self.id, password=self.password_digest, token=self.token))
         return payload.decode("utf-8")
 
+    @classmethod
+    def conver_token(cls, token):
+        temp = Serializer(app.config["SECRET_KEY"])
+        try:
+            result = temp.loads(token)
+            item = cls.query.filter_by(id=result.get("user_id"), token=result.get("token"), password_digest=result.get("password")).first()
+            if not item:
+                return False
+            return item
+        except:
+            return False
 
 
     ## 用户注册

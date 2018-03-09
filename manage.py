@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-03-02 14:44:27
+# Last modified: 2018-03-07 12:47:06
 # Author: yeyong
 
 import os
@@ -24,10 +24,10 @@ from app.models.order_detail import OrderDetail
 from app.models.communicate import Communicate
 
 
+
 app = create_app()
 manager = Manager(app)
 migrate = Migrate(app, db)
-
 def make_shell_context():
     return dict(app=app,
             db=db,
