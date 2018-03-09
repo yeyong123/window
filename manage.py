@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-03-02 14:44:27
+# Last modified: 2018-03-09 09:25:26
 # Author: yeyong
 
 import os
@@ -48,6 +48,3 @@ def make_shell_context():
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command("db", MigrateCommand)
-
-if __name__ == "__main__":
-    manager.run()
