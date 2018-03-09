@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-02 11:31:48
+# Last modified: 2018-03-06 10:55:06
 # Author: yeyong
 from app.ext import db
 from datetime import datetime
@@ -61,6 +61,21 @@ class BaseModel:
                 pages=cls.pages
                 )
         return temp_page
+
+
+    @classmethod 
+    def model_search(cls, **kwargs):
+        page  = kwargs.get("page", 1)
+        args = [getattr(cls, k) == v for k, v in kwargs.items() if v and hasattr(cls, k)]
+        start_time = kwargs.get("start_time", None)
+        end_time = kwargs.get("end_time", None)
+        if start_time or end_time:
+            args.extend(cls.parser_time(start_time=start_time, end_time=end_time))
+        args.extend([cls.account_id == cls.get_account_value()])
+        temp = cls.query.filter(*args).order_by(cls.created_at.desc()).paginate(int(page), per_page=5, error_out=False)
+        page = cls.res_page(temp)
+        results = temp.items
+        return results, page
 
 
 
