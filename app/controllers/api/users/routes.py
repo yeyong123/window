@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: routes.py
 # Created Date: 2018-03-06 10:23:59
-# Last modified: 2018-03-06 10:56:54
+# Last modified: 2018-03-09 11:28:31
 # Author: yeyong
 from .base import UsersView
 from . import users
@@ -9,6 +9,7 @@ from flask import request, g
 from app.models.user import User
 users_view = UsersView()
 users.add_url_rule("", view_func=users_view.index)
+users.add_url_rule("/:id", view_func=users_view.show)
 
 @users.before_request
 def check_login():
