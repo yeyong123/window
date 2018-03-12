@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-03-12 10:07:33
+# Last modified: 2018-03-12 10:11:13
 # Author: yeyong
 
 import os
@@ -22,7 +22,6 @@ migrate = Migrate(app, db)
 def make_shell_context():
     args = {k.__name__: k for k in models_class}
     args.update(dict(app=app, db=db))
-    print(args)
     return args
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command("db", MigrateCommand)
