@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base.py
 # Created Date: 2018-03-12 10:21:19
-# Last modified: 2018-03-12 12:15:00
+# Last modified: 2018-03-12 14:57:11
 # Author: yeyong
 from flask import Blueprint
 from werkzeug.utils import find_modules
@@ -11,7 +11,8 @@ class TempRecord:
 temp_record = TempRecord()
 view_set = TempRecord()
 for r in temp:
-    if not r in {"app.controllers.api_v2.base", "app.controllers.api_v2.api_routes"}:
+    base_path = "app.controllers.api_v2."
+    if not r in {"{}{}".format(base_path, u) for u in {"base", "api_routes", "intercept"}}:
         t_name = r.split(".")[-1]
         cap_name = "".join(map(lambda c: c.capitalize(), t_name.split("_"))) + "View"
         t_module = __import__(r, fromlist=[cap_name])
