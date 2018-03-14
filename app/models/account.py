@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-12 10:05:17
+# Last modified: 2018-03-14 13:28:01
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -139,6 +139,20 @@ class Account(db.Model, BaseModel):
         a2 = Account.query.filter_by(nickname=target.nickname).first()
         if a1 or a2:
             raise ValueError("品牌及公司名称被使用了")
+
+    def create_roles(self):
+        rs = {"技工", "司机", "销售", "审核"}
+        for r in rs:
+            role  = Role(title=r, account_id=self.id)
+            db.session.add(role)
+            db.session.commit()
+
+    def create_region(self):
+        ts = {"电商", "门户网站", "门店", "家装公司", "设计师", "经销商"}
+        for t in ts:
+            re = Region(title=t, account_id=self.id)
+            db.session.add(re)
+            db.session.commit()
 
 db.event.listen(Account, "before_insert", Account.validate_column)
 

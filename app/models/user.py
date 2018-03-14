@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-06 10:53:36
+# Last modified: 2018-03-14 13:23:01
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -132,21 +132,29 @@ class User(db.Model, BaseModel):
     def is_admin(self):
         return self.role == 5
 
-    def r(self, key=None):
-        t = self.roles.filter_by(title=key).first()
-        return True if t else False
+    @property
+    def all_roles(self):
+        results = self.roles.filter_by(account_id = self._account_id)
+        temp = [r.title for r in results]
+        return set(map(self.roles_hash, temp))
 
     @property
     def is_audit(self):
-        return self.r(key="审核")
+        return 4 in self.all_roles
+        
 
     @property
     def is_driver(self):
-        return self.r("司机")
+        return 2 in self.all_roles
+
 
     @property
     def is_server(self):
-        return self.r("技工")
+        return 3 in self.all_roles
+
+    @property
+    def is_sale(self):
+        return 1 in self.all_roles
 
 
     ## 用户切换的设置更新用户的 account_id
