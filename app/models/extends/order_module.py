@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order_module.py
 # Created Date: 2018-03-14 11:03:01
-# Last modified: 2018-03-14 17:22:52
+# Last modified: 2018-03-14 21:29:36
 # Author: yeyong
 from app.extra import and_, or_
 from itertools import groupby
@@ -42,7 +42,7 @@ class OrderModule:
             return user_args
         if user.is_admin:
             return user_args
-        if user.is_server
+        if user.is_server:
             user_args.extend([cls.install_id == req.id, cls.server_id == req.id])
         if user.is_driver:
             user_args.append(cls.driver_id == req.id)
@@ -132,7 +132,7 @@ class OrderModule:
         """
         user_args = []
         temp_orders = fetch_order_date(range_month=date)
-        server_ids = set(sum(([o.server_id, o.install_id], for o in temp_orders), []))
+        server_ids = set(sum(([o.server_id, o.install_id] for o in temp_orders), []))
         if server_ids:
         
             temp_orders.filter()

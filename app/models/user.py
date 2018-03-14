@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-14 13:23:01
+# Last modified: 2018-03-14 21:34:12
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -18,7 +18,6 @@ class User(db.Model, BaseModel):
     password_digest = db.Column(db.String(128))
     image  = db.Column(db.String)
     amount = db.Column(db.Integer, default=0)
-    raty_price = db.Column(db.Integer, default=0)
     role = db.Column(db.Integer, default=0)
     orders_count = db.Column(db.Integer, default=0)
     geohash = db.Column(db.String, index=True)
