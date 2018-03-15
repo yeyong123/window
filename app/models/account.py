@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-14 13:28:01
+# Last modified: 2018-03-15 14:34:22
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -27,6 +27,7 @@ class Account(db.Model, BaseModel):
     communicates = db.relationship("Communicate", backref="account", lazy="dynamic")
     companies = db.relationship("Company", backref="company", lazy="dynamic")
     customers = db.relationship("Customer", backref="account", lazy="dynamic")
+    raty_prices = db.relationship("RatyPrice", backref="account", lazy="dynamic")
     
 
 
@@ -80,7 +81,9 @@ class Account(db.Model, BaseModel):
             user = User.query.filter_by(phone=phone).first()
             if not user:
                 return False, "该手机号的用户没有找到"
-            user.raty_price = raty_price
+            if user.is_admin:
+                return False, "禁止修改管理员的角色"
+            raty = RatyPrice(user_id=user.id, account_id=user.account_id, raty=raty_price)
             r = Role.query.filter(Role.id.in_(tuple(roles)), Role.account_id==self.id)
             if not r.first():
                 return False, "无效的角色"
@@ -89,7 +92,7 @@ class Account(db.Model, BaseModel):
                 return False, msg
             roles = [role for role in r if not role in user.roles]
             user.roles.extend(roles)
-            db.session.add(user)
+            db.session.add_all([user, raty])
             db.session.commit()
             return True, self
         except Exception as e:

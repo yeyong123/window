@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-14 14:38:42
+# Last modified: 2018-03-15 14:31:53
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -78,6 +78,7 @@ class Order(db.Model, BaseModel, OrderModule):
     install_confirm = db.Column(db.Boolean, default=False)
     nodes = db.relationship("Node", backref="order", lazy="dynamic")
     order_details = db.relationship("OrderDetail", backref="order", lazy="dynamic")
+    product_metal = db.Column(db.String)
 
     ## 区分不同的用户
     server = db.relationship("User", foreign_keys=[server_id])

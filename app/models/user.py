@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-14 21:34:12
+# Last modified: 2018-03-15 14:33:52
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -36,6 +36,7 @@ class User(db.Model, BaseModel):
     install_orders = db.relationship("Order", foreign_keys="Order.install_id", lazy="dynamic")
     orders = db.relationship("Order", foreign_keys="Order.user_id", lazy="dynamic")
     customers = db.relationship("Customer", foreign_keys="Customer.server_id", lazy="dynamic")
+    raty_prices = db.relationship("RatyPrice", backref="user", lazy="dynamic")
 
 
     def __init__(self, **kwargs):
@@ -189,6 +190,8 @@ class User(db.Model, BaseModel):
     ## 分配角色
     def allocation_role(self, role_id=None):
         try:
+            if self.is_admin:
+                return False, "该用户禁止修改角色"
             self.roles = []
             temps = Role.query.filter_by(id=role_id, account_id=self.account_id)
             for rl in temps:
