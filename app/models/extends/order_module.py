@@ -1,10 +1,11 @@
 # coding:utf-8
 # File Name: order_module.py
 # Created Date: 2018-03-14 11:03:01
-# Last modified: 2018-03-14 17:22:52
+# Last modified: 2018-03-15 11:37:10
 # Author: yeyong
 from app.extra import and_, or_
 from itertools import groupby
+from app.models.user import User
 class OrderModule:
 
     @classmethod
@@ -42,7 +43,7 @@ class OrderModule:
             return user_args
         if user.is_admin:
             return user_args
-        if user.is_server
+        if user.is_server:
             user_args.extend([cls.install_id == req.id, cls.server_id == req.id])
         if user.is_driver:
             user_args.append(cls.driver_id == req.id)
@@ -131,25 +132,72 @@ class OrderModule:
         # 3. intro 介绍人
         """
         user_args = []
-        temp_orders = fetch_order_date(range_month=date)
-        server_ids = set(sum(([o.server_id, o.install_id], for o in temp_orders), []))
-        if server_ids:
-        
-            temp_orders.filter()
-        else:
+        temp_orders = cls.fetch_order_date(range_month=date)
+        if temp_orders.first() is None:
             return user_args
+        user_ids  = cls.classify_from_orders(orders=temp_orders, kind=kind)
+        if len(user_ids) < 1:
+            return user_args
+        for u in user_ids:
+            if u is None:
+                continue
+            user_args.append(cls.fetch_signle_user_order(orders=temp_orders, user_id=u, kind=kind))
+        return user_args
+
+    ## 找出订单
+    @classmethod
+    def fetch_signle_user_order(cls, orders=None, user_id=None, kind="server"):
+        """ 根据不同的类别来找出关于这个用户的单子 """
+        user = cls.fetch_role_user(user_id)
+        user_info = dict(name=user.name, phone=user.phone)
+        if kind == "server":
+            orders = orders.filter(or_(cls.server_id == user_id, cls.install_id == user_id))
+        elif kind == "ship":
+            orders = orders.filter(cls.driver_id == user_id)
+        else:
+            orders = orders.filter(cls.intro_id == user_id)
+        if kind == "server":
+            measure_count = orders.filter_by(server_id=user_id).count()
+            install_count = orders.filter_by(install_id=user_id).count()
+            amount_total = sum(o.measure_amount + o.install_amount for o in orders)
+            user_info.update(dict(server_count=measure_count, 
+                install_count=install_count,
+                total_amount=amount_total))
+        elif kind == "ship":
+            count = orders.count()
+            amount = sum(o.ship_amount for o in orders)
+            user_info.update(dict(
+                ship_count=count,
+                total_amount=amount
+                ))
+        else:
+            count = orders.count()
+            amount = sum(o.intro_amount for o in orders)
+            user_info.update(dict(
+                deduct_count=count,
+                total_amount=amount
+                ))
+        return user_info
 
 
-    def fetch_role_user(self, kind="server", user_id=None):
-        map_key = dict(
-                server="server",
-                install="installer",
-                driver="driver"
-                )
-        if kind == "intro":
-            user = User.query.filter_by(id=user_id).first()
-            return user
-        return getattr(self, kind)
+
+    #把订单下的用户区分开来
+    @classmethod
+    def classify_from_orders(cls, orders=None, kind="server"):
+        """ 根据不同的角色区分不同的用户 """
+        user_ids = set()
+        if kind == "server":
+            user_ids = set(sum(([o.server_id, o.install_id] for o in orders), []))
+        elif kind == "ship":
+            user_ids = {o.driver_id for o in orders}
+        else:
+            user_ids = {o.intro_id for o in orders}
+        return user_ids
+
+    @classmethod
+    def fetch_role_user(cls,user_id=None):
+        """找出这个用户的信息"""
+        return User.query.filter_by(id=user_id).first()
 
 
 
