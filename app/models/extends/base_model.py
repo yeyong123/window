@@ -1,12 +1,12 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-14 11:39:44
+# Last modified: 2018-03-14 21:17:46
 # Author: yeyong
+from dateutil.relativedelta import relativedelta
 from app.ext import db
 from datetime import datetime
 import time
-from dateutil.relativedelta import relativedelta
 class BaseModel:
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
