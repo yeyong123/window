@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-16 12:10:06
+# Last modified: 2018-03-16 14:33:17
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
@@ -10,8 +10,10 @@ from app.controllers.api_v2.users import UsersView
 from app.controllers.api_v2.accounts import AccountsView
 
 users = route_api['users']
+accounts = route_api["accounts"]
 
 @users.before_request
+@accounts.before_request
 def check_login():
     """
     获取用户请求头中的 Headers 中的 Authorization的值
@@ -47,11 +49,12 @@ add_route(route='users',path="/toggle_account", method="remove_toggle_account", 
 add_route(route='users',path="/remove_account", method="remove_toggle_account", action="POST")
 
 ## 结束用户的路由
-
-
+##
+##
+## 账户有关的路由
 add_route(route='accounts',path="/<int:id>", method="show")
 add_route(route='accounts',path="", method="index")
-add_route(route='accounts',path="/account", method="account")
+add_route(route='accounts',path="", method="create", action="POST")
 
 
 

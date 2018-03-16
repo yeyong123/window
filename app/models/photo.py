@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: photo.py
 # Created Date: 2018-02-26 15:23:24
-# Last modified: 2018-02-28 14:46:11
+# Last modified: 2018-03-16 13:47:34
 # Author: yeyong
 from app.extra import *
 from qiniu import Auth, put_file
@@ -18,7 +18,6 @@ class Photo(db.Model, BaseModel):
 
     @classmethod
     def upload(cls, f, name):
-        extend_name = name.split(".")[-1]
         q = Auth(access_key=app.config.get("QINIU_AK"), secret_key=app.config.get("QINIU_SK"))
         key = uuid.uuid4()
         bucket_name = app.config.get("BUCKET_NAME")
@@ -26,7 +25,7 @@ class Photo(db.Model, BaseModel):
         token = q.upload_token(bucket_name, key, 3600)
         res, info = put_file(token, key, f)
         if info.status_code == 200:
-            image = base_url + res.get("key") + '.' + extend_name
+            image = base_url + res.get("key")
             p = cls(image=image)
             db.session.add(p)
             db.session.commit()

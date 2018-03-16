@@ -1,11 +1,12 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-16 09:14:59
+# Last modified: 2018-03-16 17:23:22
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
 from app.models.role import Role
+from app.models.region import Region
 
 class Account(db.Model, BaseModel):
     __tablename__ = "accounts"
@@ -42,13 +43,32 @@ class Account(db.Model, BaseModel):
 
     ## 创建公司
     @classmethod
-    def create_account(cls, **kwargs):
+    def create_account(cls, user=None, **kwargs):
+        """
+        用户创建企业
+        简称用户的输入的值
+        如果企业名称, 手机号/电话, 简称已存在就返回错误信息
+        每次创建就将这个的当前企业修改新的企业,并设置为管理员
+        每次创建新的公司就添加新的渠道, 新的角色
+        """
         try:
             validate = {"title", "manager_id", "address", "nickname", "serial_no", "token", "phone", "image"}
             kwargs = {key: value for key, value in kwargs.items() if key in validate}
+            kwargs.update(manager_id=user.id, phone=user.phone, token=user.id, nickname=kwargs.get("title"))
+            title = kwargs.get("title")
+            temp = cls.query.filter_by(title=title).first()
+            if temp:
+                return False, "这个企业的名字, 手机号, 简称已被使用"
             account = cls(**kwargs)
             db.session.add(account)
             db.session.commit()
+            user.account_id = account.id
+            user.role = 5
+            user.accounts.append(account)
+            db.session.add(user)
+            db.session.commit()
+            account.create_roles()
+            account.create_region()
             return True, account
         except Exception as e:
             app.logger.warn("创建公司失败, {}".format(e))
@@ -120,8 +140,7 @@ class Account(db.Model, BaseModel):
     ##将用户添加进公司
     def add_user_to_account(self, user=None):
         try:
-            u = user in self.users
-            if u:
+            if user in self.users:
                 return False, "该用户已经添加过了"
             self.users.append(user)
             return True, user
