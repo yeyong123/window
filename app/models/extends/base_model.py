@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-14 21:17:46
+# Last modified: 2018-03-16 10:09:26
 # Author: yeyong
 from dateutil.relativedelta import relativedelta
 from app.ext import db
@@ -96,6 +96,22 @@ class BaseModel:
             return datetime.strptime(date, "%Y-%m-%d")
         except:
             return datetime.utcnow()
+
+
+    def update(self, **kwargs):
+        try:
+            for k, v in kwargs.items():
+                if v and hasattr(self, k):
+                    setattr(self, k, v)
+            db.session.add(self)
+            db.session.commit()
+            return True, self
+        except Exception as e:
+            return False, "错误:{}".format(e)
+
+
+
+
 
 
         

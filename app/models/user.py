@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-15 14:33:52
+# Last modified: 2018-03-16 13:31:38
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -9,6 +9,7 @@ from flask_bcrypt import Bcrypt
 from app.models.send_code import SendCode
 from app.models.account import Account
 from app.models.role import Role
+from app.models.raty_price import RatyPrice
 import re
 bcrtpt = Bcrypt(app)
 class User(db.Model, BaseModel):
@@ -127,14 +128,15 @@ class User(db.Model, BaseModel):
             return False
 
 
-       #简化用户的角色
+    #简化用户的角色
     @property
     def is_admin(self):
         return self.role == 5
 
     @property
     def all_roles(self):
-        results = self.roles.filter_by(account_id = self._account_id)
+        acc = self._account_id if User.get_account_value() else self.account_id
+        results = self.roles.filter_by(account_id = acc)
         temp = [r.title for r in results]
         return set(map(self.roles_hash, temp))
 
@@ -158,7 +160,8 @@ class User(db.Model, BaseModel):
 
 
     ## 用户切换的设置更新用户的 account_id
-    def set_account_id(self, account):
+    def set_account_id(self, account_id=None):
+        type(self).set_account(account_id)
         User.query.filter_by(id=self.id).update({"account_id": account_id})
 
     ##找到不同类型的用户
@@ -167,7 +170,12 @@ class User(db.Model, BaseModel):
         r = cls.query.filter(cls.roles.any(title=key)).paginate(int(page), per_page=25, error_out=False)
         page = cls.res_page(r)
         return r.items, page
-        
+
+    @property
+    def current_account(self):
+        return Account.query.filter_by(id=type(self)._account_id).first()
+    
+    ## 企业信息
     def account_info(self):
         a = Account.query.filter_by(id=self.account_id).first()
         if not a:
@@ -182,7 +190,8 @@ class User(db.Model, BaseModel):
     def as_json(self):
         args = dict(
                 account= self.account_info(),
-                owner_roles = self.owner_roles()
+                all_roles = list(self.all_roles),
+                raty_price=self.raty_price()
                 )
         return self.to_json(**args)
 
@@ -192,21 +201,22 @@ class User(db.Model, BaseModel):
         try:
             if self.is_admin:
                 return False, "该用户禁止修改角色"
-            self.roles = []
-            temps = Role.query.filter_by(id=role_id, account_id=self.account_id)
-            for rl in temps:
-                ## 如果这个角色已经分配了这个用户就返回信息
-                r = self.roles.filter_by(id=rl.id).first()
-                if r:
-                    return False, "已经分配了该角色"
-                value = self.roles_hash(key=rl.title)
+            self.roles = [] # 先清空原有的角色
+            temps = Role.query.filter(Role.id.in_(tuple(role_id)), Role.account_id==self.account_id)
+            if not temps.first():
+                return False, "无效的角色选择"
+            for element in temps:
+                has_role = self.roles.filter_by(id=element.id).first()
+                if has_role:
+                    continue
+                value = self.roles_hash(key=element.title)
                 if not value:
-                    return False, "无效的角色名"
+                    continue
                 self.role = int(value)
-                self.roles.append(rl)
-                db.session.add(self)
-                db.session.commit()
-                return True, self
+                self.roles.append(element)
+            db.session.add(self)
+            db.session.commit()
+            return True, self
         except Exception as e:
             app.logger.warn("分配角色失败:{}".format(e))
             db.session.rollback()
@@ -230,6 +240,7 @@ class User(db.Model, BaseModel):
 
     ## 加入公司
     def add_account(self, account_id=None):
+        """加入公司"""
         a = Account.query.filter_by(id=account_id).first()
         joined = self.accounts.filter_by(id=a.id).first()
         if not a:
@@ -239,7 +250,52 @@ class User(db.Model, BaseModel):
         self.accounts.append(a)
         return True, self
 
+    def accounts_list(self, page=1):
+        """列出我加入的公司"""
+        a = self.accounts.paginate(int(page), per_page=25, error_out=False)
+        page = Account.res_page(a)
+        return a.items, page
 
+    def toggle_and_remove_account(self, account_id=None, kind="remove"):
+        """
+        退出我加入的公司
+        1: 检查公司是否在不在
+        2: 检查我有没有加入这个公司
+        3: 退出公司
+        """
+        acc = Account.query.filter_by(id=account_id).first()
+        if not acc:
+            return False, "该公司设置了隐藏"
+        owner_acc = self.accounts.filter_by(id=account_id).first()
+        if not owner_acc:
+            return False, "您还未加入这个公司"
+        if kind == "toggle":
+            self.set_account_id(account_id)
+        else:
+            self.accounts.remove(owner_acc)
+        return True, self
+
+    ##获取我在这个公司的提成
+    def raty_price(self, account_id=None):
+        acc = account_id if account_id else type(self).get_account_value()
+        raty = self.raty_prices.filter_by(account_id=acc).first()
+        if not raty: return 0.0
+        return float(raty.raty)
+
+
+    ## 设置该在这个公司的提成
+    def set_current_account_raty(self, raty=0):
+        try:
+            for r in self.raty_prices.filter_by(account_id=self.account_id):
+                db.session.delete(r)
+            raty = RatyPrice(account_id=self.account_id, user_id=self.id, raty=raty)
+            db.session.add(raty)
+            db.session.commit()
+            return True, raty
+        except Exception as e:
+            app.logger.warn("设置提成失败: {}".format(e))
+            db.session.rollback()
+            return False, "设置提成失败"
 
 
 

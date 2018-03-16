@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: accounts.py
 # Created Date: 2018-03-12 10:23:16
-# Last modified: 2018-03-12 12:16:09
+# Last modified: 2018-03-16 12:07:42
 # Author: yeyong
 class AccountsView:
     def index(self):

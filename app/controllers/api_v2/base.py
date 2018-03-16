@@ -1,10 +1,11 @@
 # coding:utf-8
 # File Name: base.py
 # Created Date: 2018-03-12 10:21:19
-# Last modified: 2018-03-13 09:19:46
+# Last modified: 2018-03-16 12:08:03
 # Author: yeyong
-from flask import Blueprint
+from flask import Blueprint, g
 from werkzeug.utils import find_modules
+
 temp = find_modules("app.controllers.api_v2")
 class TempRecord:
     pass

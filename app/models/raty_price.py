@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: raty_price.py
 # Created Date: 2018-03-15 13:50:55
-# Last modified: 2018-03-15 14:12:02
+# Last modified: 2018-03-16 13:27:27
 # Author: yeyong
 from app.extra import *
 class RatyPrice(db.Model, BaseModel):
@@ -14,4 +14,4 @@ class RatyPrice(db.Model, BaseModel):
     
 
     def __repr__(self):
-        return "<RatyPrice id: {}, title: raty: {}, user_id: {}>".format(self.id, self.raty, self.user_id)
+        return "<RatyPrice id: {}, raty: {}, user_id: {}>".format(self.id, self.raty, self.user_id)

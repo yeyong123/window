@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-15 14:34:22
+# Last modified: 2018-03-16 09:14:59
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -73,17 +73,26 @@ class Account(db.Model, BaseModel):
 
     ## 添加用户, 分配角色, 设置价格
     def add_user_and_allcate_roles(self, **kwargs):
+        """
+        为用户分配角色, 用户查找使用手机号码
+        需要参数: 
+            phone=手机
+            roles: 角色列表
+            raty_price: 设置提成比率
+        如果用户已添加了就不需要操作
+        用户是管理员也不操作
+        检查用户角色
+        """
         from app.models.user import User
         try:
             phone = kwargs.get("phone", None)
             roles = kwargs.get("roles", [])
-            raty_price = kwargs.get("raty_price", 0)
+            raty_price = kwargs.get("raty_price",  None)
             user = User.query.filter_by(phone=phone).first()
             if not user:
                 return False, "该手机号的用户没有找到"
             if user.is_admin:
                 return False, "禁止修改管理员的角色"
-            raty = RatyPrice(user_id=user.id, account_id=user.account_id, raty=raty_price)
             r = Role.query.filter(Role.id.in_(tuple(roles)), Role.account_id==self.id)
             if not r.first():
                 return False, "无效的角色"
@@ -91,8 +100,13 @@ class Account(db.Model, BaseModel):
             if not ok:
                 return False, msg
             roles = [role for role in r if not role in user.roles]
+            if not user.account_id:
+                user.account_id = self.id
             user.roles.extend(roles)
-            db.session.add_all([user, raty])
+            if raty_price:
+                raty = RatyPrice(user_id=user.id, account_id=user.account_id, raty=raty_price)
+                db.session.add(raty)
+            db.session.add(user)
             db.session.commit()
             return True, self
         except Exception as e:

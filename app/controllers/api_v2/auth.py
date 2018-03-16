@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: auth.py
 # Created Date: 2018-03-12 15:13:06
-# Last modified: 2018-03-13 10:03:35
+# Last modified: 2018-03-16 09:47:33
 # Author: yeyong
 from flask import Blueprint, request
 from app.models.user import User
@@ -11,7 +11,9 @@ auth_route = Blueprint("auth_list", __name__)
 @auth_route.route("/login", methods=["POST"])
 def login():
     phone = request.form.get("phone", None)
-    password = requets.form.get("password", None)
+    password = request.form.get("password", None)
+    if phone is None or password is None:
+        return dict(msg="手机和密码不能为空", code=422)
     user = User.query.filter_by(phone=phone).first()
     if user and user.verify_password(password):
         user.reset_token()
