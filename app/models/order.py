@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-05 14:40:13
+# Last modified: 2018-03-15 14:31:53
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -14,8 +14,9 @@ from app.models.region import Region
 from app.models.category import Category
 from app.models.company import Company
 from app.models.material import Material
+from app.models.extends.order_module import OrderModule
 
-class Order(db.Model, BaseModel):
+class Order(db.Model, BaseModel, OrderModule):
     __tablename__  = 'orders'
     user_id  = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
     account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)
@@ -26,7 +27,7 @@ class Order(db.Model, BaseModel):
     customer_id = db.Column(db.Integer, index=True)
     factory_id = db.Column(db.Integer, index=True)
     intro_id = db.Column(db.Integer, index=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), index=True, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), index=True)
     region_id = db.Column(db.Integer, index=True)
     sale_id = db.Column(db.Integer, index=True)
     category_id = db.Column(db.Integer)
@@ -77,6 +78,7 @@ class Order(db.Model, BaseModel):
     install_confirm = db.Column(db.Boolean, default=False)
     nodes = db.relationship("Node", backref="order", lazy="dynamic")
     order_details = db.relationship("OrderDetail", backref="order", lazy="dynamic")
+    product_metal = db.Column(db.String)
 
     ## 区分不同的用户
     server = db.relationship("User", foreign_keys=[server_id])
@@ -91,7 +93,7 @@ class Order(db.Model, BaseModel):
         self._current_user = None
         super().__init__(**kwargs)
         self.serial_no = self.generate_number()
-        self.product_amount = self._set_product_amount()
+        #self.product_amount = self._set_product_amount()
 
     
     @classmethod
@@ -101,11 +103,12 @@ class Order(db.Model, BaseModel):
     @classmethod
     def set_current_user(cls, user):
         cls._current_user = user
+        user.set_account(cls.get_account_value())
 
     @classmethod
     def current_user(cls):
         if hasattr(cls, "_current_user"):
-            return cls.current_user
+            return cls._current_user
         return None
 
     @classmethod
@@ -456,8 +459,8 @@ class Order(db.Model, BaseModel):
 
 
    
-    def _set_product_amount(self):
-        return self.product_info().get("price", 0)
+    # def _set_product_amount(self):
+    #   return self.product_info().get("price", 0)
 
     ############################################
     #############################################

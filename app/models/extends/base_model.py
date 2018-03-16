@@ -1,8 +1,9 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-06 10:55:06
+# Last modified: 2018-03-16 10:09:26
 # Author: yeyong
+from dateutil.relativedelta import relativedelta
 from app.ext import db
 from datetime import datetime
 import time
@@ -38,6 +39,7 @@ class BaseModel:
                 ]
         return args
 
+    ##时间戳转成时间
     @classmethod
     def conver_time(cls, time_key=1400):
         try:
@@ -76,6 +78,43 @@ class BaseModel:
         page = cls.res_page(temp)
         results = temp.items
         return results, page
+
+    ##根据提供的时间来计算出当月的范围
+    @classmethod
+    def get_month_day_range(cls, date=None):
+        if not date:
+            t = datetime.utcnow()
+        t = cls.to_date(date)
+        last_day = t + relativedelta(day=1, months=+1, days=-1)
+        first_day = t + relativedelta(day=1)
+        return first_day, last_day
+
+    #转换时间处理 如2018-1-1 => (2018, 1, 1)
+    @staticmethod
+    def to_date(date):
+        try:
+            return datetime.strptime(date, "%Y-%m-%d")
+        except:
+            return datetime.utcnow()
+
+
+    def update(self, **kwargs):
+        try:
+            for k, v in kwargs.items():
+                if v and hasattr(self, k):
+                    setattr(self, k, v)
+            db.session.add(self)
+            db.session.commit()
+            return True, self
+        except Exception as e:
+            return False, "错误:{}".format(e)
+
+
+
+
+
+
+        
 
 
 
