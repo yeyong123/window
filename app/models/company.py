@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: company.py
 # Created Date: 2018-02-27 12:41:54
-# Last modified: 2018-03-15 14:18:51
+# Last modified: 2018-03-16 14:50:48
 # Author: yeyong
 from app.extra import *
 class Company(db.Model, BaseModel):
@@ -10,7 +10,6 @@ class Company(db.Model, BaseModel):
     title = db.Column(db.String)
     logo = db.Column(db.String)
     remark = db.Column(db.String)
-    company_id = db.Column(db.Integer)
     orders = db.relationship("Order", backref="company", lazy="dynamic")
     materials = db.relationship("Material", backref="company", lazy="dynamic")
 
