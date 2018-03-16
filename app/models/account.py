@@ -1,10 +1,10 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-02 15:03:47
+# Last modified: 2018-03-12 10:05:17
 # Author: yeyong
 from app.extra import *
-from .user_accounts import user_accounts
+from .user_account import user_accounts
 from app.models.role import Role
 
 class Account(db.Model, BaseModel):
