@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: accounts.py
 # Created Date: 2018-03-12 10:23:16
-# Last modified: 2018-03-19 14:27:07
+# Last modified: 2018-03-19 17:15:28
 # Author: yeyong
 from flask import request, g
 from app.models.user import User, Account
@@ -117,6 +117,16 @@ class AccountsView:
         return self.temp_create_date(key="permissions")
 
     
+    def delete_user_from_account(self):
+        """从企业中移除用户"""
+        user = request.form.get("user_id", None)
+        if not user:
+            return dict(msg="无效的用户", code=422)
+        ok, account = g.current_account.delete_user(user)
+        if not ok:
+            return dict(msg=account, code=422)
+        return dict(msg="ok", code=200, account=account.to_json())
+
 
     def temp_create_date(self, key=None):
         kwargs = request.form.to_dict()

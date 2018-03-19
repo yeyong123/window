@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-19 14:21:40
+# Last modified: 2018-03-19 17:22:54
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -60,7 +60,7 @@ class Account(db.Model, BaseModel):
         try:
             validate = {"title", "manager_id", "address", "nickname", "serial_no", "token", "phone", "image"}
             kwargs = {key: value for key, value in kwargs.items() if key in validate}
-            kwargs.update(manager_id=user.id, phone=user.phone, token=user.id, nickname=kwargs.get("title"))
+            kwargs.update(manager_id=user.id, phone= kwargs.get("phone") if kwargs.get("phone", None) else user.phone, token=user.id, nickname=kwargs.get("title"))
             title = kwargs.get("title")
             temp = cls.query.filter_by(title=title).first()
             if temp:
@@ -242,6 +242,18 @@ class Account(db.Model, BaseModel):
             app.logger.warn("添加物料失败{}".format(e))
             db.session.rollback()
             return False, "创建物料失败"
+
+
+    def delete_user(self, user_id):
+        user = self.users.filter_by(id=user_id).first()
+        if not user:
+            return False, "该用户还没有加入该企业"
+        if user.is_admin or user_id == self.manager_id:
+            return False, "管理员不能退"
+        self.users.remove(user)
+        return True, self
+
+
 
 
 
