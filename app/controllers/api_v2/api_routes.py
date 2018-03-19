@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-16 14:33:17
+# Last modified: 2018-03-19 14:25:53
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
@@ -55,6 +55,19 @@ add_route(route='users',path="/remove_account", method="remove_toggle_account", 
 add_route(route='accounts',path="/<int:id>", method="show")
 add_route(route='accounts',path="", method="index")
 add_route(route='accounts',path="", method="create", action="POST")
+add_route(route='accounts',path="/search_role", method="searach_role")
+add_route(route='accounts',path="/<int:id>", method="update", action="POST")
+add_route(route='accounts',path="/roles", method="roles")
+add_route(route='accounts',path="/add_users", method="add_users", action="POST")
+add_route(route='accounts',path="/permissions", method="permissions")
+add_route(route='accounts',path="/company", method="company")
+add_route(route='accounts',path="/regions", method="regions")
+add_route(route='accounts',path="/materail", method="material")
+add_route(route='accounts',path="/category", method="category")
+add_route(route='accounts',path="/create_materail", method="create_material", action="POST")
+add_route(route='accounts',path="/create_company", method="create_company", action="POST")
+add_route(route='accounts',path="/create_category", method="create_category", action="POST")
+add_route(route='accounts',path="/create_permiession", method="create_permiession", action="POST")
 
 
 

@@ -1,12 +1,16 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-16 17:23:22
+# Last modified: 2018-03-19 14:21:40
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
 from app.models.role import Role
+from app.models.permission import Permission
 from app.models.region import Region
+from app.models.company import Company
+from app.models.category import Category
+from app.models.material import Material
 
 class Account(db.Model, BaseModel):
     __tablename__ = "accounts"
@@ -29,6 +33,8 @@ class Account(db.Model, BaseModel):
     companies = db.relationship("Company", backref="company", lazy="dynamic")
     customers = db.relationship("Customer", backref="account", lazy="dynamic")
     raty_prices = db.relationship("RatyPrice", backref="account", lazy="dynamic")
+    materials = db.relationship("Material", backref="account", lazy="dynamic")
+    regions = db.relationship("Region", backref="account", lazy="dynamic")
     
 
 
@@ -116,13 +122,14 @@ class Account(db.Model, BaseModel):
             r = Role.query.filter(Role.id.in_(tuple(roles)), Role.account_id==self.id)
             if not r.first():
                 return False, "无效的角色"
+            #将这个用户添加到公司中
             ok, msg = self.add_user_to_account(user)
             if not ok:
                 return False, msg
             roles = [role for role in r if not role in user.roles]
             if not user.account_id:
                 user.account_id = self.id
-            user.roles.extend(roles)
+            user.roles.extend(roles) #将这个用户添加角色
             if raty_price:
                 raty = RatyPrice(user_id=user.id, account_id=user.account_id, raty=raty_price)
                 db.session.add(raty)
@@ -134,8 +141,6 @@ class Account(db.Model, BaseModel):
             db.session.rollback()
             return False, "分配角色失败"
         
-
-
 
     ##将用户添加进公司
     def add_user_to_account(self, user=None):
@@ -162,20 +167,23 @@ class Account(db.Model, BaseModel):
             results = User.query.filter(User.roles.any(id=role, account_id=self.id)).filter(and_(*args)).paginate(int(page), per_page=25, error_out=False)
         else:
             results  = User.query.filter(and_(*args))
+        page = type(self).res_page(results)
+
+        return results.items, page
+
+
+    ## 获取这个账户下的角色的所有人员
+    def searach_role(self, title=None, page=1):
+        from .user import User
+        """
+        从账户的角色获取用户
+        """
+        results = User.query.filter(User.roles.any(title=title, account_id=self.id)).paginate(int(page), per_page=25, error_out=False)
+        page = type(self).res_page(results)
+        return results.items, page
 
     
-    ##检查公司名字和品牌名字
-    @staticmethod
-    def validate_column(mapper, connection, target):
-        if not target.title:
-            raise ValueError("公司名称不能为空")
-        if not target.nickname:
-            raise ValueError("品牌名称必填")
-        a1 = Account.query.filter_by(title=target.title).first()
-        a2 = Account.query.filter_by(nickname=target.nickname).first()
-        if a1 or a2:
-            raise ValueError("品牌及公司名称被使用了")
-
+ 
     def create_roles(self):
         rs = {"技工", "司机", "销售", "审核"}
         for r in rs:
@@ -189,6 +197,66 @@ class Account(db.Model, BaseModel):
             re = Region(title=t, account_id=self.id)
             db.session.add(re)
             db.session.commit()
+
+
+    #获取有关企业的品牌数据
+    def fetch_data_from_account(self, key=None, page=1):
+        """品牌, 渠道, 品牌, 材质"""
+        results = getattr(self, key).paginate(int(page), per_page=25, error_out=False)
+        page = type(self).res_page(results)
+        items = results.items
+        return items, page
+
+
+    #模糊搜索用户
+    def searach_account_users(self, key=None, page=1):
+        from .user import User
+        temps = self.users.filter(or_(User.name.like("%{}%".format(key)), User.phone.like("%{}%".format(key)))).paginate(int(page), per_page=25, error_out=False)
+        results = temps.items
+        page = type(self).res_page(temps)
+        return results, page
+
+
+    ##创建品牌
+    ## 删除品牌
+    ## 创建渠道
+    ## 删除渠道
+    ## 创建大类
+    ## 删除大类
+    ## 创建材质
+    ## 删除材质
+    
+    ## 创建物料品牌的基本参数
+    def base_create_data(self, key=None, **kwargs):
+        try:
+            args = dict(category=Category,role=Role, material=Material, company=Company, region=Region, permissions=Permission)
+            klass = args.get(key, None)
+            if not klass:
+                return False, "无效的参数"
+            kwargs.update(account_id=self.id)
+            temp = klass(**kwargs)
+            db.session.add(temp)
+            db.session.commit()
+            return True, temp
+        except Exception as e:
+            app.logger.warn("添加物料失败{}".format(e))
+            db.session.rollback()
+            return False, "创建物料失败"
+
+
+
+    ##检查公司名字和品牌名字
+    @staticmethod
+    def validate_column(mapper, connection, target):
+        if not target.title:
+            raise ValueError("公司名称不能为空")
+        if not target.nickname:
+            raise ValueError("品牌名称必填")
+        a1 = Account.query.filter_by(title=target.title).first()
+        a2 = Account.query.filter_by(nickname=target.nickname).first()
+        if a1 or a2:
+            raise ValueError("品牌及公司名称被使用了")
+
 
 db.event.listen(Account, "before_insert", Account.validate_column)
 
