@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-19 14:25:53
+# Last modified: 2018-03-19 17:17:11
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
@@ -68,6 +68,7 @@ add_route(route='accounts',path="/create_materail", method="create_material", ac
 add_route(route='accounts',path="/create_company", method="create_company", action="POST")
 add_route(route='accounts',path="/create_category", method="create_category", action="POST")
 add_route(route='accounts',path="/create_permiession", method="create_permiession", action="POST")
+add_route(route='accounts',path="/delete_user", method="delete_user_from_account", action="POST")
 
 
 

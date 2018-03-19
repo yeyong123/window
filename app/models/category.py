@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: category.py
 # Created Date: 2018-02-27 11:55:15
-# Last modified: 2018-03-19 14:55:04
+# Last modified: 2018-03-19 17:09:52
 # Author: yeyong
 from app.extra import *
 
@@ -21,6 +21,14 @@ class Category(db.Model, BaseModel):
         data = Category.query.filter_by(title=target.title, account_id=target.account_id).first()
         if data:
             raise ValueError("已经存在这个值了")
+
+
+    @staticmethod
+    def validate_column(target, value, oldvalue, initiator):
+        cated = Category.query.filter_by(title=value, account_id=target.account_id).first()
+        if cated:
+            raise ValueError("已经存在{}".format(value))
         
 
 db.event.listen(Category, "before_insert", Category.check_title)
+db.event.listen(Category.title, "set", Category.validate_column)
