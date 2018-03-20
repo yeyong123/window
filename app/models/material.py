@@ -1,10 +1,11 @@
 # coding:utf-8
 # File Name: material.py
 # Created Date: 2018-02-27 12:57:39
-# Last modified: 2018-03-02 15:01:09
+# Last modified: 2018-03-20 09:33:28
 # Author: yeyong
 from app.extra import *
-class Material(db.Model, BaseModel):
+from app.models.extends.title_validate import TitleValidate
+class Material(db.Model, BaseModel, TitleValidate):
     __tablename__ = 'materials'
     title = db.Column(db.String)
     account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True, nullable=False)
@@ -16,5 +17,9 @@ class Material(db.Model, BaseModel):
 
     def __repr__(self):
         return "<Material id: {}, title: {}, price: {}>".format(self.id, self.title, self.price)
+
+
+db.event.listen(Material.title, "set", Material.validate_column)
+db.event.listen(Material, "before_insert", Material.check_title)
 
 

@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-19 17:22:54
+# Last modified: 2018-03-20 09:46:48
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -217,20 +217,11 @@ class Account(db.Model, BaseModel):
         return results, page
 
 
-    ##创建品牌
-    ## 删除品牌
-    ## 创建渠道
-    ## 删除渠道
-    ## 创建大类
-    ## 删除大类
-    ## 创建材质
-    ## 删除材质
-    
     ## 创建物料品牌的基本参数
     def base_create_data(self, key=None, **kwargs):
+        """创建"""
         try:
-            args = dict(category=Category,role=Role, material=Material, company=Company, region=Region, permissions=Permission)
-            klass = args.get(key, None)
+            klass = self.find_relation(key)
             if not klass:
                 return False, "无效的参数"
             kwargs.update(account_id=self.id)
@@ -242,6 +233,44 @@ class Account(db.Model, BaseModel):
             app.logger.warn("添加物料失败{}".format(e))
             db.session.rollback()
             return False, "创建物料失败"
+
+    def delete_relation(self, key=None, id=None):
+        """删除有关物料"""
+        klass = self.find_relation(key)
+        if not klass:
+            return False, "无效的 Key"
+        ok, result = self.find_only_date(klass=klass, id=id)
+        if not ok:
+            return False, result
+        return result
+
+    def update_relation(self, key=None, id=None, **kwargs):
+        """修改物料"""
+        klass = self.find_relation(key)
+        if not klass:
+            return False, "无效的 Key"
+        ok, result = self.find_only_date(klass=klass, id=id)
+        if not ok:
+            return False, result
+        ok, temp = result.update(**kwargs)
+        if not ok:
+            return False, temp
+        return True, temp
+
+    ##去除重复的代码
+    def find_only_date(self, klass=None, id=None):
+        """找出有关物料的单个数据"""
+        result = klass.query.filter_by(id=id, account_id=self.id).first()
+        if not result:
+            return False, "无效的 ID"
+        return True, result
+
+    ## 跟这个品牌有关的物料
+    def find_relation(self, key):
+        """序列化跟这个账户有关的物料, 品类, 角色, 材质, 品牌, 渠道, 权限"""
+        args = dict(category=Category,role=Role, material=Material, product=Product,company=Company, region=Region, permissions=Permission)
+        return args.get(key, None)
+
 
 
     def delete_user(self, user_id):
