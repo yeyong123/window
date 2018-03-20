@@ -1,19 +1,26 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-19 17:17:11
+# Last modified: 2018-03-20 17:09:00
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
 from app.models.user import User
+from app.models.order import Order
 from app.controllers.api_v2.users import UsersView
 from app.controllers.api_v2.accounts import AccountsView
 
 users = route_api['users']
 accounts = route_api["accounts"]
+orders = route_api["orders"]
+customers = route_api["customers"]
+products = route_api["products"]
 
-@users.before_request
 @accounts.before_request
+@users.before_request
+@orders.before_request
+@customers.before_request
+@products.before_request
 def check_login():
     """
     获取用户请求头中的 Headers 中的 Authorization的值
@@ -27,6 +34,8 @@ def check_login():
     if not user:
         return dict(msg="登录验证失效",code=419)
     User.set_account(user.account_id)
+    Order.set_account(user.account_id)
+    Order.set_current_user(user)
     g.current_user = user
     g.current_account = user.current_account
 
@@ -43,8 +52,8 @@ add_route(route='users',path="/owner", method="owner")
 add_route(route='users',path="/<int:id>", method="update", action="POST")
 add_route(route='users',path="/account_list", method="owner_accounts")
 add_route(route='users',path="/add_account", method="add_account", action="POST")
-add_route(route='users',path="/allocation_role", method="allocation_user_to_role", action="POST")
-add_route(route='users',path="/set_raty", method="set_raty", action="POST")
+add_route(route='users',path="/allocation_user_to_role", method="allocation_user_to_role", action="POST")
+add_route(route='users',path="/set_price", method="set_raty", action="POST")
 add_route(route='users',path="/toggle_account", method="remove_toggle_account", action="POST")
 add_route(route='users',path="/remove_account", method="remove_toggle_account", action="POST")
 
@@ -55,24 +64,57 @@ add_route(route='users',path="/remove_account", method="remove_toggle_account", 
 add_route(route='accounts',path="/<int:id>", method="show")
 add_route(route='accounts',path="", method="index")
 add_route(route='accounts',path="", method="create", action="POST")
-add_route(route='accounts',path="/search_role", method="searach_role")
+add_route(route='accounts',path="/salers", method="searach_role")
 add_route(route='accounts',path="/<int:id>", method="update", action="POST")
 add_route(route='accounts',path="/roles", method="roles")
 add_route(route='accounts',path="/add_users", method="add_users", action="POST")
+add_route(route='accounts',path="/find_users", method="find_user")
 add_route(route='accounts',path="/permissions", method="permissions")
 add_route(route='accounts',path="/company", method="company")
 add_route(route='accounts',path="/regions", method="regions")
 add_route(route='accounts',path="/materail", method="material")
 add_route(route='accounts',path="/category", method="category")
-add_route(route='accounts',path="/create_materail", method="create_material", action="POST")
+add_route(route='accounts',path="/create_material", method="create_material", action="POST")
 add_route(route='accounts',path="/create_company", method="create_company", action="POST")
 add_route(route='accounts',path="/create_category", method="create_category", action="POST")
 add_route(route='accounts',path="/create_permiession", method="create_permiession", action="POST")
-add_route(route='accounts',path="/delete_user", method="delete_user_from_account", action="POST")
+add_route(route='accounts',path="/delete_user_from_account", method="delete_user_from_account", action="POST")
 
 
+##########
+#订单
+###########
+add_route(route="orders", path="", method="index")
+add_route(route="orders", path="/<int:id>", method="show")
+add_route(route="orders", path="/<int:id>", method="update", action="POST")
+add_route(route="orders", path="", method="create_order", action="POST")
+add_route(route="orders", path="/<int:id>/order_process", method="order_process", action="POST")
+add_route(route="orders", path="/<int:id>/toggle_order", method="toggle_order", action="POST")
+add_route(route="orders", path="/<int:id>/create_detail", method="create_detail", action="POST")
+add_route(route="orders", path="/<int:id>/update_detail", method="update_detail", action="POST")
 
+#######################################
+#结束 订单
+#######################################
 
+##########################
+## 客户
+##########################
+add_route(route="customers", path="", method="index")
+add_route(route="customers", path="/<int:id>", method="show")
+add_route(route="customers", path="/<int:id>", method="update", action="PUT")
+add_route(route="customers", path="", method="create", action="POST")
+add_route(route="customers", path="/<int:id>", method="destroy", action="DELETE")
+add_route(route="customers", path="/<int:id>/create_comm", method="create_common", action="POST")
+
+#########################################
+#结束客户
+########################################
+
+###################################
+## 产品库
+####################################
+add_route(route="products", path="", method="index")
 
 
 

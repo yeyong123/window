@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: product.py
 # Created Date: 2018-02-27 14:45:17
-# Last modified: 2018-03-02 14:33:35
+# Last modified: 2018-03-20 13:23:09
 # Author: yeyong
 from app.extra import *
 class Product(db.Model, BaseModel):
@@ -18,7 +18,7 @@ class Product(db.Model, BaseModel):
     pro_set = db.Column(db.String)
     unit = db.Column(db.String)
     price_type = db.Column(db.String, default="元")
-    orders = db.relationship("Order", backref="product", lazy="dynamic")
+    #orders = db.relationship("Order", backref="product", lazy="dynamic")
 
     
     def __repr__(self):

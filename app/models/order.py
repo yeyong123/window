@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-15 14:31:53
+# Last modified: 2018-03-20 16:15:04
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -14,6 +14,7 @@ from app.models.region import Region
 from app.models.category import Category
 from app.models.company import Company
 from app.models.material import Material
+from app.models.order_detail import OrderDetail
 from app.models.extends.order_module import OrderModule
 
 class Order(db.Model, BaseModel, OrderModule):
@@ -27,7 +28,8 @@ class Order(db.Model, BaseModel, OrderModule):
     customer_id = db.Column(db.Integer, index=True)
     factory_id = db.Column(db.Integer, index=True)
     intro_id = db.Column(db.Integer, index=True)
-    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), index=True)
+   # product_id = db.Column(db.Integer, db.ForeignKey("products.id"), index=True)
+    product_detail = db.column(db.String)
     region_id = db.Column(db.Integer, index=True)
     sale_id = db.Column(db.Integer, index=True)
     category_id = db.Column(db.Integer)
@@ -79,6 +81,9 @@ class Order(db.Model, BaseModel, OrderModule):
     nodes = db.relationship("Node", backref="order", lazy="dynamic")
     order_details = db.relationship("OrderDetail", backref="order", lazy="dynamic")
     product_metal = db.Column(db.String)
+    product_color = db.Column(db.String)
+    product_glass = db.Column(db.String)
+    glass_config = db.Column(db.String)
 
     ## 区分不同的用户
     server = db.relationship("User", foreign_keys=[server_id])
@@ -140,11 +145,24 @@ class Order(db.Model, BaseModel, OrderModule):
 
     #生成客户
     def generate_customer(self):
-        return Customer.generate_customer(server_id=self.user_id,phone=self.customer_phone, name=self.customer_name,account_id=self.account_id, customer_type=1)
+        return Customer.generate_customer(
+                server_id=self.user_id,
+                phone=self.customer_phone, 
+                name=self.customer_name,
+                account_id=self.account_id, 
+                province=self.province,
+                city=self.city,
+                district=self.district,
+                customer_type=self.order_type
+                )
 
     #订单创建时处理新的客户以及转为正式客户
     @classmethod
     def create_order(cls, **kwargs):
+        """
+        创建订单生产客户, 如果用户已经是正式用户就不处理, 
+        如果不是正式用户就转为正式用户, 如果没有这个用户就新建一个正式用户
+        """
         try:
             kwargs = {key: value for key, value in kwargs.items() if hasattr(cls, key)}
             o = cls(**kwargs)
@@ -194,7 +212,12 @@ class Order(db.Model, BaseModel, OrderModule):
             user = kwargs["user"]
             content = kwargs["content"]
             self.swicth(event)
-            node = Node(user_name=user.name, remark=content, account_id=user.account_id, order_id=self.id)
+            node = Node(
+                    user_name=user.name, 
+                    remark=content, 
+                    account_id=user.account_id, 
+                    order_id=self.id
+                    )
             db.session.add(node)
             db.session.commit()
             return True, self
@@ -203,19 +226,54 @@ class Order(db.Model, BaseModel, OrderModule):
             db.session.rollback()
             return False, "事件记录失败"
 
+    def record_node(self, **kwargs):
+        """
+        记录节点信息
+        """
+        node = Node(**kwargs)
+        db.session.add(node)
+        db.session.commit()
+
+    def handle_order_event(self, key=None, user=None, content=None):
+        """
+        处理事件
+        """
+        args = dict(
+                audit="审核通过",
+                complete="确认完成",
+                arrive="司机送达",
+                dismiss="关闭订单",
+                back="退回",
+                cancel="驳回"
+                )
+        if not key in args.keys():
+            return False, "无效的参数"
+        ok, node = self.record_event_to_node(event=key, user=user, content=args.get(key) if content is None else content)
+        if not ok:
+            return False, node
+        return True, self
+
+
+
     def create_event(self):
         return None
 
     def back_event(self):
+        """
+        退回事件: 根据状态将测量, 司机, 安装的 ID 设为空
+        """
         if self.status == 1:
             self.owner_self.update({'server_id': None})
         elif self.status == 4:
             self.owner_self.update({'driver_id': None})
         elif self.status == 5:
             self.owner_self.update({'install_id': None})
-        return self.toggle_status("prev")
+        return None
 
     def reset_event(self):
+        """
+        重置事件: 根据状态, 将安装时间, 运输时间, 安装时间设为空
+        """
         if self.status == 1:
             self.owner_self.update({'server_date': 0})
         elif self.status == 4:
@@ -225,22 +283,30 @@ class Order(db.Model, BaseModel, OrderModule):
         return None
 
     def cancel_event(self):
+        """退回一个状态"""
         return self.toggle_status("prev")
 
     def arrive_event(self):
+        """运输抵达状态"""
         if self.status == 4:
             return self.default_event()
 
     def install_event(self):
+        """安装完成事件"""
         if self.status == 5:
             return self.toggle_status()
 
     def measure_event(self):
+        """测量完成事件"""
         if self.status == 1:
             return self.default_event()
 
     def default_event(self):
+        """默认事件, 向前一个状态"""
         return self.toggle_status()
+
+    def dismiss_event(self):
+        return self.owner_self.update({"status": 10})
 
     def swicth(self, key=None):
         values = dict(
@@ -250,7 +316,8 @@ class Order(db.Model, BaseModel, OrderModule):
                 cancel=self.cancel_event,
                 arrive=self.arrive_event,
                 install_upload=self.install_event,
-                measure_upload=self.measure_event
+                measure_upload=self.measure_event,
+                dismiss=self.dismiss_event
                 )
         return values.get(key, self.default_event)()
 
@@ -265,7 +332,7 @@ class Order(db.Model, BaseModel, OrderModule):
     def filter_orders(cls, user=None, event=None, **kwargs):
         page = kwargs.get("page", 1)
         valid = {"category_id", "customer_name",  "serial_no", "status", "order_type"}
-        args = [getattr(cls, key) == value for key, value in kwargs.items() if key in valid]
+        args = [getattr(cls, key) == value for key, value in kwargs.items() if key in valid and value]
         start = kwargs.get("start_time", None)
         end = kwargs.get("end_time", None)
         if start or end:
@@ -279,20 +346,28 @@ class Order(db.Model, BaseModel, OrderModule):
     #意向订单
     @classmethod
     def pending_order(cls, user=None, sub=None):
+        """意向订单 order_type = 1"""
         return cls.logic_query().filter_by(order_type=0)
 
     @classmethod
     def logic_query(cls):
+        """过滤掉订单状态为删除的, 订单状态100为删除"""
         return cls.query.filter(cls.status < 100, cls.account_id == cls.get_account_value())
 
     #基本的查询
     @classmethod
     def base_regular_order(cls):
+        """过滤状态小于100, 并且不是意向订单的单子"""
         return cls.logic_query().filter_by(order_type=1)
 
     #我的订单
     @classmethod
     def owner_order(cls, user=None, sub=None):
+        """
+        我的订单
+        1. 管理员角色就区分用户
+        2. 其他用户区分这个订单相关的用户(测量工, 安装工, 司机, 介绍人)
+        """
         if user.is_admin:
             return cls.base_regular_order()
         else:
@@ -319,6 +394,12 @@ class Order(db.Model, BaseModel, OrderModule):
     #指派订单
     @classmethod
     def assion_order(cls, user=None, sub=None):
+        """
+        找出需要指派的单子
+        1, 测量指派
+        2, 运输指派
+        3, 安装指派
+        """
         if sub is None:
           return  cls.base_regular_order().filter(or_(
                cls.server_id == None,
@@ -336,6 +417,7 @@ class Order(db.Model, BaseModel, OrderModule):
     #待审核
     @classmethod
     def audit_order(cls, user=None, sub=None):
+        """待审核"""
         return cls.base_regular_order().filter_by(status=2)
         
     
@@ -454,7 +536,7 @@ class Order(db.Model, BaseModel, OrderModule):
         if self.intro_amount and self.intro_amount  > 0:
             return self.intro_amount
         else:
-            temp = self.product_amount * self.user.raty_price
+            temp = float(self.product_amount) * float(self.user.raty_price())
             return temp
 
 
@@ -477,12 +559,14 @@ class Order(db.Model, BaseModel, OrderModule):
         if not self.account:
             return {}
         return self.account.to_json()
+    
     ## 渠道
     def region_info(self):
         r = Region.query.filter_by(id=self.region_id).first()
         if not r:
             return {}
         return r.to_json()
+    
     ## 运输环境
     def detail_info(self):
         if self.order_details.first():
@@ -499,22 +583,26 @@ class Order(db.Model, BaseModel, OrderModule):
         if not self.user:
             return {}
         return self.user.to_json()
+    
     ## 技工
     def server_info(self):
         if not self.server:
             return {}
         return self.server.to_json()
-    ## 介绍人
+   
+   ## 介绍人
     def intro_info(self):
         u = User.query.filter_by(id=self.intro_id).first()
         if not u:
             return {}
         return u.to_json()
+    
     ## 安装工
     def install_info(self):
         if not self.installer:
             return {}
         return self.installer.to_json()
+    
     ## 大类
     def category_info(self):
         c = Category.query.filter_by(id=self.category_id).first()
@@ -557,7 +645,6 @@ class Order(db.Model, BaseModel, OrderModule):
     def show_json(self):
         methods = {
                 "category_info",
-                "nodes_info", 
                 "company_info", 
                 "material_info",
                 "user_info",
@@ -565,7 +652,6 @@ class Order(db.Model, BaseModel, OrderModule):
                 "server_info",
                 "driver_info",
                 "account_info",
-                "product_info",
                 "intro_info",
                 "region_info",
                 "detail_info",
@@ -622,6 +708,31 @@ class Order(db.Model, BaseModel, OrderModule):
             app.logger.warn("图片创建出现错误, {}".format(e))
             db.session.rollback()
             return False, "图片处理失败"
+
+    def toggle_order(self):
+        """将意向订单切换为正式订单"""
+        self.owner_self.update({"order_type": 1})
+    
+    def create_detail(self, **kwargs):
+        try:
+            args = set(OrderDetail.__table__.columns.keys())
+            kwargs = {k: v for k, v in kwargs.items() if v and k in args}
+            kwargs.update(account_id=self.account_id, order_id=self.id)
+            detail = OrderDetail(**kwargs)
+            db.session.add(detail)
+            db.session.commit()
+            return True, detail
+        except Exception as e:
+            msg = "添加运输安装环境失败"
+            app.logger.warn("{}{}".format(msg,e))
+            db.session.rollback()
+            return False, msg
+
+    def update_detail(self, **kwargs):
+        detail = self.order_details.first()
+        return detail.update(**kwargs)
+
+
 
 
 
