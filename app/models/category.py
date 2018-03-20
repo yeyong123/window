@@ -1,11 +1,11 @@
 # coding:utf-8
 # File Name: category.py
 # Created Date: 2018-02-27 11:55:15
-# Last modified: 2018-03-19 17:09:52
+# Last modified: 2018-03-20 09:26:20
 # Author: yeyong
 from app.extra import *
-
-class Category(db.Model, BaseModel):
+from app.models.extends.title_validate import TitleValidate
+class Category(db.Model, BaseModel, TitleValidate):
     __tablename__ = 'categories'
     account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), index=True, nullable=False)
     remark= db.Column(db.String)
