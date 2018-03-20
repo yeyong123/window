@@ -1,10 +1,10 @@
 # coding:utf-8
 # File Name: customer.py
 # Created Date: 2018-02-27 12:46:14
-# Last modified: 2018-03-05 11:11:35
+# Last modified: 2018-03-20 17:02:15
 # Author: yeyong
 from app.extra import *
-
+from app.models.communicate import Communicate
 class Customer(db.Model, BaseModel):
     __tablename__ = 'customers'
 
@@ -20,7 +20,7 @@ class Customer(db.Model, BaseModel):
     server_id = db.Column(db.Integer, db.ForeignKey("users.id"), index=True)
     colse = db.Column(db.Boolean, default=False, index=True)
     communicates = db.relationship("Communicate", backref="customer", lazy="dynamic")
-    sever = db.relationship("User", foreign_keys=[server_id])
+    server = db.relationship("User", foreign_keys=[server_id])
 
 
     def __repr__(self):
@@ -32,7 +32,7 @@ class Customer(db.Model, BaseModel):
     def generate_customer(cls, **kwargs):
         try:
             customer = cls.query.filter_by(phone=kwargs["phone"], account_id=kwargs["account_id"]).first()
-            if customer is None:
+            if not customer:
                 customer = Customer(**kwargs)
             else:
                 customer.customer_type  = 1
@@ -62,6 +62,18 @@ class Customer(db.Model, BaseModel):
     def toggle_normal(self):
         Customer.query.filter_by(id=self.id).update({'customer_type': 1})
 
+    def delete_customer(self):
+        Customer.query.filter_by(id=id).update({'close': True})
+
+
+    def as_json(self):
+        kwargs = dict(
+                communicates=self.communicate_info(),
+                server=self.server_info()
+                )
+        return self.to_json(**kwargs)
+
+
 
     ## 搜索客户
     @classmethod 
@@ -75,7 +87,6 @@ class Customer(db.Model, BaseModel):
         start = kwargs.get("start_time", None)
         end = kwargs.get("end_time", None)
         page = kwargs.get("page", 1)
-        user = user
         args = [getattr(cls, k) == v for k, v in kwargs.items() if v and hasattr(cls, k)]
         if start or end:
             args.extend(cls.parser_time(start, end))
@@ -84,10 +95,39 @@ class Customer(db.Model, BaseModel):
             p = [cls.customer_type != 0]
             results = cls.query.filter(or_(*p, *u)).filter(and_(*args))
         else:
-           results = cls.query.filter_by(account_id=user.account_id).filter(and_(*args))
+           results = cls.query.filter_by(colse=False,account_id=user.account_id).filter(and_(*args))
         temp = results.paginate(int(page), per_page=25, error_out=False)
         page = cls.res_page(temp)
         return temp.items, page 
+
+    @classmethod
+    def create_customer(self, **kwargs):
+        try:
+            args = set(Customer.__table__.columns.keys())
+            kwargs = {k: v for k, v in kwargs.items() if v and k in args}
+            cust = cls(**kwargs)
+            db.session.add(cust)
+            db.session.commit()
+            return True, cust
+        except Exception as e:
+            msg = "添加客户失败"
+            app.logger.warn("{}{}".format(msg, e))
+            db.session.rollback()
+            return False, msg
+
+    def create_commoncation(self, **kwargs):
+        try:
+            kwargs.update(customer_id=self.id)
+            comm = Communicate(**kwargs)
+            db.session.add(comm)
+            db.session.commit()
+            return True, comm
+        except Exception as e:
+            msg = "添加交流记录失败"
+            app.logger.warn("{}{}".format(msg, e))
+            db.session.rollback()
+            return False, msg
+
 
 
 
