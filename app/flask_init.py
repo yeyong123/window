@@ -1,13 +1,7 @@
 # coding:utf-8
 # File Name: flask_init.py
 # Created Date: 2018-02-26 10:48:01
-<<<<<<< HEAD
-# Last modified: 2018-03-16 13:35:16
-# Last modified: 2018-03-07 10:26:28
-# Last modified: 2018-03-12 15:11:27
-=======
-# Last modified: 2018-03-23 14:33:03
->>>>>>> 30768249162befd89d59bbaba25ab8b526488182
+# Last modified: 2018-03-23 15:21:24
 # Author: yeyong
 from config import Config
 from .ext import  db, app, redis
