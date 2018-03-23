@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-20 16:15:04
+# Last modified: 2018-03-23 15:12:28
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -125,6 +125,17 @@ class Order(db.Model, BaseModel, OrderModule):
 
     def __repr__(self):
         return "<Order id: {}, serial_no: {}, server_id: {}, user_id: {}, install_id: {}>".format(self.id, self.serial_no, self.server_id, self.user_id, self.install_id)
+
+
+    @classmethod
+    def complete_orders(cls, page=1):
+        """
+        完成的订单
+        """
+        results = cls.query.filter_by(status=7, account_id=cls.get_account_value()).paginate(int(page), per_page=25, error_out=False)
+        page = cls.res_page(results)
+        return results.items, page
+
 
     #生成单号
     def generate_number(self):

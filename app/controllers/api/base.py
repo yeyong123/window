@@ -1,23 +1,23 @@
 # coding:utf-8
 # File Name: base.py
 # Created Date: 2018-03-12 10:21:19
-# Last modified: 2018-03-20 09:49:51
+# Last modified: 2018-03-23 15:11:42
 # Author: yeyong
 from flask import Blueprint, g
 from werkzeug.utils import find_modules
 
-temp = find_modules("app.controllers.api_v2")
+temp = find_modules("app.controllers.api")
 class TempRecord:
     pass
 temp_record = TempRecord()
 view_set = TempRecord()
 for r in temp:
-    base_path = "app.controllers.api_v2."
+    base_path = "app.controllers.api."
     if not r in {"{}{}".format(base_path, u) for u in {"base", "api_routes", "intercept", "auth"}}:
         t_name = r.split(".")[-1]
         cap_name = "".join(map(lambda c: c.capitalize(), t_name.split("_"))) + "View"
         t_module = __import__(r, fromlist=[cap_name])
-        bp = Blueprint("{}_v2".format(t_name), __name__, url_prefix="/api_v2/{}".format(t_name))
+        bp = Blueprint("{}".format(t_name), __name__, url_prefix="/api/{}".format(t_name))
         setattr(temp_record, t_name, bp)
         setattr(view_set, t_name + "_view", (getattr(t_module, cap_name)()))
 

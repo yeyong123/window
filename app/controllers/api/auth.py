@@ -1,12 +1,12 @@
 # coding:utf-8
 # File Name: auth.py
 # Created Date: 2018-03-12 15:13:06
-# Last modified: 2018-03-16 09:47:33
+# Last modified: 2018-03-23 15:07:22
 # Author: yeyong
 from flask import Blueprint, request
 from app.models.user import User
 from app.models.send_code import SendCode
-auth_route = Blueprint("auth_list", __name__)
+auth_route = Blueprint("auth_list", __name__, url_prefix="/api")
 
 @auth_route.route("/login", methods=["POST"])
 def login():
