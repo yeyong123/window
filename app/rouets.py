@@ -1,13 +1,13 @@
 # coding:utf-8
 # File Name: rouets.py
 # Created Date: 2018-03-12 10:29:27
-# Last modified: 2018-03-13 09:47:00
+# Last modified: 2018-03-23 14:34:47
 # Author: yeyong
-from app.controllers.api_v2.base import temp_record
-from app.controllers.api_v2.intercept import main_route
-from app.controllers.api_v2.auth import auth_route
+from app.controllers.api.base import temp_record
+from app.controllers.api.intercept import main_route
+from app.controllers.api.auth import auth_route
 
-class ApiV2:
+class Api:
     @staticmethod
     def init_app(app):
         app.register_blueprint(main_route)

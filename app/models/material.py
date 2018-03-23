@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: material.py
 # Created Date: 2018-02-27 12:57:39
-# Last modified: 2018-03-20 09:33:28
+# Last modified: 2018-03-23 14:15:41
 # Author: yeyong
 from app.extra import *
 from app.models.extends.title_validate import TitleValidate

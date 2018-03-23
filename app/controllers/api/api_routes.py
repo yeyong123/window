@@ -1,26 +1,26 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-20 17:09:00
+# Last modified: 2018-03-23 15:11:40
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
 from app.models.user import User
 from app.models.order import Order
-from app.controllers.api_v2.users import UsersView
-from app.controllers.api_v2.accounts import AccountsView
 
 users = route_api['users']
 accounts = route_api["accounts"]
 orders = route_api["orders"]
 customers = route_api["customers"]
 products = route_api["products"]
+report = route_api["report"]
 
 @accounts.before_request
 @users.before_request
 @orders.before_request
 @customers.before_request
 @products.before_request
+@report.before_request
 def check_login():
     """
     获取用户请求头中的 Headers 中的 Authorization的值
@@ -107,15 +107,19 @@ add_route(route="customers", path="", method="create", action="POST")
 add_route(route="customers", path="/<int:id>", method="destroy", action="DELETE")
 add_route(route="customers", path="/<int:id>/create_comm", method="create_common", action="POST")
 
-#########################################
-#结束客户
-########################################
 
-###################################
 ## 产品库
 ####################################
 add_route(route="products", path="", method="index")
 
+
+## 报表
+########################################
+add_route(route="report", path="/orders", method="orders")
+add_route(route="report", path="/expense", method="expense")
+add_route(route="report", path="/income_increase", method="income_increase")
+add_route(route="report", path="/order_increase", method="order_increase")
+add_route(route="report", path="/report_orders", method="report_orders")
 
 
 

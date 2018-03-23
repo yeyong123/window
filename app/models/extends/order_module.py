@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order_module.py
 # Created Date: 2018-03-14 11:03:01
-# Last modified: 2018-03-15 11:55:15
+# Last modified: 2018-03-23 15:17:06
 # Author: yeyong
 from app.extra import and_, or_
 from itertools import groupby
@@ -93,7 +93,7 @@ class OrderModule:
 
 
     @classmethod
-    def total_orders_count(cls, currrnt=None):
+    def total_orders_count(cls, current=None):
         """
         ## 获取订单数
         ## current True 获取当月
