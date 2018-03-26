@@ -1,10 +1,10 @@
 # coding:utf-8
 # File Name: send_code.py
 # Created Date: 2018-02-26 16:25:23
-# Last modified: 2018-03-13 09:53:15
+# Last modified: 2018-03-26 16:53:01
 # Author: yeyong
 import random
-from app.ext import redis
+from app.ext import redis, app
 import requests
 import json
 
@@ -34,15 +34,14 @@ class SendCode:
     @staticmethod
     def send(**kwargs):
         args = dict(
-                appid="14592",
-                project="E7WCe4",
-                signature="e7f6e43d1e4058c46e776d7db306fa75",
+                appid=app.config.get("SMS_KEY"),
+                project=app.config.get("SMS_PROJECT"),
+                signature=app.config.get("SMS_SIGN"),
                 to=""
                 )
         args.update(kwargs)
-        url = "https://api.submail.cn/message/xsend"
         headers = {"content-type": "application/json"}
-        res = requests.post(url,data=json.dumps(args), headers=headers)
+        res = requests.post(app.config.get("SMS_URL"),data=json.dumps(args), headers=headers)
         if res.status_code != 200:
             return False, "链接短信服务器失败"
         status = json.loads(res.text)
