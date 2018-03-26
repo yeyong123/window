@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-23 15:11:40
+# Last modified: 2018-03-26 17:22:07
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
@@ -14,6 +14,7 @@ orders = route_api["orders"]
 customers = route_api["customers"]
 products = route_api["products"]
 report = route_api["report"]
+stores = route_api["stores"]
 
 @accounts.before_request
 @users.before_request
@@ -122,4 +123,9 @@ add_route(route="report", path="/order_increase", method="order_increase")
 add_route(route="report", path="/report_orders", method="report_orders")
 
 
+## 小程序门店
+###########################################
+add_route(route="stores", path="/list", method="stores_list")
+add_route(route="stores", path="", method="stores")
+add_route(route="stores", path="/<int:id>", method="store")
 
