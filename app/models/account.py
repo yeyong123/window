@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-26 16:46:10
+# Last modified: 2018-03-26 16:50:29
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -290,12 +290,12 @@ class Account(db.Model, BaseModel):
     def parse_location(self, target=None, key=None):
         """解析地址到经纬度"""
         import requests, geohash
-        url = "http://restapi.amap.com/v3/geocode/geo"
+        from app.ext import app
         args = dict(
-                key="0cac555a3a2da775a7e969ddf4f5f53d",
+                key=app.config.get("AMAP_KEY"),
                 address= target if target else self.address
                 )
-        res = requests.get(url, params=args)
+        res = requests.get(app.config.get("AMAP_URL"), params=args)
         result = res.json()
         status, info, codes = result.get("status", None), result.get("info", None), result.get("geocodes", None)
         if status == "1" and info == "OK" and len(codes) > 0:
