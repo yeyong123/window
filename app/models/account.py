@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-20 09:46:48
+# Last modified: 2018-03-26 16:46:10
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -23,6 +23,9 @@ class Account(db.Model, BaseModel):
     phone = db.Column(db.String, nullable=False, index=True, unique=True)
     code = db.Column(db.String, index=True)
     image = db.Column(db.String)
+    lon=db.Column(db.String)
+    lat= db.Column(db.String)
+    location = db.Column(db.String, index=True)
     users = db.relationship("User", secondary=user_accounts, lazy="dynamic", backref=db.backref("accounts", lazy="dynamic"))
     roles = db.relationship("Role", backref="account", lazy="dynamic")
     permissions = db.relationship("Permission", backref="account", lazy="dynamic")
@@ -284,6 +287,42 @@ class Account(db.Model, BaseModel):
 
 
 
+    def parse_location(self, target=None, key=None):
+        """解析地址到经纬度"""
+        import requests, geohash
+        url = "http://restapi.amap.com/v3/geocode/geo"
+        args = dict(
+                key="0cac555a3a2da775a7e969ddf4f5f53d",
+                address= target if target else self.address
+                )
+        res = requests.get(url, params=args)
+        result = res.json()
+        status, info, codes = result.get("status", None), result.get("info", None), result.get("geocodes", None)
+        if status == "1" and info == "OK" and len(codes) > 0:
+            lon, lat = codes[0]["location"].split(",")
+            loc = geohash.encode(float(lat), float(lon))
+            _id = key if key else self.id
+            Account.query.filter_by(id=_id).update(dict(lon=lon, lat=lat, location=loc))
+        else:
+            return info
+
+    @classmethod
+    def search_store(cls, key=None, kind="near", page=1):
+        """
+        搜索
+        kind:
+        near: 附近的门店
+        name: 门店名称已经别名, 或者地址
+        """
+        if kind == "near":
+            temps= cls.query.filter(cls.location.like("{}%".format(key))).paginate(int(page), per_page=25, error_out=False)
+        else:
+            args = [getattr(cls, val).like("%{}%".format(key)) for val in {"title", "nickname", "address"}]
+            temps = cls.query.filter(or_(*args)).paginate(int(page), per_page=25, error_out=False)
+        page = cls.res_page(temps)
+        return temps.items, page
+
+
 
 
     ##检查公司名字和品牌名字
@@ -298,8 +337,21 @@ class Account(db.Model, BaseModel):
         if a1 or a2:
             raise ValueError("品牌及公司名称被使用了")
 
+    @staticmethod
+    def handle_address(mapper, connection, target):
+        if target.address:
+            target.parse_location(target=target.address, key=target.id)
+
+
+    @staticmethod
+    def set_address(target, value, oldvalue, initiator):
+        target.parse_location(target=value, key=target.id)
+
+
 
 db.event.listen(Account, "before_insert", Account.validate_column)
+db.event.listen(Account, "after_insert", Account.handle_address)
+db.event.listen(Account.address, "set", Account.set_address)
 
 
 

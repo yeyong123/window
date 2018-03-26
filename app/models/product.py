@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: product.py
 # Created Date: 2018-02-27 14:45:17
-# Last modified: 2018-03-20 13:23:09
+# Last modified: 2018-03-26 16:31:05
 # Author: yeyong
 from app.extra import *
 class Product(db.Model, BaseModel):
@@ -18,9 +18,16 @@ class Product(db.Model, BaseModel):
     pro_set = db.Column(db.String)
     unit = db.Column(db.String)
     price_type = db.Column(db.String, default="元")
+    content= db.Column(db.Text)
+    hide = db.Column(db.Boolean, default=False, index=True)
     #orders = db.relationship("Order", backref="product", lazy="dynamic")
 
     
     def __repr__(self):
         return "<Product id: {}, title: {}>".format(self.id,self.title)
+
+
+    def delete_product(self):
+        Product.query.filter_by(id=self.id).update({'hide': True})
+
 
