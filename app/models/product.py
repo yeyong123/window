@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: product.py
 # Created Date: 2018-02-27 14:45:17
-# Last modified: 2018-03-26 16:31:05
+# Last modified: 2018-03-26 17:22:11
 # Author: yeyong
 from app.extra import *
 class Product(db.Model, BaseModel):
@@ -29,5 +29,7 @@ class Product(db.Model, BaseModel):
 
     def delete_product(self):
         Product.query.filter_by(id=self.id).update({'hide': True})
+
+    
 
 

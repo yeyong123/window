@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-16 10:09:26
+# Last modified: 2018-03-26 17:19:48
 # Author: yeyong
 from dateutil.relativedelta import relativedelta
 from app.ext import db
@@ -73,7 +73,8 @@ class BaseModel:
         end_time = kwargs.get("end_time", None)
         if start_time or end_time:
             args.extend(cls.parser_time(start_time=start_time, end_time=end_time))
-        args.extend([cls.account_id == cls.get_account_value()])
+        if hasattr(cls, "get_account_value"):
+            args.extend([cls.account_id == cls.get_account_value()])
         temp = cls.query.filter(*args).order_by(cls.created_at.desc()).paginate(int(page), per_page=5, error_out=False)
         page = cls.res_page(temp)
         results = temp.items
