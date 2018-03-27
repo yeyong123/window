@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: intercept.py
 # Created Date: 2018-03-12 14:49:42
-# Last modified: 2018-03-16 13:40:38
+# Last modified: 2018-03-27 10:09:08
 # Author: yeyong
 
 from  flask import Blueprint, request
@@ -45,13 +45,13 @@ def internal_server(e):
 @main_route.before_app_request
 def log_request_info():
     try:
-        app.logger.info("headers: {}".format(request.headers))
+        app.logger.warn("headers: {}".format(request.headers))
         if request.method == "GET":
-            app.logger.info("Body:  {}".format(request.args.to_dict()))
+            app.logger.warn("Body:  {}".format(request.args.to_dict()))
         else:
             if request.content_type == "application/x-www-form-urlencoded":
-                app.logger.info("Form => Body: %s",request.form.to_dict())
+                app.logger.warn("Form => Body: %s",request.form.to_dict())
             else:
-                app.logger.info("Data => Body: %s", request.get_json())
+                app.logger.warn("Data => Body: %s", request.get_json())
     except Exception as e:
         return None
