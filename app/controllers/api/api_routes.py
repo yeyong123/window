@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-26 17:22:07
+# Last modified: 2018-03-27 16:15:41
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
@@ -39,6 +39,7 @@ def check_login():
     Order.set_current_user(user)
     g.current_user = user
     g.current_account = user.current_account
+
 
 
 def add_route(route=None, view=None, path="", method="index", action="GET"):
@@ -112,6 +113,7 @@ add_route(route="customers", path="/<int:id>/create_comm", method="create_common
 ## 产品库
 ####################################
 add_route(route="products", path="", method="index")
+add_route(route="products", path="", method="create_product", action="POST")
 
 
 ## 报表

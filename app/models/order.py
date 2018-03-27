@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-03-23 15:12:28
+# Last modified: 2018-03-27 13:52:24
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -176,6 +176,10 @@ class Order(db.Model, BaseModel, OrderModule):
         """
         try:
             kwargs = {key: value for key, value in kwargs.items() if hasattr(cls, key)}
+            temp_dict = dict()
+            temp_key = 'pictures'
+            if temp_key in kwargs:
+                temp_dict[temp_key] = kwargs.pop('temp_key')
             o = cls(**kwargs)
             ok, c = o.generate_customer()
             if not ok:
