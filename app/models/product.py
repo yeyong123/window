@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: product.py
 # Created Date: 2018-02-27 14:45:17
-# Last modified: 2018-03-27 15:56:22
+# Last modified: 2018-03-27 16:34:13
 # Author: yeyong
 from app.extra import *
 from app.models.picture import Picture
@@ -51,7 +51,7 @@ class Product(db.Model, BaseModel):
             return True, pro
         except Exception as e:
             db.session.rollback()
-            return False, "操作失败: {}".format(e)
+            return False, "操作失败, 原因为: {}".format(e)
 
         
 
@@ -61,7 +61,6 @@ class Product(db.Model, BaseModel):
         for k in p:
             pic = Picture(pictureable_type="Product", pictureable_id=key, image=k)
             db.session.add(pic)
-
 
     def pictures(self):
         ps = Picture.query.filter_by(pictureable_id=self.id, pictureable_type="Product")
