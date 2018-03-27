@@ -1,0 +1,59 @@
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 13:10:40 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5234 fd 3
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x149d670
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 72768 bytes (71 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x149d670 pid: 1549 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (and the only) (pid: 1549, cores: 1)
+[pid: 1549|app: 0|req: 1/1] 172.16.0.28 () {58 vars in 1428 bytes} [Tue Mar 27 13:10:47 2018] POST /api/login => generated 86 bytes in 13 msecs (HTTP/1.1 200) 5 headers in 254 bytes (2 switches on core 0)
+[pid: 1549|app: 0|req: 2/2] 172.16.0.28 () {58 vars in 1428 bytes} [Tue Mar 27 13:10:47 2018] POST /api/login => generated 86 bytes in 3 msecs (HTTP/1.1 200) 5 headers in 254 bytes (2 switches on core 0)
+[pid: 1549|app: 0|req: 3/3] 172.16.0.28 () {58 vars in 1428 bytes} [Tue Mar 27 13:11:11 2018] POST /api/login => generated 86 bytes in 3 msecs (HTTP/1.1 200) 5 headers in 254 bytes (2 switches on core 0)
+[pid: 1549|app: 0|req: 4/4] 172.16.0.28 () {58 vars in 1428 bytes} [Tue Mar 27 13:11:15 2018] POST /api/login => generated 86 bytes in 4 msecs (HTTP/1.1 200) 5 headers in 254 bytes (2 switches on core 0)
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 13:17:40 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5234 fd 3
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x157b660
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 72768 bytes (71 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x157b660 pid: 2078 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (and the only) (pid: 2078, cores: 1)
+[pid: 2078|app: 0|req: 1/1] 172.16.0.28 () {58 vars in 1428 bytes} [Tue Mar 27 13:17:46 2018] POST /api/login => generated 86 bytes in 13 msecs (HTTP/1.1 200) 5 headers in 254 bytes (2 switches on core 0)

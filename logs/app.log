@@ -1,0 +1,277 @@
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:15:10 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x132bb00
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x132bb00 pid: 31168 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 31168)
+spawned uWSGI worker 1 (pid: 31172, cores: 1)
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:15:32 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:5234).
+bind(): Address already in use [core/socket.c line 769]
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:15:44 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:5234).
+bind(): Address already in use [core/socket.c line 769]
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:15:58 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:5234).
+bind(): Address already in use [core/socket.c line 769]
+...brutally killing workers...
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:16:48 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 inherited INET address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1fc54a0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1fc54a0 pid: 31168 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 31168)
+spawned uWSGI worker 1 (pid: 31238, cores: 1)
+...brutally killing workers...
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:16:52 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 inherited INET address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xd704a0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xd704a0 pid: 31168 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 31168)
+spawned uWSGI worker 1 (pid: 31245, cores: 1)
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 11:17:41 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x24aba90
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x24aba90 pid: 31263 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 31263)
+spawned uWSGI worker 1 (pid: 31267, cores: 1)
+...brutally killing workers...
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 13:07:59 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 inherited INET address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1fcc4a0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x1fcc4a0 pid: 31263 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 31263)
+spawned uWSGI worker 1 (pid: 1324, cores: 1)
+...brutally killing workers...
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 13:08:05 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 inherited INET address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x148a4a0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x148a4a0 pid: 31263 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+gracefully (RE)spawned uWSGI master process (pid: 31263)
+spawned uWSGI worker 1 (pid: 1332, cores: 1)
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 13:08:21 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x7a2aa0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 145536 bytes (142 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x7a2aa0 pid: 1343 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 1343)
+spawned uWSGI worker 1 (pid: 1349, cores: 1)
+...brutally killing workers...
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Mar 27 13:10:23 2018] ***
+compiled with version: 5.4.0 20160609 on 10 October 2017 15:42:54
+os: Linux-4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018
+nodename: ubuntu
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 8
+current working directory: /srv/www/flask_window
+detected binary path: /home/server/.local/bin/uwsgi
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 62624
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 inherited INET address 127.0.0.1:5234 fd 8
+Python version: 3.5.2 (default, Nov 23 2017, 16:37:01)  [GCC 5.4.0 20160609]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x180c090
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 72768 bytes (71 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x180c090 pid: 1343 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (and the only) (pid: 1343, cores: 1)

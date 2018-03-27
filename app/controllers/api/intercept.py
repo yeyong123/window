@@ -1,10 +1,11 @@
 # coding:utf-8
 # File Name: intercept.py
 # Created Date: 2018-03-12 14:49:42
-# Last modified: 2018-03-27 10:09:08
+# Last modified: 2018-03-27 16:19:16
 # Author: yeyong
 
 from  flask import Blueprint, request
+from app.ext import app
 from app.models.photo import Photo
 main_route = Blueprint("main_list", __name__)
 
