@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: intercept.py
 # Created Date: 2018-03-12 14:49:42
-# Last modified: 2018-03-27 16:19:16
+# Last modified: 2018-03-30 10:16:53
 # Author: yeyong
 
 from  flask import Blueprint, request
@@ -50,9 +50,9 @@ def log_request_info():
         if request.method == "GET":
             app.logger.warn("Body:  {}".format(request.args.to_dict()))
         else:
-            if request.content_type == "application/x-www-form-urlencoded":
-                app.logger.warn("Form => Body: %s",request.form.to_dict())
+            if request.is_json:
+                app.logger.warn("Form => Body: %s",request.get_json())
             else:
-                app.logger.warn("Data => Body: %s", request.get_json())
+                app.logger.warn("Data => Body: %s", request.form.to_dict())
     except Exception as e:
         return None

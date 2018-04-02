@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-26 17:19:48
+# Last modified: 2018-03-30 10:22:50
 # Author: yeyong
 from dateutil.relativedelta import relativedelta
 from app.ext import db
@@ -68,7 +68,7 @@ class BaseModel:
     @classmethod 
     def model_search(cls, **kwargs):
         page  = kwargs.get("page", 1)
-        args = [getattr(cls, k) == v for k, v in kwargs.items() if v and hasattr(cls, k)]
+        args = [getattr(cls, k) == v for k, v in kwargs.items() if not v  is None and hasattr(cls, k)]
         start_time = kwargs.get("start_time", None)
         end_time = kwargs.get("end_time", None)
         if start_time or end_time:

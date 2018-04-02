@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: product.py
 # Created Date: 2018-02-27 14:45:17
-# Last modified: 2018-03-27 16:34:13
+# Last modified: 2018-03-30 14:32:16
 # Author: yeyong
 from app.extra import *
 from app.models.picture import Picture
@@ -9,7 +9,7 @@ class Product(db.Model, BaseModel):
     __tablename__ = 'products'
     title = db.Column(db.String)
     account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False, index=True)
-    category_id= db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False, index=True)
+    category_id= db.Column(db.Integer, index=True)
     price = db.Column(db.Integer, default=0)
     material = db.Column(db.String)
     kind = db.Column(db.String)
@@ -20,7 +20,9 @@ class Product(db.Model, BaseModel):
     unit = db.Column(db.String)
     price_type = db.Column(db.String, default="元")
     content= db.Column(db.Text)
+    detail = db.Column(db.String)
     hide = db.Column(db.Boolean, default=False, index=True)
+    price2 = db.Column(db.Integer, default=0)
     #orders = db.relationship("Order", backref="product", lazy="dynamic")
 
     
@@ -59,7 +61,7 @@ class Product(db.Model, BaseModel):
     def create_pictures(cls, p=None, key=None):
         args = []
         for k in p:
-            pic = Picture(pictureable_type="Product", pictureable_id=key, image=k)
+            pic = Picture(pictureable_type="Product", pictureable_id=key, image=k.get("image"))
             db.session.add(pic)
 
     def pictures(self):
@@ -67,7 +69,12 @@ class Product(db.Model, BaseModel):
         return [p.to_json() for p in ps]
 
     def to_json(self):
-        return super().to_json(pictures=self.pictures())
+        return super().to_json(pictures=self.pictures(), account_info=self.account_info())
+
+
+    def account_info(self):
+        return self.account.to_json()
+
 
 
         

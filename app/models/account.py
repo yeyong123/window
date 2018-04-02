@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: account.py
 # Created Date: 2018-02-27 10:43:43
-# Last modified: 2018-03-26 16:50:29
+# Last modified: 2018-03-30 09:48:06
 # Author: yeyong
 from app.extra import *
 from .user_account import user_accounts
@@ -26,6 +26,9 @@ class Account(db.Model, BaseModel):
     lon=db.Column(db.String)
     lat= db.Column(db.String)
     location = db.Column(db.String, index=True)
+    open_store = db.Column(db.Boolean, default=False, index=True)
+    expired_at= db.Column(db.DateTime)
+    locked = db.Column(db.Boolean, default=False, index=True)
     users = db.relationship("User", secondary=user_accounts, lazy="dynamic", backref=db.backref("accounts", lazy="dynamic"))
     roles = db.relationship("Role", backref="account", lazy="dynamic")
     permissions = db.relationship("Permission", backref="account", lazy="dynamic")
@@ -346,6 +349,10 @@ class Account(db.Model, BaseModel):
     @staticmethod
     def set_address(target, value, oldvalue, initiator):
         target.parse_location(target=value, key=target.id)
+
+
+    def store_opend(self):
+        type(self).query.filter_by(id=self.id).update({'open_store': True})
 
 
 

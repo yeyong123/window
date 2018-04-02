@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: api_routes.py
 # Created Date: 2018-03-12 12:12:55
-# Last modified: 2018-03-27 16:15:41
+# Last modified: 2018-03-30 10:01:27
 # Author: yeyong
 from flask import g, request, Blueprint
 from .base import route_api, view_api
@@ -51,7 +51,7 @@ def add_route(route=None, view=None, path="", method="index", action="GET"):
 add_route(route='users')
 add_route(route='users',path="/<int:id>", method="show")
 add_route(route='users',path="/owner", method="owner")
-add_route(route='users',path="/<int:id>", method="update", action="POST")
+add_route(route='users',path="/<int:id>", method="update", action="PUT")
 add_route(route='users',path="/account_list", method="owner_accounts")
 add_route(route='users',path="/add_account", method="add_account", action="POST")
 add_route(route='users',path="/allocation_user_to_role", method="allocation_user_to_role", action="POST")
@@ -67,7 +67,7 @@ add_route(route='accounts',path="/<int:id>", method="show")
 add_route(route='accounts',path="", method="index")
 add_route(route='accounts',path="", method="create", action="POST")
 add_route(route='accounts',path="/salers", method="searach_role")
-add_route(route='accounts',path="/<int:id>", method="update", action="POST")
+add_route(route='accounts',path="/<int:id>", method="update", action="PUT")
 add_route(route='accounts',path="/roles", method="roles")
 add_route(route='accounts',path="/add_users", method="add_users", action="POST")
 add_route(route='accounts',path="/find_users", method="find_user")
@@ -81,6 +81,9 @@ add_route(route='accounts',path="/create_company", method="create_company", acti
 add_route(route='accounts',path="/create_category", method="create_category", action="POST")
 add_route(route='accounts',path="/create_permiession", method="create_permiession", action="POST")
 add_route(route='accounts',path="/delete_user_from_account", method="delete_user_from_account", action="POST")
+add_route(route="accounts", path="/stores", method="stores")
+add_route(route="accounts", path="/update_store", method="update_store", action="POST")
+
 
 
 ##########
@@ -88,7 +91,7 @@ add_route(route='accounts',path="/delete_user_from_account", method="delete_user
 ###########
 add_route(route="orders", path="", method="index")
 add_route(route="orders", path="/<int:id>", method="show")
-add_route(route="orders", path="/<int:id>", method="update", action="POST")
+add_route(route="orders", path="/<int:id>", method="update", action="PUT")
 add_route(route="orders", path="", method="create_order", action="POST")
 add_route(route="orders", path="/<int:id>/order_process", method="order_process", action="POST")
 add_route(route="orders", path="/<int:id>/toggle_order", method="toggle_order", action="POST")
@@ -113,6 +116,9 @@ add_route(route="customers", path="/<int:id>/create_comm", method="create_common
 ## 产品库
 ####################################
 add_route(route="products", path="", method="index")
+add_route(route="products", path="/<int:id>", method="show")
+add_route(route="products", path="/<int:id>", method="update",action="PUT")
+add_route(route="products", path="/<int:id>", method="destroy", action="DELETE")
 add_route(route="products", path="", method="create_product", action="POST")
 
 
