@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: orders.py
 # Created Date: 2018-03-12 14:17:34
-# Last modified: 2018-03-20 16:15:34
+# Last modified: 2018-04-08 14:49:37
 # Author: yeyong
 
 from flask import g, request
@@ -28,7 +28,7 @@ class OrdersView:
     def create_order(self):
         kwargs = request.form.to_dict()
         kwargs = {k: v for k, v in kwargs.items() if k in self.params() and v}
-        kwargs.update(account_id=g.current_account.id, user_id=g.current_user.id)
+        kwargs.update(account_id=g.current_account.id, user_id=g.current_user.id, ip=request.remote_addr, u_name = g.current_user.name)
         ok, order = Order.create_order(**kwargs)
         if not ok:
             return dict(msg=order, code=422)
@@ -56,6 +56,12 @@ class OrdersView:
         ok, temp = order.update(**kwargs)
         if not ok:
             return dict(msg=temp, code=422)
+        order.record_option(
+                body="操作修改了订单",
+                ip=request.remote_addr,
+                name=g.current_user.name,
+                event="update"
+                )
         return dict(msg="ok", code=200, order=temp.show_json())
 
 
@@ -65,7 +71,7 @@ class OrdersView:
         key = request.form.get("event")
         content = request.form.get("content")
         order = self.find_order(id)
-        ok, result = order.handle_order_event(key=key, user=user, content=content)
+        ok, result = order.handle_order_event(key=key, user=user, content=content, ip=request.remote_addr)
         if not ok:
             return dict(msg=result, code=422)
         return dict(msg="ok", code=200, order=result.show_json())

@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: customers.py
 # Created Date: 2018-03-12 14:17:27
-# Last modified: 2018-03-20 17:03:25
+# Last modified: 2018-04-08 14:58:43
 # Author: yeyong
 from flask import g, request
 from app.models.customer import Customer
@@ -37,6 +37,12 @@ class CustomersView:
         ok, c = cust.update(**request.form.to_dict())
         if not ok:
             return dict(msg=c, code=422)
+        cust.record_option(
+                body="修改了客户的信息",
+                ip = request.remote_addr,
+                name = g.current_user.name,
+                event = "update"
+                )
         return dict(msg="ok", code=200, customer=c.as_json())
 
     def destroy(self, id):
@@ -58,6 +64,12 @@ class CustomersView:
         ok, cust = Order.create_customer(**kwargs)
         if not ok:
             return dict(msg=cust, code=422)
+        cust.record_option(
+                body="添加了新的客户",
+                event="create",
+                ip = request.remote_addr,
+                name = g.current_user.name
+                )
         return dict(msg="ok", code=200, customer=cust.as_json())
         
 
@@ -70,6 +82,12 @@ class CustomersView:
         ok, comm = cust.create_commoncation(**kwargs)
         if not ok:
             return dict(msg=comm, code=422)
+        cust.record_option(
+                body="发布了新的交流信息",
+                event="communicate",
+                ip = request.remote_addr,
+                name = g.current_user.name
+                )
         return dict(msg="ok", code=200, comm=comm.to_json())
         
 

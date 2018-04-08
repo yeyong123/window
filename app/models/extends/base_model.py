@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-30 10:22:50
+# Last modified: 2018-04-08 14:38:21
 # Author: yeyong
 from dateutil.relativedelta import relativedelta
 from app.ext import db
@@ -26,6 +26,35 @@ class BaseModel:
 
     def to_date(self, key=0):
         return datetime.fromtimestamp(key)
+
+    def record_option(self, event=None, name=None, body=None, ip=None):
+        from app.models.user_logger import UserLogger
+        klass = self.__class__.__name__
+        if klass == "Order":
+            klass_no = self.serial_no
+        else:
+            klass_no = self.id
+        if klass == "Account":
+            account_id  = self.id
+        else:
+            account_id = self.account_id
+        if klass == "User":
+            name = self.name
+        else:
+            name = name
+        body = "从IP: {}{}".format(ip, body)
+        kwargs = dict(
+                user_name = name,
+                account_id=account_id,
+                event=event,
+                body = body,
+                klass = klass,
+                klass_no = klass_no
+                )
+        ok, res = UserLogger.create_logger(**kwargs)
+        return res
+
+        
 
 
 

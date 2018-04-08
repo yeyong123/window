@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: customer.py
 # Created Date: 2018-02-27 12:46:14
-# Last modified: 2018-03-20 17:02:15
+# Last modified: 2018-04-08 14:55:44
 # Author: yeyong
 from app.extra import *
 from app.models.communicate import Communicate
@@ -31,6 +31,10 @@ class Customer(db.Model, BaseModel):
     @classmethod
     def generate_customer(cls, **kwargs):
         try:
+            valid = cls.__table__.columns.keys()
+            ip = kwargs.get("ip")
+            name = kwargs.get("u_name")
+            kwargs = {k:v for k, v in kwargs.items() if v and k in valid}
             customer = cls.query.filter_by(phone=kwargs["phone"], account_id=kwargs["account_id"]).first()
             if not customer:
                 customer = Customer(**kwargs)
@@ -38,6 +42,12 @@ class Customer(db.Model, BaseModel):
                 customer.customer_type  = 1
             db.session.add(customer)
             db.session.flush()
+            customer.record_option(
+                    body="添加了正式的客户",
+                    ip = ip,
+                    user_name = name,
+                    event="create"
+                    )
             return True, customer
         except Exception as e:
             return False, "处理客户事件失败"
