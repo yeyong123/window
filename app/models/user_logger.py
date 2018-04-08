@@ -1,6 +1,7 @@
 # coding:utf-8
 # File Name: user_logger.py
 # Created Date: 2018-02-27 14:57:20
+# Last modified: 2018-04-08 15:01:36
 # Last modified: 2018-04-08 13:57:09
 # Author: yeyong
 from app.extra import *
@@ -15,7 +16,9 @@ class UserLogger(db.Model, BaseModel):
     klass = db.Column(db.String)
     klass_no = db.Column(db.String)
 
-
+    def __repr__(self):
+        name = "<Logger id: {}, user_name: {}, account_id: {}, event: {}>".format(self.id, self.user_name, self.account_id, self.event)
+        return name
 
     @classmethod
     def create_logger(cls, **kwargs):
@@ -28,6 +31,7 @@ class UserLogger(db.Model, BaseModel):
             return True, ul
         except Exception as e:
             db.session.rollback()
-            app.logger.warn("无效的保存： {}".format(e))
+            app.logger.warn("记录事件失败: {}".format(e))
+            return False, e
             return False, e
         

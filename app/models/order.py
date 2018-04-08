@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-04-08 13:40:11
+# Last modified: 2018-04-08 15:02:21
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -155,7 +155,7 @@ class Order(db.Model, BaseModel, OrderModule):
 
 
     #生成客户
-    def generate_customer(self):
+    def generate_customer(self, ip=None, name=None):
         return Customer.generate_customer(
                 server_id=self.user_id,
                 phone=self.customer_phone, 
@@ -164,7 +164,9 @@ class Order(db.Model, BaseModel, OrderModule):
                 province=self.province,
                 city=self.city,
                 district=self.district,
-                customer_type=self.order_type
+                customer_type=self.order_type,
+                ip = ip,
+                u_name = name
                 )
 
     #订单创建时处理新的客户以及转为正式客户
@@ -175,19 +177,26 @@ class Order(db.Model, BaseModel, OrderModule):
         如果不是正式用户就转为正式用户, 如果没有这个用户就新建一个正式用户
         """
         try:
+            ip = kwargs.get("ip")
+            u_name = kwargs.get("u_name")
             kwargs = {key: value for key, value in kwargs.items() if hasattr(cls, key)}
             temp_dict = dict()
             temp_key = 'pictures'
             if temp_key in kwargs:
                 temp_dict[temp_key] = kwargs.pop('temp_key')
             o = cls(**kwargs)
-            ok, c = o.generate_customer()
+            ok, c = o.generate_customer(ip=ip, name=u_name)
             if not ok:
                 db.session.rollback()
                 return False, c
             o.customer_id = c.id
             db.session.add(o)
             db.session.commit()
+            o.record_option(
+                    body="创建了订单",
+                    ip=ip,
+                    user_name = u_name
+                    )
             return True, o
         except Exception as e:
             app.logger.warn("订单处理失: {}".format(e))
@@ -249,7 +258,7 @@ class Order(db.Model, BaseModel, OrderModule):
         db.session.add(node)
         db.session.commit()
 
-    def handle_order_event(self, key=None, user=None, content=None):
+    def handle_order_event(self, key=None, user=None, content=None, ip=None):
         """
         处理事件
         """
@@ -266,6 +275,12 @@ class Order(db.Model, BaseModel, OrderModule):
         ok, node = self.record_event_to_node(event=key, user=user, content=args.get(key) if content is None else content)
         if not ok:
             return False, node
+        self.record_option(
+                body=args.get(key),
+                name=user.name,
+                event="update",
+                ip=ip
+                )
         return True, self
 
 

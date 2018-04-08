@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: auth.py
 # Created Date: 2018-03-12 15:13:06
-# Last modified: 2018-03-28 13:58:36
+# Last modified: 2018-04-08 14:39:19
 # Author: yeyong
 from flask import Blueprint, request
 from app.models.user import User
@@ -15,7 +15,6 @@ def login():
         phone = args.get("phone")
         password = args.get("password")
         data = args.get("hash")
-        print("-----------", data, phone, password)
     else:
         phone = request.form.get("phone", None)
         password = request.form.get("password", None)
@@ -25,6 +24,11 @@ def login():
     if user and user.verify_password(password):
         user.reset_token()
         token = user.generate_token
+        user.record_option(
+                body="登录了账户",
+                ip=request.remote_addr,
+                event="login"
+                )
         return dict(msg="ok", token=token, user=user.as_json(), code=200)
     else:
         return dict(msg="账户或密码错误", code=422)
@@ -37,6 +41,11 @@ def signup():
     ok, user = User.user_create(**kwargs.to_dict())
     if not ok:
         return dict(msg=user, code=422)
+    user.record_option(
+            ip = request.remote_addr,
+            body="注册了新账户",
+            event="signup"
+            )
     return dict(user=user.as_json(), code=200)
     
     
