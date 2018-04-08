@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-03-30 10:22:50
+# Last modified: 2018-04-08 13:57:42
 # Author: yeyong
 from dateutil.relativedelta import relativedelta
 from app.ext import db
@@ -48,7 +48,36 @@ class BaseModel:
             return datetime.utcnow()
 
 
+    def record_options(self, event=None, user_name=None, text=None, body=None):
+        from app.models.user_logger import UserLogger
+        klass = self.__class__.__name__
+        if klass == 'Account':
+            account_id = self.id
+        else:
+            account_id = self.account_id
 
+        if klass == "Order":
+            no = self.serial_no
+        else:
+            no = self.id
+
+        if klass == "User":
+            name = self.name
+        else:
+            name = user_name
+
+        kwargs = dict(
+                account_id=account_id,
+                event =  event,
+                user_name = name,
+                body=body,
+                klass = klass,
+                klass_no=no,
+                text=text
+                )
+        ok, result = UserLogger.create_logger(**kwargs)
+        return result
+        
         
 
 

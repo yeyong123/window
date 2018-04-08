@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: orders.py
 # Created Date: 2018-03-12 14:17:34
-# Last modified: 2018-03-20 16:15:34
+# Last modified: 2018-04-08 14:11:11
 # Author: yeyong
 
 from flask import g, request
@@ -32,6 +32,7 @@ class OrdersView:
         ok, order = Order.create_order(**kwargs)
         if not ok:
             return dict(msg=order, code=422)
+        order.record_options(event="create", body="创建了订单")
         return dict(msg="ok", code=200, order=order.show_json())
 
     def show(self, id):
