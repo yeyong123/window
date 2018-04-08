@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: base_model.py
 # Created Date: 2018-02-28 14:30:16
-# Last modified: 2018-04-08 14:38:21
+# Last modified: 2018-04-08 15:00:51
 # Author: yeyong
 from dateutil.relativedelta import relativedelta
 from app.ext import db
@@ -77,7 +77,7 @@ class BaseModel:
             return datetime.utcnow()
 
 
-
+            
         
 
 

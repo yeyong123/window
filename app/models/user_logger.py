@@ -1,9 +1,11 @@
 # coding:utf-8
 # File Name: user_logger.py
 # Created Date: 2018-02-27 14:57:20
-# Last modified: 2018-04-08 14:24:34
+# Last modified: 2018-04-08 15:01:36
+# Last modified: 2018-04-08 13:57:09
 # Author: yeyong
 from app.extra import *
+from app.ext import app
 class UserLogger(db.Model, BaseModel):
     __tablename__  = 'user_loggers'
     event = db.Column(db.String)
@@ -21,7 +23,7 @@ class UserLogger(db.Model, BaseModel):
     @classmethod
     def create_logger(cls, **kwargs):
         try:
-            valid = cls.__table__.columns.keys()
+            valid = set(cls.__table__.columns.keys())
             kwargs = {k: v for k, v in kwargs.items() if v and k in valid}
             ul = cls(**kwargs)
             db.session.add(ul)
@@ -31,4 +33,5 @@ class UserLogger(db.Model, BaseModel):
             db.session.rollback()
             app.logger.warn("记录事件失败: {}".format(e))
             return False, e
-
+            return False, e
+        

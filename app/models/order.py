@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: order.py
 # Created Date: 2018-02-27 13:52:39
-# Last modified: 2018-04-08 14:56:08
+# Last modified: 2018-04-08 15:02:21
 # Author: yeyong
 from app.extra import *
 from app.models.customer import Customer
@@ -761,6 +761,7 @@ class Order(db.Model, BaseModel, OrderModule):
     def update_detail(self, **kwargs):
         detail = self.order_details.first()
         return detail.update(**kwargs)
+
 
 
 
