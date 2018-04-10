@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-03-12 10:11:13
+# Last modified: 2018-04-10 15:09:26
 # Author: yeyong
 
 import os
@@ -16,7 +16,7 @@ for model in models:
         name = "".join(map(lambda c: c.capitalize(), model.split(".")[-1].split("_")))
         m = __import__(model, fromlist=[name])
         models_class.add(getattr(m, name))
-app = create_app()
+app = create_app(os.getenv("FLASK_ENV") or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 def make_shell_context():
