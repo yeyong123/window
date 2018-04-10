@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-03-16 13:35:29
+# Last modified: 2018-03-27 17:15:58
 # Last modified: 2018-03-12 10:07:33
 # Last modified: 2018-03-12 10:11:13
 # Author: yeyong
@@ -27,3 +27,9 @@ def make_shell_context():
     return args
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command("db", MigrateCommand)
+
+if not app.debug:
+    import logging
+    app.logger.addHandler(logging.StreamHandler())
+    app.logger.setLevel(logging.INFO)
+
