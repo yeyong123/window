@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: user.py
 # Created Date: 2018-02-26 11:06:00
-# Last modified: 2018-03-16 13:31:38
+# Last modified: 2018-04-11 11:13:57
 # Author: yeyong
 from app.extra import *
 import hashlib
@@ -307,6 +307,7 @@ class User(db.Model, BaseModel):
         user = User.query.filter_by(phone=target.phone).first()
         if user:
             raise ValueError("手机号被使用")
+
 
 
 
