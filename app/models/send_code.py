@@ -1,13 +1,14 @@
 # coding:utf-8
 # File Name: send_code.py
 # Created Date: 2018-02-26 16:25:23
-# Last modified: 2018-03-26 16:53:01
+# Last modified: 2018-04-11 11:18:53
 # Author: yeyong
 import random
 from app.ext import redis, app
 import requests
 import json
-
+from flask_celery import Celery
+celery = Celery()
 class SendCode:
     @staticmethod
     def code(phone=None):
@@ -32,6 +33,7 @@ class SendCode:
 
 
     @staticmethod
+    @celery.task()
     def send(**kwargs):
         args = dict(
                 appid=app.config.get("SMS_KEY"),
@@ -49,6 +51,9 @@ class SendCode:
             return True, "发送成功"
         else:
             return False, status['status']
+
+
+
         
         
 

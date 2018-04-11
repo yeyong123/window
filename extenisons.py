@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: task.py
 # Created Date: 2018-03-07 11:39:56
-# Last modified: 2018-03-07 11:51:33
+# Last modified: 2018-04-11 11:23:37
 # Author: yeyong
 import os
 from app.flask_init import create_app
@@ -23,6 +23,6 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
-flask_app = create_app()
+flask_app = create_app("default")
 celery = make_celery(flask_app)
 
