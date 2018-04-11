@@ -1,7 +1,7 @@
 # coding:utf-8
 # File Name: manage.py
 # Created Date: 2018-02-26 10:43:45
-# Last modified: 2018-04-10 15:25:31
+# Last modified: 2018-04-11 13:57:41
 # Author: yeyong
 
 import os
@@ -30,4 +30,8 @@ if not app.debug:
     import logging
     app.logger.addHandler(logging.StreamHandler())
     app.logger.setLevel(logging.INFO)
+
+
+if __name__ == "__main__":
+    manager.run()
 
