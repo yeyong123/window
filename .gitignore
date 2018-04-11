@@ -4,3 +4,7 @@ config.py
 example_config.py
 data-dev.sqlite
 .qiniu_pythonsdk_hostscache.json
+*.log
+logs/*
+tmp/*
+
